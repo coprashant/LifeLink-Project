@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin - Inventory</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .sidebar { min-height: 100vh; background: #343a40; color: white; }
+        .sidebar a { color: white; text-decoration: none; padding: 15px; display: block; }
+        .sidebar a:hover { background: #495057; }
+    </style>
+</head>
+<body>
+
+<div class="d-flex">
+    <div class="sidebar col-md-2 d-none d-md-block">
+        <h3 class="p-3">LifeLink Admin</h3>
+        <a href="/admin/dashboard">Dashboard</a>
+        <a href="/admin/inventory" class="bg-primary">Manage Inventory</a>
+        <a href="/admin/donors">Manage Donors</a>
+        <a href="/admin/requests">Hospital Requests <span class="badge bg-danger rounded-pill">2</span></a>
+        <a href="/logout" class="mt-5">Logout</a>
+    </div>
+
+    <div class="col-md-10 p-4 bg-light">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>🩸 Blood Inventory Management</h2>
+            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addBagModal">+ Add Blood Bag</button>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <table class="table align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Bag ID</th>
+                            <th>Group</th>
+                            <th>Donor</th>
+                            <th>Collected</th>
+                            <th>Expires</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="table-danger">
+                            <td>BAG-501</td>
+                            <td><strong>B-</strong></td>
+                            <td>Donor #420</td>
+                            <td>2023-11-25</td>
+                            <td>2023-12-30</td>
+                            <td class="text-danger fw-bold">Expired</td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-danger">🗑 Trash</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>BAG-502</td>
+                            <td><strong>A+</strong></td>
+                            <td>John Doe</td>
+                            <td>2024-01-10</td>
+                            <td>2024-02-21</td>
+                            <td><span class="badge bg-success">Available</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-primary">Dispatch</button>
+                                <button class="btn btn-sm btn-outline-danger">🗑</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addBagModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add New Blood Bag</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="/admin/add-bag" method="POST">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label>Donor ID</label>
+                        <input type="text" class="form-control" name="donor_id" placeholder="Scan or type ID" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Blood Group</label>
+                        <select class="form-select" name="blood_group">
+                            <option>A+</option>
+                            <option>B-</option>
+                            <option>O+</option>
+                            </select>
+                    </div>
+                    <div class="mb-3">
+                        <label>Collection Date</label>
+                        <input type="date" class="form-control" name="collection_date" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Save to Inventory</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lifesave - Register</title>
+    <link rel="stylesheet" href="../Styles/login.css">
+</head>
+<body>
+
+<div class="container">
+    <div class="card">
+
+        <div class="logo">🩸</div>
+        <h3 class="header1">Create Account</h3>
+        <p class="header2">Join Lifesave as a donor</p>
+
+        <form action="/register" method="post">
+
+            <div class="field">
+                <label class="labels">Full Name</label>
+                <input class="login-input" type="text" name="name" required>
+            </div>
+
+            <div class="field">
+                <label class="labels">Email Address</label>
+                <input class="login-input" type="email" name="email" required>
+            </div>
+
+            <div class="field">
+                <label class="labels">Blood Group</label>
+                <select class="login-input" name="blood_group" required>
+                    <option>A+</option>
+                    <option>A-</option>
+                    <option>B+</option>
+                    <option>B-</option>
+                    <option>O+</option>
+                    <option>O-</option>
+                    <option>AB+</option>
+                    <option>AB-</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label class="labels">Password</label>
+                <input class="login-input" type="password" name="password" required>
+            </div>
+
+            <div class="field">
+                <label class="labels">Confirm Password</label>
+                <input class="login-input" type="password" name="confirm_password" required>
+            </div>
+
+            <button type="submit" class="login-button">Register</button>
+        </form>
+
+        <div class="meta">
+            <p>
+                Already have an account?
+                <a class="register" href="./login.html">Login</a>
+            </p>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

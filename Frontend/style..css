@@ -1,0 +1,113 @@
+/* 1. Global Reset: Removes default browser margins/padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* Ensures padding doesn't affect element width */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* 2. Navigation: Using Flexbox for alignment */
+.navbar {
+    display: flex;
+    justify-content: space-between; /* Pushes Logo to left, Links to right */
+    align-items: center; /* Centers items vertically */
+    padding: 20px 10%;
+    background-color: #fff;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #e63946;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    align-items: center;
+}
+
+.nav-links li {
+    margin-left: 30px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+}
+
+/* 3. Hero Section: Using a background image and centering content */
+.hero {
+    height: 80vh;
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
+                url('https://images.unsplash.com/photo-1615461066841-6116e61058f4?auto=format&fit=crop&w=1350&q=80');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+}
+
+.hero h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+}
+
+/* 4. Buttons: Custom styling from scratch */
+.btn-red {
+    background-color: #e63946;
+    color: white !important;
+    padding: 12px 25px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.btn-red:hover {
+    background-color: #c1121f;
+}
+
+.btn-outline {
+    border: 2px solid white;
+    color: white;
+    padding: 10px 25px;
+    border-radius: 5px;
+    text-decoration: none;
+    margin-left: 15px;
+}
+
+/* 5. Stats Section: Using Flexbox for the card row */
+.stats-container {
+    display: flex;
+    justify-content: space-around;
+    padding: 50px 10%;
+    background-color: #f8f9fa;
+}
+
+.stat-card {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    text-align: center;
+    width: 250px;
+}
+
+.stat-card h3 {
+    font-size: 2.5rem;
+    color: #e63946;
+    margin-bottom: 5px;
+}
+
+.stat-card p {
+    color: #666;
+}
