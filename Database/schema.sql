@@ -1,5 +1,5 @@
 -- 1. Create custom types for restricted fields
-CREATE TYPE user_role AS ENUM ('Admin', 'Hospital', 'Donor');
+CREATE TYPE user_role AS ENUM ('admin', 'hospital', 'donor');
 CREATE TYPE blood_status AS ENUM ('available', 'reserved', 'used', 'expired');
 CREATE TYPE request_urgency AS ENUM ('Normal', 'Urgent', 'Critical');
 CREATE TYPE request_status AS ENUM ('pending', 'partially_fulfilled', 'fulfilled', 'cancelled');
@@ -11,7 +11,7 @@ CREATE TABLE Donors (
     contact_no VARCHAR(15) NOT NULL,
     address TEXT,
     last_donation_date DATE,
-    blood_group VARCHAR(5) NOT NULL -- Added for quick lookups
+    blood_group VARCHAR(5) NOT NULL 
 );
 
 -- 3. Hospitals Table
@@ -27,13 +27,13 @@ CREATE TABLE Hospitals (
 CREATE TABLE Users (
     user_id SERIAL PRIMARY KEY,
     email VARCHAR(100) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL, -- To be hashed in Node.js
+    password VARCHAR(255) NOT NULL,
     role user_role NOT NULL,
     donor_id INT REFERENCES Donors(donor_id) ON DELETE CASCADE,
     hospital_id INT REFERENCES Hospitals(hospital_id) ON DELETE CASCADE
 );
 
--- 5. Donation History (Tracking over time)
+-- 5. Donation History 
 CREATE TABLE Donation_History (
     history_id SERIAL PRIMARY KEY,
     donation_date DATE DEFAULT CURRENT_DATE,
@@ -42,12 +42,11 @@ CREATE TABLE Donation_History (
     donor_id INT NOT NULL REFERENCES Donors(donor_id) ON DELETE CASCADE
 );
 
--- 6. Blood Inventory (Individual bags)
+-- 6. Blood Inventory 
 CREATE TABLE Blood_Inventory (
     bag_id SERIAL PRIMARY KEY,
     blood_group VARCHAR(5) NOT NULL,
     collection_date DATE NOT NULL DEFAULT CURRENT_DATE,
-    -- Business Logic: Automatic 42-day shelf life
     expiry_date DATE NOT NULL DEFAULT (CURRENT_DATE + INTERVAL '42 days'),
     status blood_status DEFAULT 'available',
     donor_id INT REFERENCES Donors(donor_id) ON DELETE SET NULL
@@ -66,13 +65,12 @@ CREATE TABLE Blood_Requests (
 
 -- 8. Request Fulfillment (Bridge Table)
 CREATE TABLE Request_Fulfillment (
-    fulfillment_id SERIAL PRIMARY KEY, -- Simplifies management over a composite key
+    fulfillment_id SERIAL PRIMARY KEY, 
     request_id INT NOT NULL REFERENCES Blood_Requests(request_id) ON DELETE CASCADE,
     bag_id INT NOT NULL REFERENCES Blood_Inventory(bag_id) ON DELETE CASCADE,
     fulfillment_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Create a view to quickly see who can donate today
 CREATE OR REPLACE VIEW eligible_donors AS
 SELECT 
     donor_id, 
@@ -83,3 +81,6 @@ SELECT
 FROM Donors
 WHERE last_donation_date IS NULL -- Never donated before
    OR (CURRENT_DATE - last_donation_date) >= 90;
+
+
+SELECT * FROM Users;
