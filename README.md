@@ -116,7 +116,7 @@ Update your PostgreSQL credentials inside the `.env` file.
 * Run the SQL script located at:
 
   ```
-  ./Resources/schema.sql
+  ./Database/schema.sql
   ```
 
 ### 4️⃣ Run the Application
