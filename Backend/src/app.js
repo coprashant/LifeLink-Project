@@ -1,7 +1,7 @@
 const express = require('express');
 const session = require('express-session');
 const path = require('path');
-const frontendPath = path.join(__dirname, '../../Frontend');
+const frontendPath = path.join(process.cwd(), 'Frontend');
 require('dotenv').config();
 
 // 1. Import the routes (this contains the handleLogin logic)
@@ -24,16 +24,16 @@ app.use(session({
 app.use('/', authRoutes); 
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../../Frontend/login.html')); 
+    res.sendFile(path.join(frontendPath, 'login.html')); 
 });
 app.get('/register.html', (req, res) => {
-    res.sendFile(path.join(__dirname, '../../Frontend/register.html'));
+    res.sendFile(path.join(frontendPath, 'register.html'));
 });
 app.get('/login.html', (req, res) => {
-    res.sendFile(path.join(__dirname, '../../Frontend/login.html'));
+    res.sendFile(path.join(frontendPath, 'login.html'));
 });
 app.get('/home.html', (req, res) => {
-    res.sendFile(path.join(__dirname, '../../Frontend/home.html'));
+    res.sendFile(path.join(frontendPath, 'home.html'));
 });
 
 module.exports = app;

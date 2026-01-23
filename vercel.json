@@ -5,7 +5,9 @@
       "src": "Backend/src/app.js",
       "use": "@vercel/node",
       "config": {
-        "includeFiles": "Frontend/**"
+        "includeFiles": [
+          "Frontend/**"
+        ]
       }
     }
   ],
