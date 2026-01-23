@@ -1,6 +1,7 @@
 const express = require('express');
 const session = require('express-session');
 const path = require('path');
+const frontendPath = path.join(__dirname, '../../Frontend');
 require('dotenv').config();
 
 // 1. Import the routes (this contains the handleLogin logic)
@@ -10,7 +11,7 @@ const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(express.static(path.join(__dirname, '../../Frontend')));
+app.use(express.static(frontendPath));
 
 app.use(session({
     secret: process.env.SESSION_SECRET || 'thapathali_campus_key',
@@ -21,11 +22,6 @@ app.use(session({
 
 // 2. Use the routes
 app.use('/', authRoutes); 
-
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
-});
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../../Frontend/login.html')); 
