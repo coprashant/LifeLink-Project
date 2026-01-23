@@ -10,6 +10,8 @@ const pool = new Pool({
   port: process.env.DB_PORT || 5432,
 });
 
+ssl: { rejectUnauthorized: false }
+
 // Test the connection immediately on startup
 pool.on('connect', () => {
   console.log('Connected to LifeLink PostgreSQL Database');
@@ -24,3 +26,4 @@ module.exports = {
   query: (text, params) => pool.query(text, params),
   pool: pool
 };
+
