@@ -23,7 +23,7 @@ CREATE TABLE Hospitals (
     hospital_email VARCHAR(100) UNIQUE NOT NULL
 );
 
--- 4. Users Table (Linking to Donors or Hospitals)
+-- 4. Users Table 
 CREATE TABLE Users (
     user_id SERIAL PRIMARY KEY,
     email VARCHAR(100) UNIQUE NOT NULL,
