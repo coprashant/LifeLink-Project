@@ -27,6 +27,9 @@ app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);
 });
 
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '../../Frontend/login.html')); 
+});
 app.get('/register.html', (req, res) => {
     res.sendFile(path.join(__dirname, '../../Frontend/register.html'));
 });
