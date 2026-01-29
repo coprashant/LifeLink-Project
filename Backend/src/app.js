@@ -10,7 +10,7 @@ const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(express.static(path.join(__dirname, '../../Frontend/HTML')));
+app.use(express.static(path.join(__dirname, '../../Frontend')));
 
 app.use(session({
     secret: process.env.SESSION_SECRET || 'thapathali_campus_key',
