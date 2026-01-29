@@ -1,7 +1,6 @@
 const express = require('express');
 const session = require('express-session');
 const path = require('path');
-const frontendPath = path.join(__dirname, '../../Frontend');
 require('dotenv').config();
 
 //Import the routes
@@ -11,7 +10,7 @@ const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(express.static(frontendPath));
+app.use(express.static(path.join(__dirname, '../../Frontend/HTML')));
 
 app.use(session({
     secret: process.env.SESSION_SECRET || 'thapathali_campus_key',
@@ -40,7 +39,7 @@ app.get('/home.html', (req, res) => {
 module.exports = app;
 
 //Run the server locally
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
-});
+// const PORT = process.env.PORT || 5000;
+// app.listen(PORT, () => {
+//     console.log(`Server running at http://localhost:${PORT}`);
+// });
