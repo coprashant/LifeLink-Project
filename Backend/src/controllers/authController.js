@@ -19,7 +19,14 @@ exports.handleLogin = async (req, res) => {
         if (match) {
             req.session.userId = user.user_id;
             req.session.role = user.role;
-            res.send("Login Successful"); 
+            // REDirection logic based on role
+            if (user.role === 'admin') {
+                return res.redirect('/admin/dashboard.html');
+            } else if (user.role === 'hospital') {
+                return res.redirect('/hospital/portal.html');
+            } else {
+                return res.redirect('/home.html'); // For donors
+            }
         } else {
             res.status(401).send('Incorrect password.');
         }
