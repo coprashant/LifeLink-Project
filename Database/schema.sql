@@ -65,16 +65,5 @@ CREATE TABLE Request_Fulfillment (
     fulfillment_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- 8. Eligible Donors View
-CREATE OR REPLACE VIEW eligible_donors AS
-SELECT 
-    donor_id, 
-    full_name, 
-    blood_group,
-    last_donation_date,
-    (CURRENT_DATE - last_donation_date) AS days_since_last_donation
-FROM Donors
-WHERE last_donation_date IS NULL 
-   OR (CURRENT_DATE - last_donation_date) >= 90;
 
 SELECT * FROM Users;

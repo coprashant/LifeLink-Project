@@ -3,8 +3,10 @@ const session = require('express-session');
 const path = require('path');
 require('dotenv').config();
 
-//Import the routes
-const authRoutes = require('./routes/authRoutes'); 
+const authRoutes = require('./routes/authRoutes');
+const adminRoutes = require('./routes/adminRoutes');
+const hospitalRoutes = require('./routes/hospitalRoutes');
+const donorRoutes = require('./routes/donorRoutes');
 
 const app = express();
 
@@ -19,19 +21,23 @@ app.use(session({
     cookie: { secure: false }
 }));
 
-//Use the routes
-app.use('/', authRoutes); 
-
+app.use('/', authRoutes);
+app.use('/admin', adminRoutes);
+app.use('/hospital', hospitalRoutes);
+app.use('/donor', donorRoutes);
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../../Frontend/HTML/home.html')); 
+    res.sendFile(path.join(__dirname, '../../Frontend/HTML/home.html'));
 });
+
 app.get('/register.html', (req, res) => {
     res.sendFile(path.join(__dirname, '../../Frontend/HTML/register.html'));
 });
+
 app.get('/login.html', (req, res) => {
     res.sendFile(path.join(__dirname, '../../Frontend/HTML/login.html'));
 });
+
 app.get('/home.html', (req, res) => {
     res.sendFile(path.join(__dirname, '../../Frontend/HTML/home.html'));
 });

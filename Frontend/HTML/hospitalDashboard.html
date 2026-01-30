@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Portal - LifeLink</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f4f4f4; }
+        .container { max-width: 1000px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; }
+        h1 { color: #c41e3a; margin-bottom: 10px; }
+        .user-info { background: #f8f8f8; padding: 10px; margin-bottom: 20px; border-radius: 4px; }
+        .section { margin-bottom: 30px; padding: 20px; border: 1px solid #ddd; border-radius: 4px; }
+        h2 { color: #333; margin-bottom: 15px; font-size: 20px; }
+        input, select, textarea { width: 100%; padding: 8px; margin: 5px 0; border: 1px solid #ddd; border-radius: 4px; }
+        button { background: #c41e3a; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; margin: 5px 5px 5px 0; }
+        button:hover { background: #a01828; }
+        .btn-secondary { background: #666; }
+        .btn-secondary:hover { background: #555; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background: #f8f8f8; font-weight: bold; }
+        .result { margin-top: 10px; padding: 10px; background: #e8f5e9; border-radius: 4px; display: none; }
+        .error { background: #ffebee; color: #c62828; }
+        .status-pending { color: #ff9800; font-weight: bold; }
+        .status-fulfilled { color: #4caf50; font-weight: bold; }
+        .status-partially_fulfilled { color: #2196f3; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>LifeLink - Hospital Portal</h1>
+        <div class="user-info">
+            <strong>Role:</strong> Hospital | <button class="btn-secondary" onclick="logout()">Logout</button>
+        </div>
+
+        <div class="section">
+            <h2>Submit Blood Request</h2>
+            <select id="bloodGroupNeeded">
+                <option value="">Select Blood Group Needed</option>
+                <option value="A+">A+</option>
+                <option value="A-">A-</option>
+                <option value="B+">B+</option>
+                <option value="B-">B-</option>
+                <option value="AB+">AB+</option>
+                <option value="AB-">AB-</option>
+                <option value="O+">O+</option>
+                <option value="O-">O-</option>
+            </select>
+            <input type="number" id="unitsRequested" placeholder="Units Requested" min="1">
+            <select id="urgency">
+                <option value="Normal">Normal</option>
+                <option value="Urgent">Urgent</option>
+                <option value="Critical">Critical</option>
+            </select>
+            <button onclick="submitRequest()">Submit Request</button>
+            <div id="submitResult" class="result"></div>
+        </div>
+
+        <div class="section">
+            <h2>My Blood Requests</h2>
+            <button onclick="getMyRequests()">Refresh Requests</button>
+            <div id="requestsResult" class="result"></div>
+        </div>
+
+        <div class="section">
+            <h2>Blood Availability</h2>
+            <button onclick="checkAvailability()">Check Available Blood</button>
+            <div id="availabilityResult" class="result"></div>
+        </div>
+    </div>
+
+    <script>
+        async function submitRequest() {
+            const request = {
+                blood_group_needed: document.getElementById('bloodGroupNeeded').value,
+                units_requested: document.getElementById('unitsRequested').value,
+                urgency: document.getElementById('urgency').value
+            };
+
+            if (!request.blood_group_needed || !request.units_requested) {
+                showError('submitResult', 'Please fill all required fields');
+                return;
+            }
+
+            try {
+                const response = await fetch('/hospital/requests', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(request)
+                });
+
+                if (response.ok) {
+                    showSuccess('submitResult', 'Blood request submitted successfully!');
+                    document.getElementById('bloodGroupNeeded').value = '';
+                    document.getElementById('unitsRequested').value = '';
+                    document.getElementById('urgency').value = 'Normal';
+                    getMyRequests();
+                } else {
+                    const error = await response.text();
+                    showError('submitResult', error);
+                }
+            } catch (error) {
+                showError('submitResult', error.message);
+            }
+        }
+
+        async function getMyRequests() {
+            try {
+                const response = await fetch('/hospital/requests');
+                const data = await response.json();
+                
+                const resultDiv = document.getElementById('requestsResult');
+                resultDiv.className = 'result';
+                resultDiv.style.display = 'block';
+
+                if (data.length === 0) {
+                    resultDiv.innerHTML = '<p>No requests found</p>';
+                    return;
+                }
+
+                let html = '<table><tr><th>ID</th><th>Blood Group</th><th>Units</th><th>Urgency</th><th>Status</th><th>Date</th></tr>';
+                
+                data.forEach(req => {
+                    const statusClass = `status-${req.status}`;
+                    html += `<tr>
+                        <td>${req.request_id}</td>
+                        <td>${req.blood_group_needed}</td>
+                        <td>${req.units_requested}</td>
+                        <td>${req.urgency}</td>
+                        <td class="${statusClass}">${req.status.replace('_', ' ').toUpperCase()}</td>
+                        <td>${new Date(req.request_date).toLocaleString()}</td>
+                    </tr>`;
+                });
+
+                html += '</table>';
+                resultDiv.innerHTML = html;
+            } catch (error) {
+                showError('requestsResult', error.message);
+            }
+        }
+
+        async function checkAvailability() {
+            try {
+                const response = await fetch('/hospital/inventory/available');
+                const data = await response.json();
+                
+                const resultDiv = document.getElementById('availabilityResult');
+                resultDiv.className = 'result';
+                resultDiv.style.display = 'block';
+
+                if (data.length === 0) {
+                    resultDiv.innerHTML = '<p>No blood available</p>';
+                    return;
+                }
+
+                let html = '<table><tr><th>Blood Group</th><th>Available Units</th></tr>';
+                
+                data.forEach(item => {
+                    html += `<tr>
+                        <td>${item.blood_group}</td>
+                        <td>${item.available_units}</td>
+                    </tr>`;
+                });
+
+                html += '</table>';
+                resultDiv.innerHTML = html;
+            } catch (error) {
+                showError('availabilityResult', error.message);
+            }
+        }
+
+        async function logout() {
+            try {
+                await fetch('/logout', { method: 'POST' });
+                window.location.href = '/login.html';
+            } catch (error) {
+                alert('Logout failed');
+            }
+        }
+
+        function showSuccess(elementId, message) {
+            const resultDiv = document.getElementById(elementId);
+            resultDiv.className = 'result';
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = `<p>${message}</p>`;
+        }
+
+        function showError(elementId, message) {
+            const resultDiv = document.getElementById(elementId);
+            resultDiv.className = 'result error';
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = `<p>Error: ${message}</p>`;
+        }
+
+        window.onload = function() {
+            getMyRequests();
+        };
+    </script>
+</body>
+</html>
