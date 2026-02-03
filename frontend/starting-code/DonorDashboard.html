@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donor Dashboard - LifeLink</title>
+    <link rel="stylesheet" href="DonorDashboard.css">
+</head>
+<body>
+    <div class="container">
+        <header class="dashboard-header">
+            <h1>LifeLink - Donor Dashboard</h1>
+            <div class="user-info">
+                <strong>Role:</strong> Donor | <button class="btn-secondary" onclick="logout()">Logout</button>
+            </div>
+        </header>
+
+        <section class="section">
+            <h2>My Profile</h2>
+            <div class="button-group">
+                <button onclick="getProfile()">View Profile</button>
+                <button onclick="showEditForm()">Edit Profile</button>
+            </div>
+            
+            <div id="profileDisplay" class="result"></div>
+            
+            <div id="editForm" class="edit-container" style="display:none;">
+                <h3>Edit Profile</h3>
+                <input type="text" id="editName" placeholder="Full Name">
+                <input type="text" id="editContact" placeholder="Contact Number">
+                <input type="text" id="editAddress" placeholder="Address">
+                <div class="button-group">
+                    <button onclick="updateProfile()">Save Changes</button>
+                    <button class="btn-secondary" onclick="hideEditForm()">Cancel</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Donation Eligibility</h2>
+            <button onclick="checkEligibility()">Check Eligibility</button>
+            <div id="eligibilityResult" class="result"></div>
+        </section>
+
+        <section class="section">
+            <h2>Search Blood Availability</h2>
+            <div class="search-controls">
+                <select id="searchBloodGroup">
+                    <option value="">Select Blood Group</option>
+                    <option value="A+">A+</option>
+                    <option value="A-">A-</option>
+                    <option value="B+">B+</option>
+                    <option value="B-">B-</option>
+                    <option value="AB+">AB+</option>
+                    <option value="AB-">AB-</option>
+                    <option value="O+">O+</option>
+                    <option value="O-">O-</option>
+                </select>
+                <button onclick="searchBlood()">Search</button>
+            </div>
+            <div id="searchResult" class="result"></div>
+        </section>
+    </div>
+
+    <script>
+        // JS remains the same to ensure functionality with your API
+        async function getProfile() {
+            try {
+                const response = await fetch('/donor/profile');
+                const data = await response.json();
+                const resultDiv = document.getElementById('profileDisplay');
+                resultDiv.className = 'result';
+                resultDiv.style.display = 'block';
+
+                resultDiv.innerHTML = `
+                    <div class="info-box">
+                        <p><strong>Name:</strong> ${data.full_name}</p>
+                        <p><strong>Blood Group:</strong> ${data.blood_group}</p>
+                        <p><strong>Contact:</strong> ${data.contact_no}</p>
+                        <p><strong>Address:</strong> ${data.address || 'Not provided'}</p>
+                        <p><strong>Last Donation:</strong> ${data.last_donation_date || 'Never donated'}</p>
+                    </div>`;
+            } catch (error) {
+                showError('profileDisplay', error.message);
+            }
+        }
+
+        function showEditForm() {
+            getProfile().then(() => {
+                document.getElementById('editForm').style.display = 'block';
+            });
+        }
+
+        function hideEditForm() {
+            document.getElementById('editForm').style.display = 'none';
+        }
+
+        async function updateProfile() {
+            const profile = {
+                full_name: document.getElementById('editName').value,
+                contact_no: document.getElementById('editContact').value,
+                address: document.getElementById('editAddress').value
+            };
+            try {
+                const response = await fetch('/donor/profile', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(profile)
+                });
+                if (response.ok) {
+                    showSuccess('profileDisplay', 'Profile updated successfully!');
+                    hideEditForm();
+                    getProfile();
+                } else {
+                    const error = await response.text();
+                    showError('profileDisplay', error);
+                }
+            } catch (error) {
+                showError('profileDisplay', error.message);
+            }
+        }
+
+        async function checkEligibility() {
+            try {
+                const response = await fetch('/donor/eligibility');
+                const data = await response.json();
+                const resultDiv = document.getElementById('eligibilityResult');
+                resultDiv.className = 'result';
+                resultDiv.style.display = 'block';
+
+                const eligibilityClass = data.is_eligible ? 'eligible' : 'not-eligible';
+                const eligibilityText = data.is_eligible ? 'ELIGIBLE' : 'NOT ELIGIBLE';
+                
+                let html = `<div class="info-box">
+                    <p><strong>Name:</strong> ${data.full_name}</p>
+                    <p><strong>Eligibility Status:</strong> <span class="${eligibilityClass}">${eligibilityText}</span></p>`;
+
+                if (data.last_donation_date) {
+                    html += `<p><strong>Last Donation:</strong> ${new Date(data.last_donation_date).toLocaleDateString()}</p>`;
+                    html += `<p><strong>Days Since Last Donation:</strong> ${data.days_since_last_donation}</p>`;
+                } else {
+                    html += `<p><strong>Last Donation:</strong> Never donated</p>`;
+                }
+
+                html += `<p><strong>Next Eligible Date:</strong> ${new Date(data.next_donation_date).toLocaleDateString()}</p>`;
+                html += data.is_eligible ? 
+                    `<p class="eligible">You can donate blood now!</p>` : 
+                    `<p class="not-eligible">Please wait ${90 - data.days_since_last_donation} more days.</p>`;
+                html += '</div>';
+                resultDiv.innerHTML = html;
+            } catch (error) {
+                showError('eligibilityResult', error.message);
+            }
+        }
+
+        async function searchBlood() {
+            const bloodGroup = document.getElementById('searchBloodGroup').value;
+            if (!bloodGroup) { showError('searchResult', 'Please select a blood group'); return; }
+            try {
+                const response = await fetch(`/donor/search/${bloodGroup}`);
+                const data = await response.json();
+                const resultDiv = document.getElementById('searchResult');
+                resultDiv.className = 'result';
+                resultDiv.style.display = 'block';
+
+                if (data.available_units === 0) {
+                    resultDiv.innerHTML = `<div class="info-box"><p><strong>Status:</strong> No units available</p></div>`;
+                } else {
+                    resultDiv.innerHTML = `
+                        <div class="info-box">
+                            <p><strong>Blood Group:</strong> ${data.blood_group}</p>
+                            <p class="eligible"><strong>Available Units:</strong> ${data.available_units}</p>
+                            <p><strong>Earliest Expiry:</strong> ${new Date(data.earliest_expiry).toLocaleDateString()}</p>
+                        </div>`;
+                }
+            } catch (error) { showError('searchResult', error.message); }
+        }
+
+        async function logout() {
+            try {
+                await fetch('/logout', { method: 'POST' });
+                window.location.href = '/login.html';
+            } catch (error) { alert('Logout failed'); }
+        }
+
+        function showSuccess(elementId, message) {
+            const resultDiv = document.getElementById(elementId);
+            resultDiv.className = 'result';
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = `<p>${message}</p>`;
+        }
+
+        function showError(elementId, message) {
+            const resultDiv = document.getElementById(elementId);
+            resultDiv.className = 'result error';
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = `<p>Error: ${message}</p>`;
+        }
+
+        window.onload = () => { getProfile(); checkEligibility(); };
+    </script>
+</body>
+</html>
