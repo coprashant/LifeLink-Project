@@ -2,68 +2,61 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Donor Dashboard</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donor Dashboard | LifeLink</title>
+    <link rel="stylesheet" href="donor.css">
 </head>
-<body class="bg-light">
+<body>
 
-    <nav class="navbar navbar-dark bg-danger">
-        <div class="container">
+    <nav class="navbar">
+        <div class="container nav-content">
             <span class="navbar-brand">LifeLink Donor Panel</span>
-            <a href="/logout" class="btn btn-sm btn-light text-danger">Logout</a>
+            <a href="/logout" class="btn btn-logout">Logout</a>
         </div>
     </nav>
 
-    <div class="container mt-5">
-        <h2 class="mb-4">Welcome, <span id="donorName">John Doe</span></h2>
+    <div class="container main-content">
+        <h2 class="welcome-text">Welcome, <span id="donorName">John Doe</span></h2>
 
-        <div class="card text-white bg-success mb-4 shadow">
-            <div class="card-body text-center p-5">
-                <h1 class="display-4">✅ You are Eligible!</h1>
-                <p class="lead">It has been more than 90 days since your last donation.</p>
-                <button class="btn btn-light btn-lg text-success fw-bold">Find a Blood Drive</button>
-            </div>
+        <div class="status-banner">
+            <h1>✅ You are Eligible!</h1>
+            <p>It has been more than 90 days since your last donation.</p>
+            <button class="btn btn-action">Find a Blood Drive</button>
         </div>
         
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card shadow-sm">
-                    <div class="card-body text-center">
-                        <div class="display-1 fw-bold text-danger">O+</div>
-                        <h5 class="card-title">Blood Group</h5>
-                        <p class="text-muted">Donor ID: #4401</p>
-                    </div>
-                </div>
+        <div class="dashboard-grid">
+            <div class="card donor-info">
+                <div class="blood-group">O+</div>
+                <h5>Blood Group</h5>
+                <p class="text-muted">Donor ID: #4401</p>
             </div>
 
-            <div class="col-md-8">
-                <div class="card shadow-sm">
-                    <div class="card-header bg-white">
-                        <h5 class="mb-0">Donation History</h5>
-                    </div>
-                    <div class="card-body">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Quantity (ml)</th>
-                                    <th>Remarks</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>2023-10-25</td>
-                                    <td>450ml</td>
-                                    <td><span class="badge bg-success">Normal BP</span></td>
-                                </tr>
-                                <tr>
-                                    <td>2023-06-15</td>
-                                    <td>450ml</td>
-                                    <td><span class="badge bg-secondary">None</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+            <div class="card history-card">
+                <div class="card-header">
+                    <h5 class="mb-0">Donation History</h5>
+                </div>
+                <div class="card-body">
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Quantity (ml)</th>
+                                <th>Remarks</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2023-10-25</td>
+                                <td>450ml</td>
+                                <td><span class="badge badge-success">Normal BP</span></td>
+                            </tr>
+                            <tr>
+                                <td>2023-06-15</td>
+                                <td>450ml</td>
+                                <td><span class="badge badge-none">None</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

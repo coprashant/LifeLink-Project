@@ -4,53 +4,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LifeLink - Home</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../Styles/home.css">
-    <link rel="stylesheet" href="/Styles/home.css">
+    <link rel="stylesheet" href="home.css">
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-        <div class="container">
-            <a class="navbar-brand fw-bold text-danger" href="#">🩸 LifeLink</a>
-            <div class="d-flex">
-                <a href="./login.html" class="btn btn-outline-danger me-2">Login</a>
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a class="logo" href="#">🩸 LifeLink</a>
+            <div class="nav-actions">
+                <a href="./login.html" class="btn btn-outline">Login</a>
                 <a href="./register.html" class="btn btn-danger">Register as Donor</a>
             </div>
         </div>
     </nav>
 
     <header class="hero-section">
-        <div class="container">
-            <h1 class="display-3 fw-bold">From Vein to Patient</h1>
-            <p class="lead mb-4">Connecting donors, hospitals, and blood banks in real-time.</p>
-            <div>
-                <a href="./register.html" class="btn btn-danger btn-lg me-3">I Want to Donate</a>
+        <div class="container hero-content">
+            <h1 class="hero-title">From Vein to Patient</h1>
+            <p class="hero-subtitle">Connecting donors, hospitals, and blood banks in real-time.</p>
+            <div class="hero-buttons">
+                <a href="./register.html" class="btn btn-danger btn-lg">I Want to Donate</a>
                 <a href="./login.html" class="btn btn-primary btn-lg">Hospital Request</a>
             </div>
         </div>
     </header>
 
-    <section class="py-5 bg-light">
+    <section class="stats-section">
         <div class="container">
-            <div class="row text-center">
-                <div class="col-md-4">
-                    <div class="card stat-card p-4">
-                        <h2 class="text-danger fw-bold">150+</h2>
-                        <p class="text-muted">Registered Donors</p>
-                    </div>
+            <div class="stat-grid">
+                <div class="stat-card">
+                    <h2 class="stat-number">150+</h2>
+                    <p class="stat-label">Registered Donors</p>
                 </div>
-                <div class="col-md-4">
-                    <div class="card stat-card p-4">
-                        <h2 class="text-danger fw-bold">45</h2>
-                        <p class="text-muted">Units Available Today</p>
-                    </div>
+                <div class="stat-card">
+                    <h2 class="stat-number">45+</h2>
+                    <p class="stat-label">Units Available Today</p>
                 </div>
-                <div class="col-md-4">
-                    <div class="card stat-card p-4">
-                        <h2 class="text-danger fw-bold">300+</h2>
-                        <p class="text-muted">Lives Impacted</p>
-                    </div>
+                <div class="stat-card">
+                    <h2 class="stat-number">300+</h2>
+                    <p class="stat-label">Lives Impacted</p>
                 </div>
             </div>
         </div>
