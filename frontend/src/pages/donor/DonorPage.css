@@ -1,48 +1,42 @@
-/* General Reset */
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+/* Base Styles - Scoped to Donor Page */
+.donor-page-wrapper {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-body {
     background-color: #f8f9fa;
     color: #333;
     line-height: 1.6;
 }
 
 /* Layout Containers */
-.container {
+.donor-page-wrapper .container {
     max-width: 1100px;
     margin: 0 auto;
     padding: 0 20px;
 }
 
-.main-content {
+.donor-page-wrapper .main-content {
     margin-top: 40px;
 }
 
 /* Navbar */
-.navbar {
+.donor-page-wrapper .navbar {
     background-color: #dc3545;
     padding: 1rem 0;
     color: white;
 }
 
-.nav-content {
+.donor-page-wrapper .nav-content {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.navbar-brand {
+.donor-page-wrapper .navbar-brand {
     font-size: 1.25rem;
     font-weight: bold;
 }
 
 /* Buttons */
-.btn {
+.donor-page-wrapper .btn {
     text-decoration: none;
     padding: 8px 16px;
     border-radius: 5px;
@@ -51,13 +45,13 @@ body {
     border: none;
 }
 
-.btn-logout {
+.donor-page-wrapper .btn-logout {
     background-color: #fff;
     color: #dc3545;
     font-size: 0.85rem;
 }
 
-.btn-action {
+.donor-page-wrapper .btn-action {
     background-color: #fff;
     color: #28a745;
     font-size: 1.1rem;
@@ -67,92 +61,98 @@ body {
 }
 
 /* Eligibility Banner */
-.status-banner {
+.donor-page-wrapper .status-banner {
     background-color: #28a745;
     color: white;
     padding: 40px;
     border-radius: 8px;
     text-align: center;
     margin-bottom: 30px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.status-banner h1 {
+.donor-page-wrapper .status-banner h1 {
     font-size: 2.5rem;
     margin-bottom: 10px;
 }
 
 /* Dashboard Grid */
-.dashboard-grid {
+.donor-page-wrapper .dashboard-grid {
     display: grid;
     grid-template-columns: 1fr 2fr;
     gap: 20px;
 }
 
 @media (max-width: 768px) {
-    .dashboard-grid {
+    .donor-page-wrapper .dashboard-grid {
         grid-template-columns: 1fr;
     }
 }
 
 /* Cards */
-.card {
+.donor-page-wrapper .card {
     background: white;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     border: 1px solid #e0e0e0;
 }
 
-.donor-info {
+.donor-page-wrapper .donor-info {
     text-align: center;
     padding: 30px;
 }
 
-.blood-group {
+.donor-page-wrapper .blood-group {
     font-size: 5rem;
     font-weight: bold;
     color: #dc3545;
     line-height: 1;
 }
 
-.text-muted {
+.donor-page-wrapper .text-muted {
     color: #6c757d;
     font-size: 0.9rem;
 }
 
 /* Table Styles */
-.card-header {
+.donor-page-wrapper .card-header {
     padding: 15px 20px;
     border-bottom: 1px solid #eee;
     font-weight: bold;
 }
 
-.card-body {
+.donor-page-wrapper .card-body {
     padding: 20px;
 }
 
-.history-table {
+.donor-page-wrapper .history-table {
     width: 100%;
     border-collapse: collapse;
 }
 
-.history-table th, .history-table td {
+.donor-page-wrapper .history-table th,
+.donor-page-wrapper .history-table td {
     padding: 12px;
     text-align: left;
     border-bottom: 1px solid #eee;
 }
 
-.history-table tr:hover {
+.donor-page-wrapper .history-table tr:hover {
     background-color: #f1f1f1;
 }
 
 /* Badges */
-.badge {
+.donor-page-wrapper .badge {
     padding: 4px 8px;
     border-radius: 4px;
     font-size: 0.75rem;
     color: white;
 }
 
-.badge-success { background-color: #28a745; }
-.badge-none { background-color: #6c757d; }
+.donor-page-wrapper .badge-success {
+    background-color: #28a745;
+}
+
+.donor-page-wrapper .badge-none {
+    background-color: #6c757d;
+}

@@ -1,25 +1,16 @@
-/* General Reset */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
+/* General Reset - Scoped */
+.hospital-dashboard-wrapper {
     font-family: 'Segoe UI', Arial, sans-serif;
-    padding: 20px;
-    background-color: #f0f2f5;
     color: #333;
-    line-height: 1.6;
 }
 
-.container {
+.hospital-dashboard-wrapper .container {
     max-width: 1000px;
     margin: 0 auto;
 }
 
 /* Header & Nav */
-.main-header {
+.hospital-dashboard-wrapper .main-header {
     background: white;
     padding: 20px;
     border-radius: 8px;
@@ -27,35 +18,38 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-h1 { color: #c41e3a; font-size: 24px; }
+.hospital-dashboard-wrapper h1 {
+    color: #c41e3a;
+    font-size: 24px;
+}
 
-.user-info {
+.hospital-dashboard-wrapper .user-info {
     display: flex;
     align-items: center;
     gap: 15px;
 }
 
 /* Section Cards */
-.section {
+.hospital-dashboard-wrapper .section {
     background: white;
     padding: 25px;
     margin-bottom: 25px;
     border-radius: 8px;
     border: 1px solid #e1e4e8;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
 }
 
-.section-header {
+.hospital-dashboard-wrapper .section-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 15px;
 }
 
-h2 {
+.hospital-dashboard-wrapper h2 {
     color: #444;
     font-size: 18px;
     border-left: 4px solid #c41e3a;
@@ -63,7 +57,8 @@ h2 {
 }
 
 /* Inputs & Forms */
-input, select {
+.hospital-dashboard-wrapper input,
+.hospital-dashboard-wrapper select {
     width: 100%;
     padding: 12px;
     margin: 10px 0;
@@ -73,13 +68,14 @@ input, select {
     transition: border 0.3s ease;
 }
 
-input:focus, select:focus {
+.hospital-dashboard-wrapper input:focus,
+.hospital-dashboard-wrapper select:focus {
     border-color: #c41e3a;
     outline: none;
 }
 
 /* Buttons */
-button {
+.hospital-dashboard-wrapper button {
     background: #c41e3a;
     color: white;
     padding: 10px 22px;
@@ -90,29 +86,38 @@ button {
     transition: all 0.2s ease;
 }
 
-button:hover { background: #a01828; transform: translateY(-1px); }
+.hospital-dashboard-wrapper button:hover {
+    background: #a01828;
+    transform: translateY(-1px);
+}
 
-.btn-secondary { background: #5c636a; }
-.btn-secondary:hover { background: #495057; }
+.hospital-dashboard-wrapper .btn-secondary {
+    background: #5c636a;
+}
+
+.hospital-dashboard-wrapper .btn-secondary:hover {
+    background: #495057;
+}
 
 /* Tables */
-.result-display {
+.hospital-dashboard-wrapper .result-display {
     margin-top: 15px;
     overflow-x: auto;
 }
 
-table {
+.hospital-dashboard-wrapper table {
     width: 100%;
     border-collapse: collapse;
 }
 
-th, td {
+.hospital-dashboard-wrapper th,
+.hospital-dashboard-wrapper td {
     padding: 14px;
     text-align: left;
     border-bottom: 1px solid #eee;
 }
 
-th {
+.hospital-dashboard-wrapper th {
     background: #f8f9fa;
     color: #666;
     text-transform: uppercase;
@@ -121,22 +126,56 @@ th {
 }
 
 /* Status Badges & Messages */
-.result {
+.hospital-dashboard-wrapper .result {
     margin-top: 15px;
     padding: 15px;
     border-radius: 6px;
     display: none;
 }
 
-.success-box { background: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
-.error-box { background: #ffebee; color: #c62828; border: 1px solid #ffcdd2; }
-.empty-msg { color: #666; font-style: italic; text-align: center; padding: 20px; }
+.hospital-dashboard-wrapper .success-box {
+    background: #e8f5e9;
+    color: #2e7d32;
+    border: 1px solid #c8e6c9;
+}
 
-.status-pending { color: #f39c12; font-weight: bold; }
-.status-fulfilled { color: #27ae60; font-weight: bold; }
-.status-partially_fulfilled { color: #2980b9; font-weight: bold; }
+.hospital-dashboard-wrapper .error-box {
+    background: #ffebee;
+    color: #c62828;
+    border: 1px solid #ffcdd2;
+}
+
+.hospital-dashboard-wrapper .empty-msg {
+    color: #666;
+    font-style: italic;
+    text-align: center;
+    padding: 20px;
+}
+
+.hospital-dashboard-wrapper .status-pending {
+    color: #f39c12;
+    font-weight: bold;
+}
+
+.hospital-dashboard-wrapper .status-fulfilled {
+    color: #27ae60;
+    font-weight: bold;
+}
+
+.hospital-dashboard-wrapper .status-partially_fulfilled {
+    color: #2980b9;
+    font-weight: bold;
+}
 
 @media (max-width: 600px) {
-    .main-header { flex-direction: column; text-align: center; gap: 10px; }
-    .section-header { flex-direction: column; gap: 10px; }
+    .hospital-dashboard-wrapper .main-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+
+    .hospital-dashboard-wrapper .section-header {
+        flex-direction: column;
+        gap: 10px;
+    }
 }

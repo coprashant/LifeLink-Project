@@ -1,33 +1,25 @@
-/* General Reset and Base Styles */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
+/* General Reset and Base Styles - Scoped */
+.donor-dashboard-wrapper {
     font-family: 'Segoe UI', Arial, sans-serif;
-    padding: 20px;
-    background-color: #f4f4f4;
     color: #333;
 }
 
-.container {
+.donor-dashboard-wrapper .container {
     max-width: 900px;
     margin: 0 auto;
     background: white;
     padding: 30px;
     border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 /* Header and User Info */
-h1 {
+.donor-dashboard-wrapper h1 {
     color: #c41e3a;
     margin-bottom: 10px;
 }
 
-.user-info {
+.donor-dashboard-wrapper .user-info {
     background: #f8f8f8;
     padding: 15px;
     margin-bottom: 20px;
@@ -38,14 +30,14 @@ h1 {
 }
 
 /* Sections */
-.section {
+.donor-dashboard-wrapper .section {
     margin-bottom: 30px;
     padding: 20px;
     border: 1px solid #ddd;
     border-radius: 4px;
 }
 
-h2 {
+.donor-dashboard-wrapper h2 {
     color: #333;
     margin-bottom: 15px;
     font-size: 20px;
@@ -54,7 +46,8 @@ h2 {
 }
 
 /* Forms and Inputs */
-input, select {
+.donor-dashboard-wrapper input,
+.donor-dashboard-wrapper select {
     width: 100%;
     padding: 10px;
     margin: 8px 0;
@@ -63,7 +56,7 @@ input, select {
     font-size: 14px;
 }
 
-.edit-container {
+.donor-dashboard-wrapper .edit-container {
     margin-top: 15px;
     background: #f8f8f8;
     padding: 20px;
@@ -72,13 +65,13 @@ input, select {
 }
 
 /* Buttons */
-.button-group {
+.donor-dashboard-wrapper .button-group {
     display: flex;
     gap: 10px;
     margin-top: 5px;
 }
 
-button {
+.donor-dashboard-wrapper button {
     background: #c41e3a;
     color: white;
     padding: 10px 20px;
@@ -89,20 +82,20 @@ button {
     transition: background 0.3s ease;
 }
 
-button:hover {
+.donor-dashboard-wrapper button:hover {
     background: #a01828;
 }
 
-.btn-secondary {
+.donor-dashboard-wrapper .btn-secondary {
     background: #666;
 }
 
-.btn-secondary:hover {
+.donor-dashboard-wrapper .btn-secondary:hover {
     background: #555;
 }
 
 /* Results and Boxes */
-.result {
+.donor-dashboard-wrapper .result {
     margin-top: 15px;
     padding: 15px;
     background: #e8f5e9;
@@ -111,35 +104,42 @@ button:hover {
     animation: fadeIn 0.4s ease;
 }
 
-.error {
+.donor-dashboard-wrapper .error {
     background: #ffebee;
     color: #c62828;
 }
 
-.info-box {
+.donor-dashboard-wrapper .info-box {
     background: #fff;
     padding: 15px;
     border-radius: 4px;
     border: 1px solid #eee;
 }
 
-.info-box p {
+.donor-dashboard-wrapper .info-box p {
     margin: 8px 0;
 }
 
 /* Status Colors */
-.eligible {
+.donor-dashboard-wrapper .eligible {
     color: #2e7d32;
     font-weight: bold;
 }
 
-.not-eligible {
+.donor-dashboard-wrapper .not-eligible {
     color: #c62828;
     font-weight: bold;
 }
 
 /* Simple Animation */
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-5px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
