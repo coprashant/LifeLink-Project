@@ -3,10 +3,10 @@ const db = require('../config/db');
 exports.getAllDonors = async (req, res) => {
     try {
         const result = await db.query('SELECT * FROM Donors ORDER BY donor_id DESC');
-        res.json(result.rows);
+        res.json({message: 'Donors retrieved successfully', data: result.rows});
     } catch (err) {
         console.error(err);
-        res.status(500).send('Server Error');
+        res.status(500).json({message: 'Server Error'});
     }
 };
 
@@ -16,13 +16,13 @@ exports.getDonorById = async (req, res) => {
         const result = await db.query('SELECT * FROM Donors WHERE donor_id = $1', [id]);
         
         if (result.rows.length === 0) {
-            return res.status(404).send('Donor not found');
+            return res.status(404).json({message: 'Donor not found'});
         }
         
         res.json(result.rows[0]);
     } catch (err) {
         console.error(err);
-        res.status(500).send('Server Error');
+        res.status(500).json({message: 'Server Error'});
     }
 };
 
@@ -35,10 +35,10 @@ exports.createDonor = async (req, res) => {
             [full_name, contact_no, address, blood_group]
         );
         
-        res.status(201).json(result.rows[0]);
+        res.status(201).json({message: 'Donor created successfully', donor: result.rows[0]});
     } catch (err) {
         console.error(err);
-        res.status(500).send('Server Error');
+        res.status(500).json({message: 'Server Error'});
     }
 };
 
@@ -53,13 +53,13 @@ exports.updateDonor = async (req, res) => {
         );
         
         if (result.rows.length === 0) {
-            return res.status(404).send('Donor not found');
+            return res.status(404).json({message: 'Donor not found'});
         }
         
-        res.json(result.rows[0]);
+        res.json({message: 'Donor updated successfully', donor: result.rows[0]});
     } catch (err) {
         console.error(err);
-        res.status(500).send('Server Error');
+        res.status(500).json({message: 'Server Error'});
     }
 };
 
@@ -70,33 +70,33 @@ exports.deleteDonor = async (req, res) => {
         const result = await db.query('DELETE FROM Donors WHERE donor_id = $1 RETURNING *', [id]);
         
         if (result.rows.length === 0) {
-            return res.status(404).send('Donor not found');
+            return res.status(404).json({ message: 'Donor not found' });
         }
         
-        res.send('Donor deleted successfully');
+        res.json({ message: 'Donor deleted successfully' });
     } catch (err) {
         console.error(err);
-        res.status(500).send('Server Error');
+        res.status(500).json({ message: 'Server Error' });
     }
 };
 
 exports.getEligibleDonors = async (req, res) => {
     try {
         const result = await db.query('SELECT * FROM eligible_donors');
-        res.json(result.rows);
+        res.json({message: 'Eligible donors retrieved successfully', data: result.rows});
     } catch (err) {
         console.error(err);
-        res.status(500).send('Server Error');
+        res.status(500).json({message: 'Server Error'});
     }
 };
 
 exports.getInventory = async (req, res) => {
     try {
         const result = await db.query('SELECT * FROM Blood_Inventory ORDER BY collection_date DESC');
-        res.json(result.rows);
+        res.json({message: 'Inventory retrieved successfully', data: result.rows});
     } catch (err) {
         console.error(err);
-        res.status(500).send('Server Error');
+        res.status(500).json({message: 'Server Error'});
     }
 };
 
@@ -106,13 +106,13 @@ exports.getInventoryById = async (req, res) => {
         const result = await db.query('SELECT * FROM Blood_Inventory WHERE bag_id = $1', [id]);
         
         if (result.rows.length === 0) {
-            return res.status(404).send('Blood bag not found');
+            return res.status(404).json({ message: 'Blood bag not found' });
         }
         
         res.json(result.rows[0]);
     } catch (err) {
         console.error(err);
-        res.status(500).send('Server Error');
+        res.status(500).json({ message: 'Server Error' });
     }
 };
 
@@ -128,7 +128,7 @@ exports.addBloodBag = async (req, res) => {
         res.status(201).json(result.rows[0]);
     } catch (err) {
         console.error(err);
-        res.status(500).send('Server Error');
+        res.status(500).json({message: 'Server Error'});
     }
 };
 
@@ -143,13 +143,13 @@ exports.updateBloodBag = async (req, res) => {
         );
         
         if (result.rows.length === 0) {
-            return res.status(404).send('Blood bag not found');
+            return res.status(404).json({message: 'Blood bag not found'});
         }
         
         res.json(result.rows[0]);
     } catch (err) {
         console.error(err);
-        res.status(500).send('Server Error');
+        res.status(500).json({message: 'Server Error'});
     }
 };
 
@@ -160,13 +160,13 @@ exports.deleteBloodBag = async (req, res) => {
         const result = await db.query('DELETE FROM Blood_Inventory WHERE bag_id = $1 RETURNING *', [id]);
         
         if (result.rows.length === 0) {
-            return res.status(404).send('Blood bag not found');
+            return res.status(404).json({message: 'Blood bag not found'});
         }
         
-        res.send('Blood bag deleted successfully');
+        res.json({message: 'Blood bag deleted successfully'});
     } catch (err) {
         console.error(err);
-        res.status(500).send('Server Error');
+        res.status(500).json({ message: 'Server Error' });
     }
 };
 
@@ -182,7 +182,7 @@ exports.getExpiringBags = async (req, res) => {
         res.json(result.rows);
     } catch (err) {
         console.error(err);
-        res.status(500).send('Server Error');
+        res.status(500).json({ message: 'Server Error' });
     }
 };
 
@@ -198,7 +198,7 @@ exports.getAllRequests = async (req, res) => {
         res.json(result.rows);
     } catch (err) {
         console.error(err);
-        res.status(500).send('Server Error');
+        res.status(500).json({ message: 'Server Error' });
     }
 };
 
@@ -214,13 +214,13 @@ exports.getRequestById = async (req, res) => {
         );
         
         if (result.rows.length === 0) {
-            return res.status(404).send('Request not found');
+            return res.status(404).json({message: 'Request not found'});
         }
         
         res.json(result.rows[0]);
     } catch (err) {
         console.error(err);
-        res.status(500).send('Server Error');
+        res.status(500).json({message: 'Server Error'});
     }
 };
 
@@ -272,11 +272,11 @@ exports.allocateBloodToRequest = async (req, res) => {
         
         await client.query('COMMIT');
         
-        res.send('Blood allocated successfully');
+        res.json({message: 'Blood allocated successfully', status: newStatus});
     } catch (err) {
         await client.query('ROLLBACK');
         console.error(err);
-        res.status(500).send('Server Error');
+        res.status(500).json({message: 'Server Error'});
     } finally {
         client.release();
     }
@@ -293,13 +293,13 @@ exports.updateRequestStatus = async (req, res) => {
         );
         
         if (result.rows.length === 0) {
-            return res.status(404).send('Request not found');
+            return res.status(404).json({message: 'Request not found'});
         }
         
         res.json(result.rows[0]);
     } catch (err) {
         console.error(err);
-        res.status(500).send('Server Error');
+        res.status(500).json({message: 'Server Error' });
     }
 };
 
@@ -323,11 +323,11 @@ exports.recordDonation = async (req, res) => {
         
         await client.query('COMMIT');
         
-        res.status(201).json(donation.rows[0]);
+        res.status(201).json({message: 'Donation recorded successfully', donation: donation.rows[0]});
     } catch (err) {
         await client.query('ROLLBACK');
         console.error(err);
-        res.status(500).send('Server Error');
+        res.status(500).json({message: 'Server Error'});
     } finally {
         client.release();
     }
@@ -345,6 +345,6 @@ exports.getDonationHistory = async (req, res) => {
         res.json(result.rows);
     } catch (err) {
         console.error(err);
-        res.status(500).send('Server Error');
+        res.status(500).json({message: 'Server Error'});
     }
 };

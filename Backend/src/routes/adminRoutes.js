@@ -7,19 +7,19 @@ router.use(protect(['admin']));
 
 // Donor Management
 router.get('/donors', adminController.getAllDonors);
+router.get('/donors/eligible', adminController.getEligibleDonors);
 router.get('/donors/:id', adminController.getDonorById);
 router.post('/donors', adminController.createDonor);
 router.put('/donors/:id', adminController.updateDonor);
 router.delete('/donors/:id', adminController.deleteDonor);
-router.get('/donors/eligible', adminController.getEligibleDonors);
 
 // Blood Inventory Management
 router.get('/inventory', adminController.getInventory);
+router.get('/inventory/alerts/expiring', adminController.getExpiringBags);
 router.get('/inventory/:id', adminController.getInventoryById);
 router.post('/inventory', adminController.addBloodBag);
 router.put('/inventory/:id', adminController.updateBloodBag);
 router.delete('/inventory/:id', adminController.deleteBloodBag);
-router.get('/inventory/alerts/expiring', adminController.getExpiringBags);
 
 // Blood Request Management
 router.get('/requests', adminController.getAllRequests);

@@ -6,7 +6,7 @@ exports.submitBloodRequest = async (req, res) => {
         const hospitalId = req.session.hospitalId;
         
         if (!hospitalId) {
-            return res.status(400).send('Hospital ID not found in session');
+            return res.status(400).json({message: 'Hospital ID not found in session'});
         }
         
         const result = await db.query(
@@ -14,10 +14,10 @@ exports.submitBloodRequest = async (req, res) => {
             [blood_group_needed, units_requested, urgency, hospitalId]
         );
         
-        res.status(201).json(result.rows[0]);
+        res.status(201).json({message: 'Blood request submitted successfully', data: result.rows[0]});
     } catch (err) {
         console.error(err);
-        res.status(500).send('Server Error');
+        res.status(500).json({message: 'Server Error'});
     }
 };
 
@@ -26,7 +26,7 @@ exports.getMyRequests = async (req, res) => {
         const hospitalId = req.session.hospitalId;
         
         if (!hospitalId) {
-            return res.status(400).send('Hospital ID not found in session');
+            return res.status(400).json({message: 'Hospital ID not found in session'});
         }
         
         const result = await db.query(
@@ -34,10 +34,10 @@ exports.getMyRequests = async (req, res) => {
             [hospitalId]
         );
         
-        res.json(result.rows);
+        res.json({message: 'Requests retrieved successfully', data: result.rows});
     } catch (err) {
         console.error(err);
-        res.status(500).send('Server Error');
+        res.status(500).json({message: 'Server Error'});
     }
 };
 
@@ -47,7 +47,7 @@ exports.getRequestDetails = async (req, res) => {
         const hospitalId = req.session.hospitalId;
         
         if (!hospitalId) {
-            return res.status(400).send('Hospital ID not found in session');
+            return res.status(400).json({message: 'Hospital ID not found in session'});
         }
         
         const result = await db.query(
@@ -59,13 +59,13 @@ exports.getRequestDetails = async (req, res) => {
         );
         
         if (result.rows.length === 0) {
-            return res.status(404).send('Request not found');
+            return res.status(404).json({message: 'Request not found'});
         }
         
-        res.json(result.rows[0]);
+        res.json({message: 'Request details retrieved successfully', data: result.rows[0]});
     } catch (err) {
         console.error(err);
-        res.status(500).send('Server Error');
+        res.status(500).json({message: 'Server Error'});
     }
 };
 
@@ -79,9 +79,9 @@ exports.getAvailableBlood = async (req, res) => {
              ORDER BY blood_group`
         );
         
-        res.json(result.rows);
+        res.json({message: 'Available blood retrieved successfully', data: result.rows});
     } catch (err) {
         console.error(err);
-        res.status(500).send('Server Error');
+        res.status(500).json({message: 'Server Error'});
     }
 };

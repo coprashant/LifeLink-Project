@@ -4,7 +4,7 @@ const protect = (roles = []) => {
             return res.redirect('/login.html'); // Not logged in
         }
         if (roles.length && !roles.includes(req.session.role)) {
-            return res.status(403).send('Unauthorized Access'); // Wrong role
+            return res.status(403).json({ message: 'Unauthorized Access' }); // Wrong role
         }
         next();
     };
