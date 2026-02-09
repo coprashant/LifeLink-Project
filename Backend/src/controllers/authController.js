@@ -10,7 +10,7 @@ exports.handleLogin = async (req, res) => {
         const result = await db.query(userQuery, [email, role]);
 
         if (result.rows.length === 0) {
-            return res.status(401).send('Invalid email or role.');
+            return res.status(401).json({message: 'Invalid email or role.'}); 
         }
 
         const user = result.rows[0];
@@ -19,35 +19,24 @@ exports.handleLogin = async (req, res) => {
         if (match) {
             req.session.userId = user.user_id;
             req.session.role = user.role;
+            req.session.donorId = user.donor_id; 
+            req.session.hospitalId = user.hospital_id;
 
-            let rootPath = process.cwd();
-            if (rootPath.endsWith('Backend')) {
-                rootPath = path.join(rootPath, '..');
-            }
-            
-            const htmlFolder = path.join(rootPath, 'Frontend/HTML');
-            
-            if (user.role === 'admin') {
-                return res.sendFile(path.join(htmlFolder, 'adminDashboard.html'));
-            }
-            
-            if (user.role === 'donor' && user.donor_id) {
-                req.session.donorId = user.donor_id;
-                return res.sendFile(path.join(htmlFolder, 'DonorDashboard.html'));
-            }
-            
-            if (user.role === 'hospital' && user.hospital_id) {
-                req.session.hospitalId = user.hospital_id;
-                return res.sendFile(path.join(htmlFolder, 'hospitalDashboard.html'));
-            }
-            
-            res.send('Login Successful');
+           return res.status(200).json({
+                success: true,
+                user: {
+                    role: user.role,
+                    donorId: user.donor_id,
+                    hospitalId: user.hospital_id
+                }
+            });
+
         } else {
-            res.status(401).send('Incorrect password.');
+            res.status(401).json({ message: 'Incorrect password.' }); 
         }
     } catch (err) {
         console.error(err);
-        res.status(500).send('Server Error');
+        res.status(500).json({ message: 'Server Error' });
     }
 };
 
@@ -55,7 +44,7 @@ exports.handleRegister = async (req, res) => {
     const { name, email, blood_group, password, confirm_password } = req.body;
 
     if (password !== confirm_password) {
-        return res.status(400).send('Passwords do not match.');
+        return res.status(400).json({ message: 'Passwords do not match.' }); 
     }
 
     const client = await db.pool.connect();
@@ -77,13 +66,41 @@ exports.handleRegister = async (req, res) => {
         );
 
         await client.query('COMMIT');
-        res.send("Registration successful! <a href='/login.html'>Login here</a>");
+
+        res.status(201).json({ 
+            success: true, 
+            message: "Registration successful! You can now login." 
+        });                                                          
 
     } catch (err) {
         await client.query('ROLLBACK');
         console.error('Registration Error:', err);
-        res.status(500).send('Error: Email might already be registered.');
+        res.status(500).json({ message: 'Error: Email might already be registered.' });   
     } finally {
         client.release();
+    }
+};
+
+exports.getMe = async (req, res) => {
+    if (!req.session.userId) {
+        return res.status(401).json({ message: "Not logged in" });
+    }
+
+    try {
+        // Query the DB using the ID saved in the session
+        const result = await db.query('SELECT * FROM Users WHERE user_id = $1', [req.session.userId]);
+        const user = result.rows[0];
+        
+        res.json({
+            loggedIn: true,
+            user: {
+                id: user.user_id,
+                role: user.role,
+                donorId: user.donor_id,
+                hospitalId: user.hospital_id
+            }
+        });
+    } catch (err) {
+        res.status(500).json({ message: "Server error" });
     }
 };
