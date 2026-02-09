@@ -12,6 +12,16 @@ export function RegisterPage() {
 
                 <form action="/register" method="post">
 
+                    
+                    <div className="field">
+                        <label className="labels">Register As </label>
+                        <select className="login-input" name="role" required>
+                            <option value="donor">Donor</option>
+                            <option value="admin">Admin</option>
+                            <option value="hospital">Hospital</option>
+                        </select>
+                    </div>
+
                     <div className="field">
                         <label className="labels">Full Name</label>
                         <input className="login-input" type="text" name="name" required />
