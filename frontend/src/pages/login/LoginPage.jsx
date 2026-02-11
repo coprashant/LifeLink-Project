@@ -12,16 +12,16 @@ export function LoginPage() {
     const navigate = useNavigate();
 
     //  Auto-redirect if already logged in
-    useEffect(() => {
-        const isLoggedIn = localStorage.getItem('isLoggedIn');
-        const savedRole = localStorage.getItem('role');
+    // useEffect(() => {
+    //     const isLoggedIn = localStorage.getItem('isLoggedIn');
+    //     const savedRole = localStorage.getItem('role');
 
-        if (isLoggedIn === 'true' && savedRole) {
-            if (savedRole === 'admin') navigate('/admin-dashboard');
-            else if (savedRole === 'donor') navigate('/donor-dashboard');
-            else if (savedRole === 'hospital') navigate('/hospital-dashboard');
-        }
-    }, [navigate]);
+    //     if (isLoggedIn === 'true' && savedRole) {
+    //         if (savedRole === 'admin') navigate('/admin-dashboard');
+    //         else if (savedRole === 'donor') navigate('/donor-dashboard');
+    //         else if (savedRole === 'hospital') navigate('/hospital-dashboard');
+    //     }
+    // }, [navigate]);
 
     // Login handler
     const handleLogin = async (e) => {
@@ -43,9 +43,9 @@ export function LoginPage() {
                 alert(data.message);
 
                 // Save login info to localStorage
-                localStorage.setItem('isLoggedIn', 'true');
-                localStorage.setItem('role', data.user.role);
-                localStorage.setItem('user', JSON.stringify(data.user));
+                // localStorage.setItem('isLoggedIn', 'true');
+                // localStorage.setItem('role', data.user.role);
+                // localStorage.setItem('user', JSON.stringify(data.user));
 
                 // Navigate based on role
                 if (data.user.role === 'admin') navigate('/admin-dashboard');

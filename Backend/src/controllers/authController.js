@@ -4,13 +4,13 @@ const path = require('path');
 
 exports.handleLogin = async (req, res) => {
     const { role, email, password } = req.body;
-    
+
     try {
         const userQuery = 'SELECT * FROM Users WHERE email = $1 AND role = $2';
         const result = await db.query(userQuery, [email, role]);
 
         if (result.rows.length === 0) {
-            return res.status(401).json({message: 'Invalid email or role.'}); 
+            return res.status(401).json({ message: 'Invalid email or role.' });
         }
 
         const user = result.rows[0];
@@ -19,10 +19,10 @@ exports.handleLogin = async (req, res) => {
         if (match) {
             req.session.userId = user.user_id;
             req.session.role = user.role;
-            req.session.donorId = user.donor_id; 
+            req.session.donorId = user.donor_id;
             req.session.hospitalId = user.hospital_id;
 
-           return res.status(200).json({
+            return res.status(200).json({
                 success: true,
                 user: {
                     role: user.role,
@@ -32,7 +32,7 @@ exports.handleLogin = async (req, res) => {
             });
 
         } else {
-            res.status(401).json({ message: 'Incorrect password.' }); 
+            res.status(401).json({ message: 'Incorrect password.' });
         }
     } catch (err) {
         console.error(err);
@@ -41,10 +41,10 @@ exports.handleLogin = async (req, res) => {
 };
 
 exports.handleRegister = async (req, res) => {
-    const { name, email, blood_group, password, confirm_password } = req.body;
+    const { role, name, email, blood_group, password, confirm_password } = req.body;
 
     if (password !== confirm_password) {
-        return res.status(400).json({ message: 'Passwords do not match.' }); 
+        return res.status(400).json({ message: 'Passwords do not match.' });
     }
 
     const client = await db.pool.connect();
@@ -53,29 +53,44 @@ exports.handleRegister = async (req, res) => {
         await client.query('BEGIN');
 
         const hashedPassword = await bcrypt.hash(password, 10);
-
-        const donorResult = await client.query(
-            'INSERT INTO Donors (full_name, blood_group, contact_no) VALUES ($1, $2, $3) RETURNING donor_id',
-            [name, blood_group, 'Not Provided']
-        );
-        const donorId = donorResult.rows[0].donor_id;
+        let donorId = null;
+        let hospitalId = null;
+ 
+        //update role 
+        if (role === 'donor') {
+            const donorResult = await client.query(
+                'INSERT INTO Donors (full_name, blood_group, contact_no) VALUES ($1, $2, $3) RETURNING donor_id',
+                [name, blood_group, 'Not Provided']
+            );
+            donorId = donorResult.rows[0].donor_id;
+        } else if (role === 'hospital') {
+            const hospitalResult = await client.query(
+                'INSERT INTO Hospitals (hospital_name, hospital_email, location, contact) VALUES ($1, $2, $3, $4) RETURNING hospital_id',
+                [name, email, 'Not Provided', 'Not Provided']
+            );
+            hospitalId = hospitalResult.rows[0].hospital_id;
+        } else if (role === 'admin') {
+            // Admin doesn't need a linked donor or hospital record
+        } else {
+            throw new Error('Invalid role specified');
+        }
 
         await client.query(
-            "INSERT INTO Users (email, password, role, donor_id) VALUES ($1, $2, 'donor', $3)",
-            [email, hashedPassword, donorId]
+            "INSERT INTO Users (email, password, role, donor_id, hospital_id) VALUES ($1, $2, $3, $4, $5)",
+            [email, hashedPassword, role, donorId, hospitalId]
         );
 
         await client.query('COMMIT');
 
-        res.status(201).json({ 
-            success: true, 
-            message: "Registration successful! You can now login." 
-        });                                                          
+        res.status(201).json({
+            success: true,
+            message: "Registration successful! You can now login."
+        });
 
     } catch (err) {
         await client.query('ROLLBACK');
         console.error('Registration Error:', err);
-        res.status(500).json({ message: 'Error: Email might already be registered.' });   
+        res.status(500).json({ message: 'Error: Email might already be registered or invalid data.' });
     } finally {
         client.release();
     }
@@ -90,7 +105,7 @@ exports.getMe = async (req, res) => {
         // Query the DB using the ID saved in the session
         const result = await db.query('SELECT * FROM Users WHERE user_id = $1', [req.session.userId]);
         const user = result.rows[0];
-        
+
         res.json({
             loggedIn: true,
             user: {
