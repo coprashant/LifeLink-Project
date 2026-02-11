@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 export default function RequestStatusTable({ requests }) {
 
     return (
@@ -12,7 +14,7 @@ export default function RequestStatusTable({ requests }) {
                             <th>Blood Group</th>
                             <th>Units</th>
                             <th>Date</th>
-                            <th>Status</th>
+                            {/* <th>Status</th> */}
                         </tr>
                     </thead>
 
@@ -24,18 +26,18 @@ export default function RequestStatusTable({ requests }) {
                                 <td>{req.units}</td>
                                 <td>
                                     {req.created_at
-                                        ? new Date(req.created_at).toLocaleDateString()
+                                        ? dayjs(req.created_at).format("DD MMM YYYY")
                                         : "—"}
                                 </td>
-                                <td>
-                                    <span className={`badge ${
-                                        req.status === "Fulfilled"
+
+                                {/* <td>
+                                    <span className={`badge ${req.status === "Fulfilled"
                                             ? "badge-success"
                                             : "badge-warning"
-                                    }`}>
+                                        }`}>
                                         {req.status || "Pending"}
                                     </span>
-                                </td>
+                                </td> */}
                             </tr>
                         ))}
                     </tbody>

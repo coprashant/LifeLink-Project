@@ -10,10 +10,17 @@ export function HospitalDashboard() {
 
     const fetchRequests = async () => {
         try {
-            const res = await axios.get("/api/hospital/requests");
-            setRequests(res.data.data);
+            const response = await axios.get("/api/hospital/requests");
+            setRequests(response.data.data);
         } catch (error) {
-            console.error(error);
+            if (error.response){
+                alert(error.response.data.message || "Server error occured.");
+            }else if (error.request){
+                alert("Server error occured.");
+            }
+                else{
+                alert("Something went wrong");
+            }
         }
     };
 
@@ -26,7 +33,14 @@ export function HospitalDashboard() {
             await axios.post("/api/hospital/requests", data);
             fetchRequests();
         } catch (error) {
-            console.error(error);
+            if (error.response){
+                alert(error.response.data.message || "Server error occured.");
+            }else if (error.request){
+                alert("Server error occured.");
+            }
+                else{
+                alert("Something went wrong");
+            }
         }
     };
 
