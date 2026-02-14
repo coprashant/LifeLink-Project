@@ -10,9 +10,9 @@ const pool = new Pool({
   port: process.env.DB_PORT || 5432,
 
   //Enable only for cloud DB connections
-//   ssl: {
-//         rejectUnauthorized: false
-//     }
+  ssl: {
+        rejectUnauthorized: false
+    }
 });
 
 // Test the connection immediately on startup
