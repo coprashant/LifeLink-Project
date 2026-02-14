@@ -42,11 +42,11 @@ export function HospitalDashboard({ user }) {
                 </header>
 
                 <div className="dashboard-grid">
-                    <div className="form-column">
-                        <BloodRequestForm onSubmit={createRequest} />
-                    </div>
                     <div className="table-column">
                         <RequestStatusTable requests={requests} />
+                    </div>
+                    <div className="form-column">
+                        <BloodRequestForm onSubmit={createRequest} />
                     </div>
                 </div>
             </main>

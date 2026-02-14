@@ -1,210 +1,176 @@
-/* Core Variables & Reset - Scoped */
-.hospital-page-wrapper {
-    --primary: #0d6efd;
-    --success: #198754;
-    --danger: #dc3545;
-    --warning: #ffc107;
-    --light: #f8f9fa;
-    --dark: #212529;
-    --border: #dee2e6;
-
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    background-color: var(--light);
-    color: var(--dark);
-    line-height: 1.5;
+/* Container Spacing */
+.hospital-dashboard-wrapper {
+    padding: 2rem 0;
+    min-height: calc(100vh - 70px);
+    background-color: #f4f7f6;
 }
 
-.hospital-page-wrapper * {
-    box-sizing: border-box;
-}
-
-.hospital-page-wrapper .container {
-    max-width: 1000px;
+.dashboard-main {
+    max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
 }
 
-/* Navbar */
-.hospital-page-wrapper .navbar {
+/* Header Section */
+.dashboard-header {
+    margin-bottom: 2rem;
+}
+
+.dashboard-header h2 {
+    font-size: 1.8rem;
+    color: #1a1a1a;
+    font-weight: 700;
+    margin-bottom: 0.2rem;
+}
+
+.text-muted {
+    color: #666;
+    font-size: 0.95rem;
+}
+
+/* Layout Grid */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns:1fr 350px; /* Fixed width for form, flexible for table */
+    gap: 2rem;
+    align-items: start;
+}
+
+/* Card Styling (Forms & Sections) */
+.hospital-dashboard-wrapper .card {
     background: white;
-    padding: 15px 0;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    margin-bottom: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    border: 1px solid #eef0f2;
+    overflow: hidden;
 }
 
-.hospital-page-wrapper .nav-content {
+.hospital-dashboard-wrapper .card-header {
+    padding: 1.25rem;
+    background: #fff;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.hospital-dashboard-wrapper .card-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #dc3545; /* Thematic Red */
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    gap: 8px;
 }
 
-.hospital-page-wrapper .navbar-brand {
-    font-weight: bold;
-    color: var(--primary);
-    font-size: 1.2rem;
+.hospital-dashboard-wrapper .card-body {
+    padding: 1.5rem;
 }
 
-/* Buttons */
-.hospital-page-wrapper .btn-outline {
-    text-decoration: none;
-    color: var(--dark);
-    border: 1px solid var(--dark);
-    padding: 6px 16px;
-    border-radius: 4px;
-    transition: 0.2s;
+/* Form Elements */
+.hospital-dashboard-wrapper .form-label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 0.5rem;
 }
 
-.hospital-page-wrapper .btn-outline:hover {
-    background: var(--dark);
-    color: white;
-}
-
-.hospital-page-wrapper .btn-submit {
+.hospital-dashboard-wrapper .form-select,
+.hospital-dashboard-wrapper .form-input {
     width: 100%;
-    background: var(--primary);
+    padding: 0.75rem;
+    border: 1.5px solid #e1e1e1;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    margin-bottom: 1.25rem;
+    transition: border-color 0.2s;
+}
+
+.hospital-dashboard-wrapper .form-select:focus,
+.hospital-dashboard-wrapper .form-input:focus {
+    outline: none;
+    border-color: #dc3545;
+}
+
+.hospital-dashboard-wrapper .btn-submit {
+    width: 100%;
+    background: #dc3545;
     color: white;
     border: none;
-    padding: 12px;
-    border-radius: 5px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-top: 20px;
-}
-
-.hospital-page-wrapper .btn-submit:hover {
-    background: #0b5ed7;
-}
-
-/* Card & Form */
-.hospital-page-wrapper .card {
-    background: white;
+    padding: 0.8rem;
     border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    margin-bottom: 40px;
-}
-
-.hospital-page-wrapper .card-header {
-    background: var(--primary);
-    color: white;
-    padding: 15px 20px;
-}
-
-.hospital-page-wrapper .card-body {
-    padding: 25px;
-}
-
-.hospital-page-wrapper .form-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-}
-
-.hospital-page-wrapper .form-label {
-    display: block;
-    margin-bottom: 8px;
-    font-size: 0.9rem;
-    font-weight: 500;
-}
-
-.hospital-page-wrapper .form-select,
-.hospital-page-wrapper .form-input {
-    width: 100%;
-    padding: 8px 12px;
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    font-size: 1rem;
-}
-
-/* Custom Radio Buttons */
-.hospital-page-wrapper .radio-group {
-    display: flex;
-    gap: 10px;
-}
-
-.hospital-page-wrapper .radio-group input[type="radio"] {
-    display: none;
-}
-
-.hospital-page-wrapper .radio-label {
-    flex: 1;
-    text-align: center;
-    padding: 8px;
-    border: 1px solid var(--border);
-    border-radius: 4px;
+    font-weight: 600;
     cursor: pointer;
-    font-size: 0.9rem;
+    transition: background 0.2s;
 }
 
-.hospital-page-wrapper #normal:checked+.label-success {
-    background: var(--success);
-    color: white;
-    border-color: var(--success);
+.hospital-dashboard-wrapper .btn-submit:hover {
+    background: #c82333;
 }
 
-.hospital-page-wrapper #critical:checked+.label-danger {
-    background: var(--danger);
-    color: white;
-    border-color: var(--danger);
+/* Request Status Table */
+.section-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: #333;
 }
 
-/* Table */
-.hospital-page-wrapper .section-title {
-    margin-bottom: 15px;
-}
-
-.hospital-page-wrapper .table-container {
+.table-container {
     background: white;
-    border-radius: 8px;
-    border: 1px solid var(--border);
-    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    border: 1px solid #eef0f2;
+    overflow-x: auto;
 }
 
-.hospital-page-wrapper .status-table {
+.status-table {
     width: 100%;
     border-collapse: collapse;
+    min-width: 600px;
 }
 
-.hospital-page-wrapper .status-table th,
-.hospital-page-wrapper .status-table td {
-    padding: 12px 15px;
+.status-table th {
+    background: #fafafa;
+    padding: 1rem;
     text-align: left;
-    border-bottom: 1px solid var(--border);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #777;
+    border-bottom: 1px solid #eee;
 }
 
-.hospital-page-wrapper .status-table thead {
-    background: #f1f3f5;
+.status-table td {
+    padding: 1.2rem 1rem;
+    border-bottom: 1px solid #f9f9f9;
+    font-size: 0.95rem;
+    color: #444;
 }
 
-/* Helpers */
-.hospital-page-wrapper .text-danger {
-    color: var(--danger);
+/* Status Badges */
+.badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
 }
 
-.hospital-page-wrapper .fw-bold {
-    font-weight: bold;
-}
-
-.hospital-page-wrapper .badge {
-    padding: 4px 10px;
-    border-radius: 50px;
-    font-size: 0.8rem;
-    font-weight: 500;
-}
-
-.hospital-page-wrapper .badge-success {
+.badge-success {
     background: #d1e7dd;
     color: #0f5132;
 }
 
-.hospital-page-wrapper .badge-warning {
+.badge-warning {
     background: #fff3cd;
     color: #664d03;
 }
 
-@media (max-width: 600px) {
-    .hospital-page-wrapper .nav-content {
-        flex-direction: column;
-        gap: 10px;
+/* Responsive Breakpoints */
+@media (max-width: 992px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr; /* Stack form on top of table on smaller screens */
+    }
+    
+    .form-column {
+        max-width: 100%;
     }
 }
