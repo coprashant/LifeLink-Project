@@ -1,22 +1,22 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { apiFetch, handleLogout } from "../../utils/api";
+import { apiFetch } from "../../utils/api";
 import "./AdminPage.css";
 
-export function AdminPage({ setUser }) {
+export function AdminPage() {
     const [inventory, setInventory] = useState([]);
     const [loading, setLoading] = useState(true);
-    const navigate = useNavigate();
+    // 1. State to toggle form visibility
+    const [showAddForm, setShowAddForm] = useState(false);
 
-    // 1. Fetch real inventory data from the backend
     const fetchInventory = async () => {
         try {
             const data = await apiFetch('/admin/inventory');
-            setInventory(data);
+            setInventory(Array.isArray(data) ? data : []);
         } catch (err) {
             console.error("Failed to fetch inventory", err);
+            setInventory([]);
         } finally {
-            setLoading(setLoading(false));
+            setLoading(false);
         }
     };
 
@@ -24,110 +24,47 @@ export function AdminPage({ setUser }) {
         fetchInventory();
     }, []);
 
-    // 2. Handle adding a new bag
     const handleAddBag = async (e) => {
         e.preventDefault();
         const formData = new FormData(e.target);
         const payload = Object.fromEntries(formData);
 
         try {
-            await apiFetch('/admin/add-bag', {
+            // Updated to match your backend route
+            await apiFetch('/admin/inventory', {
                 method: 'POST',
                 body: JSON.stringify(payload)
             });
             alert("Blood bag added!");
-            e.target.reset(); // Clear form
-            window.location.hash = ""; // Close the CSS modal
-            fetchInventory(); // Refresh the list
+            e.target.reset(); 
+            setShowAddForm(false); // Hide form after success
+            fetchInventory(); 
         } catch (err) {
             alert(err.message);
         }
     };
 
     return (
-        <div className="admin-page-wrapper">
-            <div className="admin-container">
-                <nav className="sidebar">
-                    <h3 className="brand">LifeLink Admin</h3>
-                    <ul className="nav-links">
-                        {/* Use Link instead of a tags to prevent page reloads */}
-                        <li><Link to="/admin-dashboard">Dashboard</Link></li>
-                        <li><Link to="/admin-inventory" className="active">Manage Inventory</Link></li>
-                        <li><Link to="/admin-donors">Manage Donors</Link></li>
-                        <li><Link to="/admin-requests">Hospital Requests</Link></li>
-                        <li>
-                            <button 
-                                className="logout-btn-link" 
-                                onClick={() => handleLogout(setUser, navigate)}
-                            >
-                                Logout
-                            </button>
-                        </li>
-                    </ul>
-                </nav>
+        <>
+            <header className="content-header">
+                <h2>🩸 Blood Inventory Management</h2>
+                {/* 2. Toggle button text and state */}
+                <button 
+                    className="btn-primary-red" 
+                    onClick={() => setShowAddForm(!showAddForm)}
+                >
+                    {showAddForm ? "✕ Close Form" : "+ Add Blood Bag"}
+                </button>
+            </header>
 
-                <main className="content">
-                    <header className="content-header">
-                        <h2>🩸 Blood Inventory Management</h2>
-                        <a href="#addBagModal" className="btn btn-success">+ Add Blood Bag</a>
-                    </header>
-
-                    <section className="card">
-                        <table className="inventory-table">
-                            <thead>
-                                <tr>
-                                    <th>Bag ID</th>
-                                    <th>Group</th>
-                                    <th>Donor</th>
-                                    <th>Collected</th>
-                                    <th>Expires</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {inventory.map((bag) => (
-                                    <tr key={bag.bag_id} className={bag.status === 'Expired' ? 'row-expired' : ''}>
-                                        <td>{bag.bag_id}</td>
-                                        <td><strong>{bag.blood_group}</strong></td>
-                                        <td>{bag.donor_name}</td>
-                                        <td>{new Date(bag.collection_date).toLocaleDateString()}</td>
-                                        <td>{new Date(bag.expiry_date).toLocaleDateString()}</td>
-                                        <td>
-                                            <span className={`badge ${bag.status === 'Available' ? 'badge-success' : 'badge-danger'}`}>
-                                                {bag.status}
-                                            </span>
-                                        </td>
-                                        <td>
-                                            {bag.status === 'Available' ? (
-                                                <button className="btn btn-primary">Dispatch</button>
-                                            ) : (
-                                                <button className="btn btn-outline-danger">🗑 Trash</button>
-                                            )}
-                                        </td>
-                                    </tr>
-                                ))}
-                                {!loading && inventory.length === 0 && (
-                                    <tr><td colSpan="7" style={{textAlign: 'center'}}>No blood bags in inventory.</td></tr>
-                                )}
-                            </tbody>
-                        </table>
-                    </section>
-                </main>
-            </div>
-
-            {/* Modal for Adding Blood Bag */}
-            <div id="addBagModal" className="modal-overlay">
-                <div className="modal-content">
-                    <div className="modal-header">
-                        <h3>Add New Blood Bag</h3>
-                        <a href="#" className="close-btn">&times;</a>
-                    </div>
-                    <form onSubmit={handleAddBag}>
-                        <div className="modal-body">
+            {/* 3. Conditional Form Rendering */}
+            {showAddForm && (
+                <section className="table-card form-section-animate">
+                    <form onSubmit={handleAddBag} className="inline-add-form">
+                        <div className="form-row">
                             <div className="form-group">
                                 <label>Donor ID</label>
-                                <input type="text" name="donor_id" placeholder="Enter Donor ID" required />
+                                <input type="text" name="donor_id" placeholder="Enter ID" required />
                             </div>
                             <div className="form-group">
                                 <label>Blood Group</label>
@@ -146,13 +83,55 @@ export function AdminPage({ setUser }) {
                                 <label>Collection Date</label>
                                 <input type="date" name="collection_date" defaultValue={new Date().toISOString().split('T')[0]} required />
                             </div>
-                        </div>
-                        <div className="modal-footer">
-                            <button type="submit" className="btn btn-primary">Save to Inventory</button>
+                            <div className="form-actions">
+                                <button type="submit" className="btn-primary-red">Save Bag</button>
+                            </div>
                         </div>
                     </form>
-                </div>
-            </div>
-        </div>
+                </section>
+            )}
+
+            <section className="table-card">
+                <table className="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Bag ID</th>
+                            <th>Group</th>
+                            <th>Donor</th>
+                            <th>Collected</th>
+                            <th>Expires</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {inventory.map((bag) => (
+                            <tr key={bag.bag_id} className={bag.status === 'Expired' ? 'row-expired' : ''}>
+                                <td>#{bag.bag_id}</td>
+                                <td><strong>{bag.blood_group}</strong></td>
+                                <td>{bag.donor_name}</td>
+                                <td>{new Date(bag.collection_date).toLocaleDateString()}</td>
+                                <td>{new Date(bag.expiry_date).toLocaleDateString()}</td>
+                                <td>
+                                    <span className={`status-tag ${bag.status?.toLowerCase()}`}>
+                                        {bag.status}
+                                    </span>
+                                </td>
+                                <td className="table-actions">
+                                    {bag.status === 'Available' ? (
+                                        <button className="action-btn approve">Dispatch</button>
+                                    ) : (
+                                        <button className="action-btn reject">🗑 Trash</button>
+                                    )}
+                                </td>
+                            </tr>
+                        ))}
+                        {!loading && inventory.length === 0 && (
+                            <tr><td colSpan="7" className="no-data">No blood bags in inventory.</td></tr>
+                        )}
+                    </tbody>
+                </table>
+            </section>
+        </>
     );
 }

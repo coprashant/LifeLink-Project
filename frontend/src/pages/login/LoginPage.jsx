@@ -22,9 +22,9 @@ export function LoginPage({ setUser }) {
             if (data.success) {
                 setUser(data.user);
 
-                if (data.user.role === 'admin') navigate('/admin-dashboard');
-                else if (data.user.role === 'donor') navigate('/donor-dashboard');
-                else if (data.user.role === 'hospital') navigate('/hospital-dashboard');
+                if (data.user.role === 'admin') navigate('/admin/dashboard');
+                else if (data.user.role === 'donor') navigate('/donor/dashboard');
+                else if (data.user.role === 'hospital') navigate('/hospital/dashboard');
             }
         } catch (error) {
             console.error('Login error:', error);

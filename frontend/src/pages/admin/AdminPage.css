@@ -191,3 +191,34 @@
     border-color: #ff4d4d;
     background: white;
 }
+
+.form-section-animate {
+    margin-bottom: 20px;
+    animation: slideDown 0.3s ease-out;
+    background: #fdfdfd;
+    border-left: 4px solid #c41e3a;
+}
+
+.inline-add-form .form-row {
+    display: flex;
+    gap: 20px;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    padding: 10px;
+}
+
+.inline-add-form .form-group {
+    flex: 1;
+    min-width: 150px;
+    margin-bottom: 0; /* Override default margin */
+}
+
+.form-actions {
+    display: flex;
+    align-items: center;
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
