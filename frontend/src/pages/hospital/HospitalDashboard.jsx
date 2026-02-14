@@ -1,26 +1,19 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import { apiFetch } from "../../utils/api"; // Using your existing utility
 import "./HospitalDashboard.css";
 import BloodRequestForm from "./BloodRequestForm";
 import RequestStatusTable from "./RequestStatusTable";
 
-export function HospitalDashboard() {
-
+export function HospitalDashboard({ user }) {
     const [requests, setRequests] = useState([]);
 
     const fetchRequests = async () => {
         try {
-            const response = await axios.get("/api/hospital/requests");
-            setRequests(response.data.data);
+            // Updated to use your consistent apiFetch utility
+            const data = await apiFetch("/hospital/requests");
+            setRequests(Array.isArray(data) ? data : []);
         } catch (error) {
-            if (error.response){
-                alert(error.response.data.message || "Server error occured.");
-            }else if (error.request){
-                alert("Server error occured.");
-            }
-                else{
-                alert("Something went wrong");
-            }
+            console.error("Fetch error:", error);
         }
     };
 
@@ -28,34 +21,34 @@ export function HospitalDashboard() {
         fetchRequests();
     }, []);
 
-    const createRequest = async (data) => {
+    const createRequest = async (formData) => {
         try {
-            await axios.post("/api/hospital/requests", data);
-            fetchRequests();
+            await apiFetch("/hospital/requests", {
+                method: "POST",
+                body: JSON.stringify(formData)
+            });
+            fetchRequests(); // Refresh table
         } catch (error) {
-            if (error.response){
-                alert(error.response.data.message || "Server error occured.");
-            }else if (error.request){
-                alert("Server error occured.");
-            }
-                else{
-                alert("Something went wrong");
-            }
+            alert(error.message || "Failed to submit request");
         }
     };
 
     return (
-        <div className="hospital-page-wrapper">
-            <nav className="navbar">
-                <div className="container nav-content">
-                    <span className="navbar-brand">🏥 City General Hospital</span>
-                    <a href="/logout" className="btn-outline">Logout</a>
-                </div>
-            </nav>
+        <div className="hospital-dashboard-wrapper">
+            <main className="container dashboard-main">
+                <header className="dashboard-header">
+                    <h2>Hospital Dashboard</h2>
+                    <p className="text-muted">Welcome, {user?.name || "City General Hospital"}</p>
+                </header>
 
-            <main className="container">
-                <BloodRequestForm onSubmit={createRequest} />
-                <RequestStatusTable requests={requests} />
+                <div className="dashboard-grid">
+                    <div className="form-column">
+                        <BloodRequestForm onSubmit={createRequest} />
+                    </div>
+                    <div className="table-column">
+                        <RequestStatusTable requests={requests} />
+                    </div>
+                </div>
             </main>
         </div>
     );

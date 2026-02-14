@@ -34,42 +34,43 @@ export function LoginPage({ setUser }) {
 
     return (
         <div className="auth-page-wrapper">
-            <div className="card">
-                <div className="logo">🩸</div>
-                <h3 className="header1">Welcome Back</h3>
-                <p className="header2">Please enter your details to login</p>
+            <div className="auth-card">
+                <div className="auth-header">
+                    <h3>Welcome Back</h3>
+                    <p>Enter your details to access your account</p>
+                </div>
 
-                <form onSubmit={handleLogin}>
+                <form className="auth-form" onSubmit={handleLogin}>
                     <div className="field">
-                        <label className="labels">Login As</label>
+                        <label>Login As</label>
                         <select
-                            className="login-input"
+                            className="auth-input"
                             value={role}
                             onChange={(e) => setRole(e.target.value)}
                             required
                         >
                             <option value="donor">Donor</option>
-                            <option value="admin">Admin</option>
                             <option value="hospital">Hospital</option>
+                            <option value="admin">Admin</option>
                         </select>
                     </div>
 
                     <div className="field">
-                        <label className="labels">Email Address</label>
+                        <label>Email Address</label>
                         <input
-                            className="login-input"
+                            className="auth-input"
                             type="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            placeholder="name@email.com"
+                            placeholder="name@company.com"
                             required
                         />
                     </div>
 
                     <div className="field">
-                        <label className="labels">Password</label>
+                        <label>Password</label>
                         <input
-                            className="login-input"
+                            className="auth-input"
                             type="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
@@ -78,14 +79,14 @@ export function LoginPage({ setUser }) {
                         />
                     </div>
 
-                    <button type="submit" className="login-button">
-                        Login
+                    <button type="submit" className="auth-button">
+                        Sign In
                     </button>
                 </form>
 
-                <div className="meta">
-                    <p>New donor? <Link className="register" to="/register">Register here</Link></p>
-                    <p><Link className="back-home" to="/">← Back to Home</Link></p>
+                <div className="auth-meta">
+                    <p>New here? <Link to="/register">Create an account</Link></p>
+                    <Link className="back-home-link" to="/">← Back to Home</Link>
                 </div>
             </div>
         </div>

@@ -22,7 +22,6 @@ export function RegisterPage() {
         }
 
         try {
-            // Use apiFetch instead of axios
             const data = await apiFetch('/auth/register', {
                 method: 'POST',
                 body: JSON.stringify({
@@ -46,60 +45,37 @@ export function RegisterPage() {
         }
     };
 
-    return (
+   return (
         <div className="auth-page-wrapper">
-            <div className="card">
-                <div className="logo">🩸</div>
-                <h3 className="header1">Create Account</h3>
-                <p className="header2">Join Lifesave as a {role}</p>
+            <div className="auth-card">
+                <div className="auth-header">
+                    <h3>Create Account</h3>
+                    <p>Start saving lives as a {role}</p>
+                </div>
 
-                <form onSubmit={handleRegister}>
+                <form className="auth-form" onSubmit={handleRegister}>
                     <div className="field">
-                        <label className="labels">Register As</label>
-                        <select
-                            className="login-input"
-                            value={role}
-                            onChange={(e) => setRole(e.target.value)}
-                            required
-                        >
+                        <label>Join As</label>
+                        <select className="auth-input" value={role} onChange={(e) => setRole(e.target.value)}>
                             <option value="donor">Donor</option>
                             <option value="hospital">Hospital</option>
-                            <option value="admin">Admin</option>
                         </select>
                     </div>
 
                     <div className="field">
-                        <label className="labels">Full Name</label>
-                        <input
-                            className="login-input"
-                            type="text"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            required
-                        />
+                        <label>Full Name</label>
+                        <input className="auth-input" type="text" value={name} onChange={(e) => setName(e.target.value)} required />
                     </div>
 
                     <div className="field">
-                        <label className="labels">Email Address</label>
-                        <input
-                            className="login-input"
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
+                        <label>Email Address</label>
+                        <input className="auth-input" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
                     </div>
 
-                    {/* Show Blood Group only for Donors */}
                     {role === 'donor' && (
                         <div className="field">
-                            <label className="labels">Blood Group</label>
-                            <select
-                                className="login-input"
-                                value={blood_group}
-                                onChange={(e) => setBloodGroup(e.target.value)}
-                                required
-                            >
+                            <label>Blood Group</label>
+                            <select className="auth-input" value={blood_group} onChange={(e) => setBloodGroup(e.target.value)}>
                                 {['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'].map(bg => (
                                     <option key={bg} value={bg}>{bg}</option>
                                 ))}
@@ -108,37 +84,20 @@ export function RegisterPage() {
                     )}
 
                     <div className="field">
-                        <label className="labels">Password</label>
-                        <input
-                            className="login-input"
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
+                        <label>Password</label>
+                        <input className="auth-input" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
                     </div>
 
                     <div className="field">
-                        <label className="labels">Confirm Password</label>
-                        <input
-                            className="login-input"
-                            type="password"
-                            value={confirm_password}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                            required
-                        />
+                        <label>Confirm Password</label>
+                        <input className="auth-input" type="password" value={confirm_password} onChange={(e) => setConfirmPassword(e.target.value)} required />
                     </div>
 
-                    <button type="submit" className="login-button">
-                        Register
-                    </button>
+                    <button type="submit" className="auth-button">Register Now</button>
                 </form>
 
-                <div className="meta">
-                    <p>
-                        Already have an account?
-                        <Link className="register" to="/login"> Login</Link>
-                    </p>
+                <div className="auth-meta">
+                    <p>Already have an account? <Link to="/login">Login</Link></p>
                 </div>
             </div>
         </div>
