@@ -1,64 +1,34 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { apiFetch } from '../../utils/api'; // Import your helper
 import './LoginPage.css';
-import axios from 'axios';
 
-export function LoginPage() {
-    // State for inputs
+// Accept setUser as a prop from App.jsx
+export function LoginPage({ setUser }) { 
     const [role, setRole] = useState('donor');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
     const navigate = useNavigate();
 
-    //  Auto-redirect if already logged in
-    // useEffect(() => {
-    //     const isLoggedIn = localStorage.getItem('isLoggedIn');
-    //     const savedRole = localStorage.getItem('role');
-
-    //     if (isLoggedIn === 'true' && savedRole) {
-    //         if (savedRole === 'admin') navigate('/admin-dashboard');
-    //         else if (savedRole === 'donor') navigate('/donor-dashboard');
-    //         else if (savedRole === 'hospital') navigate('/hospital-dashboard');
-    //     }
-    // }, [navigate]);
-
-    // Login handler
     const handleLogin = async (e) => {
-        e.preventDefault(); // prevent page refresh
+        e.preventDefault();
 
         try {
-            const response = await axios.post(
-                '/api/auth/login',
-                { role, email, password },
-                {
-                    headers: { 'Content-Type': 'application/json' },
-                    withCredentials: true
-                }
-            );
-
-            const data = response.data;
+            const data = await apiFetch('/auth/login', {
+                method: 'POST',
+                body: JSON.stringify({ role, email, password })
+            });
 
             if (data.success) {
-                alert(data.message);
+                setUser(data.user);
 
-                // Save login info to localStorage
-                // localStorage.setItem('isLoggedIn', 'true');
-                // localStorage.setItem('role', data.user.role);
-                // localStorage.setItem('user', JSON.stringify(data.user));
-
-                // Navigate based on role
                 if (data.user.role === 'admin') navigate('/admin-dashboard');
                 else if (data.user.role === 'donor') navigate('/donor-dashboard');
                 else if (data.user.role === 'hospital') navigate('/hospital-dashboard');
-            } else {
-                alert(data.message || 'Login failed');
             }
         } catch (error) {
-            console.error('Error logging in:', error);
-            const errorMessage =
-                error.response?.data?.message || 'Could not connect to the server.';
-            alert(errorMessage);
+            console.error('Login error:', error);
+            alert(error.message || 'Login failed');
         }
     };
 
@@ -114,17 +84,8 @@ export function LoginPage() {
                 </form>
 
                 <div className="meta">
-                    <p>
-                        New donor?{' '}
-                        <Link className="register" to="/register">
-                            Register here
-                        </Link>
-                    </p>
-                    <p>
-                        <Link className="back-home" to="/">
-                            ← Back to Home
-                        </Link>
-                    </p>
+                    <p>New donor? <Link className="register" to="/register">Register here</Link></p>
+                    <p><Link className="back-home" to="/">← Back to Home</Link></p>
                 </div>
             </div>
         </div>

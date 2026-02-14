@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import axios from 'axios';
+import { apiFetch } from '../../utils/api'; // Import your helper
 import './LoginPage.css';
 
 export function RegisterPage() {
@@ -22,36 +22,27 @@ export function RegisterPage() {
         }
 
         try {
-            const response = await axios.post(
-                '/api/auth/register',
-                {
+            // Use apiFetch instead of axios
+            const data = await apiFetch('/auth/register', {
+                method: 'POST',
+                body: JSON.stringify({
                     role,
                     name,
                     email,
                     blood_group,
                     password,
                     confirm_password
-                },
-                {
-                    withCredentials: true
-                }
-            );
-
-            const data = response.data;
+                })
+            });
 
             if (data.success) {
-                alert(data.message);
+                alert(data.message || "Registration successful!");
                 navigate('/login');
-            } else {
-                alert(data.message || 'Registration failed');
             }
-
         } catch (error) {
             console.error('Error during registration:', error);
-            alert(
-                error.response?.data?.message || 
-                'Could not connect to the server.'
-            );
+            // apiFetch throws the error message from the server automatically
+            alert(error.message || 'Could not connect to the server.');
         }
     };
 
@@ -60,10 +51,9 @@ export function RegisterPage() {
             <div className="card">
                 <div className="logo">🩸</div>
                 <h3 className="header1">Create Account</h3>
-                <p className="header2">Join Lifesave as a donor</p>
+                <p className="header2">Join Lifesave as a {role}</p>
 
                 <form onSubmit={handleRegister}>
-
                     <div className="field">
                         <label className="labels">Register As</label>
                         <select
@@ -73,8 +63,8 @@ export function RegisterPage() {
                             required
                         >
                             <option value="donor">Donor</option>
-                            <option value="admin">Admin</option>
                             <option value="hospital">Hospital</option>
+                            <option value="admin">Admin</option>
                         </select>
                     </div>
 
@@ -100,24 +90,22 @@ export function RegisterPage() {
                         />
                     </div>
 
-                    <div className="field">
-                        <label className="labels">Blood Group</label>
-                        <select
-                            className="login-input"
-                            value={blood_group}
-                            onChange={(e) => setBloodGroup(e.target.value)}
-                            required
-                        >
-                            <option value="A+">A+</option>
-                            <option value="A-">A-</option>
-                            <option value="B+">B+</option>
-                            <option value="B-">B-</option>
-                            <option value="O+">O+</option>
-                            <option value="O-">O-</option>
-                            <option value="AB+">AB+</option>
-                            <option value="AB-">AB-</option>
-                        </select>
-                    </div>
+                    {/* Show Blood Group only for Donors */}
+                    {role === 'donor' && (
+                        <div className="field">
+                            <label className="labels">Blood Group</label>
+                            <select
+                                className="login-input"
+                                value={blood_group}
+                                onChange={(e) => setBloodGroup(e.target.value)}
+                                required
+                            >
+                                {['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'].map(bg => (
+                                    <option key={bg} value={bg}>{bg}</option>
+                                ))}
+                            </select>
+                        </div>
+                    )}
 
                     <div className="field">
                         <label className="labels">Password</label>
