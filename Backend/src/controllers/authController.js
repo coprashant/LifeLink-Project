@@ -6,7 +6,25 @@ exports.handleLogin = async (req, res) => {
     const { role, email, password } = req.body;
 
     try {
-        const userQuery = 'SELECT * FROM Users WHERE email = $1 AND role = $2';
+        // We JOIN with Donors or Hospitals based on the role to get the actual name
+        let userQuery = '';
+        if (role === 'donor') {
+            userQuery = `
+                SELECT u.*, d.full_name as name 
+                FROM Users u 
+                LEFT JOIN Donors d ON u.donor_id = d.donor_id 
+                WHERE u.email = $1 AND u.role = $2`;
+        } else if (role === 'hospital') {
+            userQuery = `
+                SELECT u.*, h.hospital_name as name 
+                FROM Users u 
+                LEFT JOIN Hospitals h ON u.hospital_id = h.hospital_id 
+                WHERE u.email = $1 AND u.role = $2`;
+        } else {
+            // Admin doesn't have a linked record, so we just select from Users
+            userQuery = 'SELECT *, \'Admin\' as name FROM Users WHERE email = $1 AND role = $2';
+        }
+
         const result = await db.query(userQuery, [email, role]);
 
         if (result.rows.length === 0) {
@@ -19,18 +37,16 @@ exports.handleLogin = async (req, res) => {
         if (match) {
             req.session.userId = user.user_id;
             req.session.role = user.role;
-            req.session.donorId = user.donor_id;
-            req.session.hospitalId = user.hospital_id;
 
             return res.status(200).json({
                 success: true,
                 user: {
                     role: user.role,
+                    name: user.name, // Now this will contain the Donor name or Hospital name
                     donorId: user.donor_id,
                     hospitalId: user.hospital_id
                 }
             });
-
         } else {
             res.status(401).json({ message: 'Incorrect password.' });
         }
@@ -102,8 +118,32 @@ exports.getMe = async (req, res) => {
     }
 
     try {
-        // Query the DB using the ID saved in the session
-        const result = await db.query('SELECT * FROM Users WHERE user_id = $1', [req.session.userId]);
+        const { userId, role } = req.session;
+        let query = '';
+
+        // Match the logic used in handleLogin to fetch the name
+        if (role === 'donor') {
+            query = `
+                SELECT u.user_id, u.role, u.donor_id, u.hospital_id, d.full_name as name 
+                FROM Users u 
+                LEFT JOIN Donors d ON u.donor_id = d.donor_id 
+                WHERE u.user_id = $1`;
+        } else if (role === 'hospital') {
+            query = `
+                SELECT u.user_id, u.role, u.donor_id, u.hospital_id, h.hospital_name as name 
+                FROM Users u 
+                LEFT JOIN Hospitals h ON u.hospital_id = h.hospital_id 
+                WHERE u.user_id = $1`;
+        } else {
+            query = `SELECT user_id, role, donor_id, hospital_id, 'Admin' as name FROM Users WHERE user_id = $1`;
+        }
+
+        const result = await db.query(query, [userId]);
+        
+        if (result.rows.length === 0) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
         const user = result.rows[0];
 
         res.json({
@@ -111,11 +151,13 @@ exports.getMe = async (req, res) => {
             user: {
                 id: user.user_id,
                 role: user.role,
+                name: user.name, // Name is now correctly populated
                 donorId: user.donor_id,
                 hospitalId: user.hospital_id
             }
         });
     } catch (err) {
+        console.error("getMe Error:", err);
         res.status(500).json({ message: "Server error" });
     }
 };
