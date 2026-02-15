@@ -1,5 +1,8 @@
 {
+  "name": "lifelink-project",
+  "version": "1.0.0",
   "scripts": {
+    "build": "cd frontend && npm install && npm run build",
     "start": "node Backend/src/app.js"
   },
   "dependencies": {

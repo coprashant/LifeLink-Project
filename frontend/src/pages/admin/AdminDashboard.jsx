@@ -1,66 +1,71 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import { apiFetch, handleLogout } from "../../utils/api";
 import "./AdminDashboard.css";
 
-export function AdminDashboard() {
-    const [bloodGroups, setBloodGroups] = useState({
-        "A+": 12, "A-": 5, "B+": 15, "B-": 3,
-        "AB+": 7, "AB-": 2, "O+": 20, "O-": 8
-    });
+export function AdminDashboard({ user, setUser }) {
+    const [requests, setRequests] = useState([]);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchRequests = async () => {
+            try {
+                // Ensure this endpoint matches your Backend/src/routes/adminRoutes.js
+                const reqData = await apiFetch('/admin/requests');
+                setRequests(Array.isArray(reqData) ? reqData : []);
+            } catch (err) {
+                console.error("Failed to fetch requests", err);
+            }
+        };
+        fetchRequests();
+    }, []);
 
     return (
-        <div className="admin-dashboard-wrapper">
-            <div className="container">
-                {/* Header */}
-                <header className="main-header">
-                    <h1>Admin Dashboard</h1>
-                    <div className="user-info">
-                        <span>Admin User</span>
-                        <button className="btn-secondary">Logout</button>
-                    </div>
-                </header>
+    <>
+            <header className="content-header">
+                <h2>Admin Dashboard</h2>
+                <button className="btn-primary-red">+ Add New</button>
+            </header>
 
-                {/* Blood Inventory Section */}
-                <section className="section">
-                    <h2>🩸 Blood Inventory</h2>
-                    <div className="button-group">
-                        {Object.keys(bloodGroups).map((group) => (
-                            <button key={group} className="btn-secondary">
-                                {group}: {bloodGroups[group]} units
-                            </button>
-                        ))}
-                    </div>
-                </section>
-
-                {/* Requests Section */}
-                <section className="section">
-                    <h2>🏥 Hospital Requests</h2>
-                    <div className="table-container">
-                        <table>
-                            <thead>
+             <div className="table-card">
+                <table className="admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Hospital</th>
+                                <th>Blood Group</th>
+                                <th>Units</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {requests.length > 0 ? (
+                                requests.map((req) => (
+                                    <tr key={req.request_id}>
+                                        <td>#{req.request_id}</td>
+                                        <td>{req.hospital_name}</td>
+                                        <td><strong>{req.blood_group}</strong></td>
+                                        <td>{req.units}</td>
+                                        <td>
+                                            <span className={`status-tag ${req.status?.toLowerCase()}`}>
+                                                {req.status}
+                                            </span>
+                                        </td>
+                                        <td className="table-actions">
+                                            <button className="action-btn approve">Approve</button>
+                                            <button className="action-btn reject">Reject</button>
+                                        </td>
+                                    </tr>
+                                ))
+                            ) : (
                                 <tr>
-                                    <th>Hospital</th>
-                                    <th>Blood Group</th>
-                                    <th>Units</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
+                                    <td colSpan="6" className="no-data">No pending requests found.</td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>City Hospital</td>
-                                    <td>O+</td>
-                                    <td>5</td>
-                                    <td>Pending</td>
-                                    <td>
-                                        <button className="success-msg">Approve</button>
-                                        <button className="error">Reject</button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </section>
-            </div>
-        </div>
+                            )}
+                        </tbody>
+                    </table>
+                </div>
+         </>
     );
 }

@@ -1,6 +1,6 @@
 const express = require('express');
 const session = require('express-session');
-const cors = require('cors');   //Newly added for CORS support
+const cors = require('cors');   
 const path = require('path');
 require('dotenv').config();
 
@@ -11,10 +11,9 @@ const donorRoutes = require('./routes/donorRoutes');
 
 const app = express();
 
-//Newly added for CORS support
 app.use(cors({
-    origin: 'http://localhost:5173', // React app's address
-    credentials: true                // Allows cookies to be sent back and forth
+    origin: 'http://localhost:5173', 
+    credentials: true                
 }));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -24,9 +23,9 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     cookie: {
-        secure: false,        // Keep false for localhost
-        httpOnly: true,       // Prevents JavaScript from stealing the cookie
-        sameSite: 'lax'       // Helps with cross-origin requests on localhost
+        secure: false,       
+        httpOnly: true,       
+        sameSite: 'lax'       
     }
 }));
 

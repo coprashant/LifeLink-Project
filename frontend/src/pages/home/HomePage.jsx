@@ -4,17 +4,6 @@ import './HomePage.css';
 export function HomePage() {
     return (
         <>
-
-            <nav className="navbar">
-                <div className="container nav-container">
-                    <a className="logo" href="#">🩸 LifeLink</a>
-                    <div className="nav-actions">
-                        <Link  className="btn btn-outline" to="login" >Login</Link>
-                        <Link className="btn btn-danger" to="register" >Register as Donor</Link>
-                    </div>
-                </div>
-            </nav>
-
             <header className="hero-section">
                 <div className="container hero-content">
                     <h1 className="hero-title">From Vein to Patient</h1>

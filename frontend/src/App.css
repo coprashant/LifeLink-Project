@@ -1,0 +1,21 @@
+/* Ensure the content starts below the 70px Navbar */
+.main-content {
+    padding-top: 30px; 
+    min-height: calc(100vh - 70px);
+    background-color: #f8f9fa; /* Light grey background for dashboards */
+}
+
+/* Base button styles to keep things consistent */
+.btn-primary-red {
+    background-color: #c41e3a;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-primary-red:hover {
+    background-color: #a01830;
+}
