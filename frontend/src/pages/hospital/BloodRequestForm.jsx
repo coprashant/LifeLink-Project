@@ -3,14 +3,21 @@ import { useState } from "react";
 export default function BloodRequestForm({ onSubmit }) {
 
     const [bloodGroup, setBloodGroup] = useState("A+");
-    const [units, setUnits] = useState(1);
+    const [units, setUnits] = useState("");
+    const [urgency, setUrgency] = useState("Normal");
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
+        if(!units || units < 1){
+            alert("units must at least 1")
+            return;
+        }
+
         onSubmit({
-            blood_group: bloodGroup,
-            units: units
+            blood_group_needed: bloodGroup,
+            units_requested: units,
+            urgency: urgency
         });
     };
 
@@ -51,9 +58,22 @@ export default function BloodRequestForm({ onSubmit }) {
                                 onChange={(e) => setUnits(e.target.value)}
                             />
                         </div>
+
+                        <div>
+                            <label className="form-label">Urgency</label>
+                            <select
+                                className="form-select"
+                                value={urgency}
+                                onChange={(e) => setUrgency(e.target.value)}
+                            >
+                                <option value="Normal">Normal</option>
+                                <option value="Urgent">Urgent</option>
+                                <option value="Critical">Critical</option>
+                            </select>
+                        </div>
                     </div>
 
-                    <button className="btn-submit"  >Submit Request</button>
+                    <button className="btn-submit">Submit Request</button>
                 </form>
             </div>
         </section>

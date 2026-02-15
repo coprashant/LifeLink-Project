@@ -10,8 +10,8 @@ export function HospitalDashboard({ user }) {
     const fetchRequests = async () => {
         try {
             // Updated to use your consistent apiFetch utility
-            const data = await apiFetch("/hospital/requests");
-            setRequests(Array.isArray(data) ? data : []);
+            const response = await apiFetch("/hospital/requests");
+            setRequests(Array.isArray(response.data) ? response.data : []);
         } catch (error) {
             console.error("Fetch error:", error);
         }

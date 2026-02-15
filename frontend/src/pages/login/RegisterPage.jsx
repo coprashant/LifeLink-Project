@@ -59,6 +59,7 @@ export function RegisterPage() {
                         <select className="auth-input" value={role} onChange={(e) => setRole(e.target.value)}>
                             <option value="donor">Donor</option>
                             <option value="hospital">Hospital</option>
+                            <option value="admin">Admin</option>
                         </select>
                     </div>
 

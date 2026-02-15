@@ -57,7 +57,6 @@ export function DonorDashboard() {
                     <DonorProfile donorInfo={donorInfo} />
                     <EditProfileForm onUpdate={updateProfile} />
                 </section>
-
                <DonationHistory donorHistory={donorInfo.history} />
             </div>
         </div>

@@ -11,7 +11,7 @@ export function AdminPage() {
     const fetchInventory = async () => {
         try {
             const data = await apiFetch('/admin/inventory');
-            setInventory(Array.isArray(data) ? data : []);
+            setInventory(Array.isArray(data.data) ? data.data : []);
         } catch (err) {
             console.error("Failed to fetch inventory", err);
             setInventory([]);

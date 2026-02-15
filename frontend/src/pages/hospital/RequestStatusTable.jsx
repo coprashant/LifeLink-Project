@@ -20,13 +20,13 @@ export default function RequestStatusTable({ requests }) {
 
                     <tbody>
                         {requests?.map((req) => (
-                            <tr key={req.id}>
-                                <td>REQ-{req.id}</td>
-                                <td>{req.blood_group}</td>
-                                <td>{req.units}</td>
+                            <tr key={req.request_id}>
+                                <td>REQ-{req.request_id}</td>
+                                <td>{req.blood_group_needed}</td>
+                                <td>{req.units_requested}</td>
                                 <td>
-                                    {req.created_at
-                                        ? dayjs(req.created_at).format("DD MMM YYYY")
+                                    {req.request_date
+                                        ? dayjs(req.request_date).format("DD MMM YYYY")
                                         : "—"}
                                 </td>
 
