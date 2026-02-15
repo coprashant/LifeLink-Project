@@ -1,5 +1,5 @@
 const db = require('./src/config/db');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 async function seedUser() {
     const email = 'admin@lifelink.com';
