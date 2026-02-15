@@ -1,35 +1,38 @@
-import { NavLink, Outlet, useNavigate } from "react-router-dom";
-import { handleLogout } from "../../utils/api";
-import "./AdminDashboard.css"; // Use one CSS file for the layout
+// Updated AdminLayout.jsx
+import { NavLink, Outlet } from "react-router-dom";
+import { Navbar } from "../layouts/Navbar"; // Keep this for the top bar
+import "./AdminDashboard.css"; 
 
-export function AdminLayout({ setUser }) {
-    const navigate = useNavigate();
-
+export function AdminLayout({ user, setUser }) {
     return (
-        <div className="admin-body-wrapper">
-            <aside className="sidebar">
-                <div className="sidebar-logo">
-                    <span className="logo-text">LifeLink</span>
-                </div>
-                <nav className="nav-menu">
-                    <NavLink to="/admin/dashboard" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
-                        Dashboard
-                    </NavLink>
-                    <NavLink to="/admin/inventory" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
-                        Inventory
-                    </NavLink>
-                </nav>
-                <div className="sidebar-footer">
-                    <button onClick={() => handleLogout(setUser, navigate)} className="logout-btn">
-                        Logout
-                    </button>
-                </div>
-            </aside>
+        <div className="admin-page-structure">
+            {/* The Logout button lives here inside Navbar */}
+            <Navbar user={user} setUser={setUser} />
+            
+            <div className="admin-body-wrapper">
+                <aside className="sidebar">
+                    
+                    <nav className="nav-menu">
+                        <NavLink to="/admin/dashboard" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
+                            📊 Overview (Requests)
+                        </NavLink>
+                        <NavLink to="/admin/inventory" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
+                            📦 Blood Inventory
+                        </NavLink>
+                        <NavLink to="/admin/donors" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
+                            👥 Donor Management
+                        </NavLink>
+                    </nav>
 
-            <main className="content">
-                {/* This Outlet is the "hole" where AdminDashboard or AdminPage will appear */}
-                <Outlet />
-            </main>
+                    {/* Sidebar Footer Removed - Logout is now only in the Top Navbar */}
+                </aside>
+
+                <main className="content">
+                    <div className="fade-in">
+                        <Outlet />
+                    </div>
+                </main>
+            </div> 
         </div>
     );
 }
