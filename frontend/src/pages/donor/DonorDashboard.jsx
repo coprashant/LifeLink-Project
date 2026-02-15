@@ -1,47 +1,64 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from 'axios';
+import { DonorHeader } from "./DonorHeader";
+import { DonorProfile } from "./DonorProfile";
+import { EditProfileForm } from "./EditProfileForm";
+import { DonationHistory } from "./DonationHistory";
 import "./DonorDashboard.css";
 
 export function DonorDashboard() {
     const [donorInfo, setDonorInfo] = useState({
-        name: "John Doe",
-        bloodGroup: "O+",
-        lastDonation: "2023-10-15",
-        status: "Eligible"
+        name: "",
+        bloodGroup: "",
+        lastDonation: "",
+        history:[]
     });
 
+    const fetchRequests = async () =>{
+        try{
+            const response = await axios.get("/api/donor/requests");
+            setDonorInfo(response.data);
+        }catch (error){
+            if (error.response){
+                alert(error.response.data.message || "Server error occured.");
+            }else if(error.request){
+                alert("Server error occured.");
+            }else{
+                alert("Something went wrong");
+            }
+        }
+    };
+
+    useEffect(() =>{
+        fetchRequests();
+    }, []);
+
+    const updateProfile = async (data) =>{
+        try{
+            await axios.put("/api/donor/requests", data);
+            fetchRequests();
+        } catch(error){
+            if(error.response){
+                alert(error.response.data.message || "Server error occured.");
+            }else if (error.request){
+                alert("Server error occured. ");
+            } else{
+                alert("Something went wrong");
+            }
+        }
+    };
+
     return (
-        <div className="donor-dashboard-wrapper container">
-            {/* Header simplified - Global Navbar handles user identity */}
-            <header className="dashboard-header">
-                <h1>Donor Dashboard</h1>
-                <p className="text-muted">Manage your donations and eligibility status.</p>
-            </header>
-
-            <div className="dashboard-content">
-                <section className="section card">
+        <div className="donor-dashboard-wrapper">
+            <div className="container">
+                <DonorHeader name={donorInfo.name} />
+                <section className="section">
                     <h2>My Profile</h2>
-                    <div className="info-box">
-                        <p><strong>Blood Group:</strong> {donorInfo.bloodGroup}</p>
-                        <p><strong>Last Donation:</strong> {donorInfo.lastDonation}</p>
-                        <p><strong>Eligibility:</strong> <span className={donorInfo.status === "Eligible" ? "eligible" : "not-eligible"}>{donorInfo.status}</span></p>
-                    </div>
-                    <div className="edit-container">
-                        <input type="text" placeholder="Update Name" className="form-input" />
-                        <button className="btn btn-primary-red">Save Changes</button>
-                    </div>
+                    <DonorProfile donorInfo={donorInfo} />
+                    <EditProfileForm onUpdate={updateProfile} />
                 </section>
 
-                <section className="section card">
-                    <h2>Donation Center</h2>
-                    <p>Find a center near you to schedule your next donation.</p>
-                    <div className="button-group">
-                        <button className="btn btn-primary-red">Find Centers</button>
-                        <button className="btn btn-outline">View History</button>
-                    </div>
-                    <div className="result">
-                        <p className="success-msg">Center found: City Hospital</p>
-                    </div>
-                </section>
+               <DonationHistory donorHistory={donorInfo.history} />
             </div>
         </div>
     );
