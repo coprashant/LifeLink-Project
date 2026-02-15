@@ -72,7 +72,8 @@
 }
 
 .donor-dashboard-wrapper button {
-    background: #c41e3a;
+    background: rgb(196, 30, 58)
+;
     color: white;
     padding: 10px 20px;
     border: none;
@@ -83,15 +84,18 @@
 }
 
 .donor-dashboard-wrapper button:hover {
-    background: #a01828;
+    background: rgb(160, 24, 40);
+
 }
 
 .donor-dashboard-wrapper .btn-secondary {
-    background: #666;
+    background: rgb(196, 30, 58);
+
 }
 
 .donor-dashboard-wrapper .btn-secondary:hover {
-    background: #555;
+    background: rgb(160, 24, 40);
+
 }
 
 /* Results and Boxes */
@@ -121,7 +125,7 @@
 }
 
 /* Status Colors */
-.donor-dashboard-wrapper .eligible {
+/* .donor-dashboard-wrapper .eligible {
     color: #2e7d32;
     font-weight: bold;
 }
@@ -129,6 +133,67 @@
 .donor-dashboard-wrapper .not-eligible {
     color: #c62828;
     font-weight: bold;
+} */
+
+/* Table Styles */
+.donor-dashboard-wrapper .card {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-top: 20px;
+    overflow: hidden; /* Keeps the border-radius on the table */
+}
+
+.donor-dashboard-wrapper .card-header {
+    background: #f8f8f8;
+    padding: 15px 20px;
+    border-bottom: 1px solid #ddd;
+    font-weight: bold;
+    color: #c41e3a;
+}
+
+.donor-dashboard-wrapper .card-body {
+    padding: 0; /* Remove padding so table spans full width */
+}
+
+.donor-dashboard-wrapper .history-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+}
+
+.donor-dashboard-wrapper .history-table th {
+    background-color: #fcfcfc;
+    color: #666;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    padding: 15px;
+    border-bottom: 2px solid #eee;
+}
+
+.donor-dashboard-wrapper .history-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+}
+
+.donor-dashboard-wrapper .history-table tr:last-child td {
+    border-bottom: none;
+}
+
+.donor-dashboard-wrapper .history-table tr:hover {
+    background-color: #fff5f6; /* Subtle red tint on hover */
+    transition: background 0.2s ease;
+}
+
+/* Empty State Styling */
+.donor-dashboard-wrapper .history-table td[colspan="3"] {
+    text-align: center;
+    color: #999;
+    padding: 30px;
+    font-style: italic;
 }
 
 /* Simple Animation */

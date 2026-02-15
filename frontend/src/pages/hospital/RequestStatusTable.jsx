@@ -19,7 +19,7 @@ export default function RequestStatusTable({ requests }) {
                     </thead>
 
                     <tbody>
-                        {requests.map((req) => (
+                        {requests?.map((req) => (
                             <tr key={req.id}>
                                 <td>REQ-{req.id}</td>
                                 <td>{req.blood_group}</td>
