@@ -41,7 +41,6 @@ export function Navbar({ user, setUser }) {
                 <div className="nav-links">
                     {user ? (
                         <>
-                            <Link to={getDashboardPath()} className="btn-link">Dashboard</Link>
                             <span className="user-welcome">
                                 {(user?.name || user?.username || user?.role || "User").split(' ')[0]}
                             </span>

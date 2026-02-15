@@ -37,12 +37,14 @@ exports.handleLogin = async (req, res) => {
         if (match) {
             req.session.userId = user.user_id;
             req.session.role = user.role;
+            req.session.donorId = user.donor_id;
+            req.session.hospitalId = user.hospital_id;
 
             return res.status(200).json({
                 success: true,
                 user: {
                     role: user.role,
-                    name: user.name, // Now this will contain the Donor name or Hospital name
+                    name: user.name, 
                     donorId: user.donor_id,
                     hospitalId: user.hospital_id
                 }

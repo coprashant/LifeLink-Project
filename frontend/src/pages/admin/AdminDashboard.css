@@ -103,6 +103,25 @@
     font-weight: 600;
 }
 
+.action-btn-approve,.action-btn-reject{
+    margin: 0 5px;
+    border: none;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    cursor: pointer;
+}
+.action-btn-approve { 
+    background-color: #0ca12a; 
+    color: white;
+}
+.action-btn-reject 
+{ 
+    background-color: #f12e14; 
+    color: white;
+}
+
 .dispatch { background: #e3f2fd; color: #0d6efd; }
 .trash { background: #fff5f5; color: #dc3545; }
 

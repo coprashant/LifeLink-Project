@@ -9,24 +9,23 @@ export function AdminPage({ mode }) {
     const fetchData = async () => {
         setLoading(true);
         try {
-            const data = await apiFetch('/admin/inventory');
-            setInventory(Array.isArray(data.data) ? data.data : []);
+            const result = await apiFetch(mode === "inventory" ? '/admin/inventory' : '/admin/donors');
+            setData(Array.isArray(result.data) ? result.data : result);
         } catch (err) {
-            console.error("Failed to fetch inventory", err);
-            setInventory([]);
+            console.error(`Failed to fetch ${mode}`, err);
+            setData([]);
         } finally {
             setLoading(false);
         }
-
+    };
 
     useEffect(() => { 
-        setShowAddForm(false); // Close form when switching pages
+        setShowAddForm(false);
         fetchData(); 
     }, [mode]);
 
-    // SMART ACTIONS: Handles Delete and Status Updates for both modes
     const handleAction = async (id, method, body = null) => {
-        const confirmMsg = method === 'DELETE' ? "Are you sure you want to delete this record?" : "Confirm update?";
+        const confirmMsg = method === 'DELETE' ? "Are you sure?" : "Confirm update?";
         if (!window.confirm(confirmMsg)) return;
 
         try {
@@ -51,12 +50,12 @@ export function AdminPage({ mode }) {
                 </button>
             </header>
 
-            {/* DYNAMIC ADD FORM */}
             {showAddForm && (
                 <section className="table-container" style={{ padding: '20px', marginBottom: '20px' }}>
                     <form className="inline-add-form" onSubmit={async (e) => {
                         e.preventDefault();
-                        const payload = Object.fromEntries(new FormData(e.target));
+                        const formData = new FormData(e.target);
+                        const payload = Object.fromEntries(formData);
                         try {
                             const endpoint = mode === "inventory" ? '/admin/inventory' : '/admin/donors';
                             await apiFetch(endpoint, { method: 'POST', body: JSON.stringify(payload) });
@@ -74,11 +73,12 @@ export function AdminPage({ mode }) {
                                 </>
                             ) : (
                                 <>
-                                    <input className="auth-input" name="name" placeholder="Full Name" required />
+                                    {/* Inputs use name attributes that match your schema expectations */}
+                                    <input className="auth-input" name="full_name" placeholder="Full Name" required />
                                     <select className="auth-input" name="blood_group" required>
                                         {['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'].map(bg => <option key={bg} value={bg}>{bg}</option>)}
                                     </select>
-                                    <input className="auth-input" name="phone" placeholder="Phone Number" required />
+                                    <input className="auth-input" name="contact_no" placeholder="Contact Number" required />
                                 </>
                             )}
                             <button type="submit" className="btn-primary-red">Save Record</button>
@@ -114,7 +114,7 @@ export function AdminPage({ mode }) {
                                     <>
                                         <td>#{item.bag_id}</td>
                                         <td><span className="blood-badge">{item.blood_group}</span></td>
-                                        <td><span className={`badge badge-${item.status === 'available' ? 'success' : 'warning'}`}>{item.status}</span></td>
+                                        <td><span className={`badge badge-${item.status}`}>{item.status}</span></td>
                                         <td>
                                             <div style={{ display: 'flex', gap: '8px' }}>
                                                 {item.status === 'available' && (
@@ -127,9 +127,10 @@ export function AdminPage({ mode }) {
                                 ) : (
                                     <>
                                         <td>#{item.donor_id}</td>
-                                        <td><strong>{item.name}</strong></td>
+                                        {/* Updated to match your Donors table: full_name and contact_no */}
+                                        <td><strong>{item.full_name}</strong></td>
                                         <td><span className="blood-badge">{item.blood_group}</span></td>
-                                        <td>{item.phone || item.email}</td>
+                                        <td>{item.contact_no}</td>
                                         <td>
                                             <button onClick={() => handleAction(item.donor_id, 'DELETE')} className="action-btn-mini trash">🗑</button>
                                         </td>
