@@ -46,10 +46,12 @@ function App() {
       </Route>
 
       {/* Admin Pages (Keep separate because of Sidebar) */}
-      <Route path="admin" element={<AdminLayout setUser={setUser} />}>
+
+      <Route path="admin" element={<AdminLayout user={user} setUser={setUser} />}>
         <Route index element={<Navigate to="dashboard" replace />} />
         <Route path="dashboard" element={<AdminDashboard user={user} />} />
-        <Route path="inventory" element={<AdminPage />} />
+        <Route path="inventory" element={<AdminPage mode="inventory" />} />
+        <Route path="donors" element={<AdminPage mode="donors" />} />
       </Route>
     </Routes>
 
