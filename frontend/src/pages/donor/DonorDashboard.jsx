@@ -16,7 +16,9 @@ export function DonorDashboard() {
 
     const fetchRequests = async () =>{
         try{
-            const response = await axios.get("/api/donor/requests");
+            const response = await axios.get("/api/donor/profile", {
+                withCredentials: true
+            });
             setDonorInfo(response.data);
         }catch (error){
             if (error.response){
@@ -35,7 +37,9 @@ export function DonorDashboard() {
 
     const updateProfile = async (data) =>{
         try{
-            await axios.put("/api/donor/requests", data);
+            await axios.put("/api/donor/profile", data, {
+                withCredentials: true
+            });
             fetchRequests();
         } catch(error){
             if(error.response){
