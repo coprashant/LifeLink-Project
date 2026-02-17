@@ -1,0 +1,83 @@
+.status-card {
+    padding: 24px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    border: 1px solid transparent;
+}
+
+/* Update these classes in donor_status.css */
+.eligible-bg {
+    background-color: #2e7d32 !important; /* Force the Green */
+    border-color: #1b5e20 !important;
+    color: #ffffff !important;           /* Force White text */
+}
+
+/* This ensures all text inside the card turns white */
+.eligible-bg h3, 
+.eligible-bg p, 
+.eligible-bg .status-body p, 
+.eligible-bg span {
+    color: #ffffff !important;
+}
+
+.eligible-bg .status-icon {
+    background: rgba(255, 255, 255, 0.2) !important; 
+    border: 2px solid #ffffff !important;
+    color: #ffffff !important;
+}
+
+.not-eligible-bg {
+    background-color: #fffaf0;
+    border-color: #feebc8;
+    color: #744210;
+}
+
+.status-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.status-header h3 {
+    margin: 0;
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+
+.status-icon {
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: white;
+}
+
+.icon-check { color: #38a169; border: 2px solid #38a169; }
+.icon-wait { color: #dd6b20; border: 2px solid #dd6b20; }
+
+.status-body p {
+    font-size: 1.05rem;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.btn-eligible {
+    margin-top: 15px;
+    background-color: #38a169;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-eligible:hover {
+    background-color: #2f855a;
+}

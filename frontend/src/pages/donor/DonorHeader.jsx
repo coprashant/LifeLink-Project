@@ -1,11 +1,10 @@
-export function DonorHeader( {full_name} ){
-    return(
+export function DonorHeader({ full_name }) {
+    return (
         <header>
-                    <h1>Donor Dashboard</h1>
-                    <div className="user-info">
-                        <p>Welcome, {full_name || "Biren"}</p>
-                        {/* <button className="btn-secondary">Logout</button> */}
-                    </div>
+            <h1>Donor Dashboard</h1>
+            <div className="user-info">
+                <p>Welcome, <span className="header-name">{full_name || "Biren"}</span></p>
+            </div>
         </header>
     );
 }

@@ -4,8 +4,13 @@
     color: #333;
 }
 
+.header-name {
+    font-weight: 800;
+    font-size: 1.2rem;
+    color: #333;
+}
 .donor-dashboard-wrapper .container {
-    max-width: 900px;
+    max-width: 1100px;
     margin: 0 auto;
     background: white;
     padding: 30px;
@@ -65,15 +70,8 @@
 }
 
 /* Buttons */
-.donor-dashboard-wrapper .button-group {
-    display: flex;
-    gap: 10px;
-    margin-top: 5px;
-}
-
 .donor-dashboard-wrapper button {
-    background: rgb(196, 30, 58)
-;
+    background: rgb(196, 30, 58);
     color: white;
     padding: 10px 20px;
     border: none;
@@ -85,34 +83,9 @@
 
 .donor-dashboard-wrapper button:hover {
     background: rgb(160, 24, 40);
-
 }
 
-.donor-dashboard-wrapper .btn-secondary {
-    background: rgb(196, 30, 58);
-
-}
-
-.donor-dashboard-wrapper .btn-secondary:hover {
-    background: rgb(160, 24, 40);
-
-}
-
-/* Results and Boxes */
-.donor-dashboard-wrapper .result {
-    margin-top: 15px;
-    padding: 15px;
-    background: #e8f5e9;
-    border-radius: 4px;
-    display: none;
-    animation: fadeIn 0.4s ease;
-}
-
-.donor-dashboard-wrapper .error {
-    background: #ffebee;
-    color: #c62828;
-}
-
+/* Info Box */
 .donor-dashboard-wrapper .info-box {
     background: #fff;
     padding: 15px;
@@ -124,8 +97,8 @@
     margin: 8px 0;
 }
 
-/* Status Colors */
-/* .donor-dashboard-wrapper .eligible {
+/* Status Colors (Matched to your original red/green theme) */
+.donor-dashboard-wrapper .eligible {
     color: #2e7d32;
     font-weight: bold;
 }
@@ -133,14 +106,14 @@
 .donor-dashboard-wrapper .not-eligible {
     color: #c62828;
     font-weight: bold;
-} */
+}
 
 /* Table Styles */
 .donor-dashboard-wrapper .card {
     border: 1px solid #ddd;
     border-radius: 4px;
     margin-top: 20px;
-    overflow: hidden; /* Keeps the border-radius on the table */
+    overflow: hidden; 
 }
 
 .donor-dashboard-wrapper .card-header {
@@ -149,10 +122,6 @@
     border-bottom: 1px solid #ddd;
     font-weight: bold;
     color: #c41e3a;
-}
-
-.donor-dashboard-wrapper .card-body {
-    padding: 0; /* Remove padding so table spans full width */
 }
 
 .donor-dashboard-wrapper .history-table {
@@ -164,47 +133,13 @@
 .donor-dashboard-wrapper .history-table th {
     background-color: #fcfcfc;
     color: #666;
-    font-weight: 600;
-    text-transform: uppercase;
-    font-size: 12px;
-    letter-spacing: 0.5px;
     padding: 15px;
     border-bottom: 2px solid #eee;
+    text-align: left;
 }
 
 .donor-dashboard-wrapper .history-table td {
     padding: 15px;
-    text-align: left;
     border-bottom: 1px solid #eee;
     font-size: 14px;
-}
-
-.donor-dashboard-wrapper .history-table tr:last-child td {
-    border-bottom: none;
-}
-
-.donor-dashboard-wrapper .history-table tr:hover {
-    background-color: #fff5f6; /* Subtle red tint on hover */
-    transition: background 0.2s ease;
-}
-
-/* Empty State Styling */
-.donor-dashboard-wrapper .history-table td[colspan="3"] {
-    text-align: center;
-    color: #999;
-    padding: 30px;
-    font-style: italic;
-}
-
-/* Simple Animation */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-5px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
 }

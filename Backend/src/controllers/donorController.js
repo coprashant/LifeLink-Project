@@ -6,7 +6,22 @@ exports.getProfile = async (req, res) => {
         const donorId = req.session.donorId;
         if (!donorId) return res.status(401).json({ message: 'Donor ID not found in session' });
 
-        const result = await db.query('SELECT * FROM Donors WHERE donor_id = $1', [donorId]);
+        // Fetch Donor Details + Calculate Eligibility status
+        const result = await db.query(
+            `SELECT *, 
+                CASE 
+                    WHEN last_donation_date IS NULL THEN 'Eligible'
+                    WHEN (CURRENT_DATE - last_donation_date) >= 90 THEN 'Eligible'
+                    ELSE 'Not Eligible'
+                END as status,
+                CASE 
+                    WHEN last_donation_date IS NOT NULL THEN (CURRENT_DATE - last_donation_date)
+                    ELSE NULL
+                END as days_since_last
+             FROM Donors 
+             WHERE donor_id = $1`, 
+            [donorId]
+        );
         if (result.rows.length === 0) return res.status(404).json({ message: 'Donor profile not found' });
 
         // Edit started from here 
