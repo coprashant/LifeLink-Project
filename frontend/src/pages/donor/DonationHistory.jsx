@@ -21,7 +21,7 @@ export function DonationHistory({ donorHistory }) {
                                         ? dayjs(item.created_at).format("DD MMM YYYY")
                                         : "—"}
                                 </td>
-                                <td>{item.center}</td>
+                                <td>{item.center || "Patan"}</td>
                                 <td>{item.units}</td>
                                 {/* <td><span className="badge badge-success">Completed</span></td> */}
                             </tr>

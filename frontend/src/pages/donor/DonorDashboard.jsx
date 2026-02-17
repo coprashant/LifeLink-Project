@@ -19,6 +19,7 @@ export function DonorDashboard() {
             const response = await axios.get("/api/donor/profile", {
                 withCredentials: true
             });
+           console.log("History Check:", response.data.history);
             setDonorInfo(response.data);
         }catch (error){
             if (error.response){
@@ -55,11 +56,11 @@ export function DonorDashboard() {
     return (
         <div className="donor-dashboard-wrapper">
             <div className="container">
-                <DonorHeader name={donorInfo.name} />
+                <DonorHeader full_name={donorInfo.full_name} />
                 <section className="section">
                     <h2>My Profile</h2>
                     <DonorProfile donorInfo={donorInfo} />
-                    <EditProfileForm onUpdate={updateProfile} />
+                    <EditProfileForm onUpdate={updateProfile} initialData={donorInfo} />
                 </section>
                <DonationHistory donorHistory={donorInfo.history} />
             </div>

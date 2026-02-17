@@ -29,9 +29,9 @@ export function Navbar({ user, setUser }) {
                 <Link to="/" className="nav-logo">🩸 LifeLink</Link>
 
                 <form className="nav-search" onSubmit={handleSearch}>
-                    <input 
-                        type="text" 
-                        placeholder="Search blood groups..." 
+                    <input
+                        type="text"
+                        placeholder="Search blood groups..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
@@ -41,11 +41,12 @@ export function Navbar({ user, setUser }) {
                 <div className="nav-links">
                     {user ? (
                         <>
+                            {/* <Link to={getDashboardPath()} className="btn-link">Dashboard</Link> */}
                             <span className="user-welcome">
                                 {(user?.name || user?.username || user?.role || "User").split(' ')[0]}
                             </span>
-                            <button 
-                                className="btn-outline-sm" 
+                            <button
+                                className="btn-outline-sm"
                                 onClick={() => handleLogout(setUser, navigate)}
                             >
                                 Logout
