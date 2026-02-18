@@ -17,6 +17,10 @@
       "destination": "Backend/src/app.js"
     },
     {
+      "source": "/favicon.ico",
+      "destination": "/Frontend/dist/vite.svg"
+    },
+    {
       "source": "/((?!api|.*\\.).*)",
       "destination": "/Frontend/dist/index.html"
     },
