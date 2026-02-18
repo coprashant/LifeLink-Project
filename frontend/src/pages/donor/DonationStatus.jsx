@@ -33,11 +33,25 @@ export function DonationStatus({ lastDonation, daysSince }) {
                     <p>
                         {isEligible 
                             ? `It has been ${days} days since your last donation on ${formattedDate}. Thank you for staying ready to help!`
-                            : `It has been ${days} days since your last donation on ${formattedDate}. You need to wait ${90 - days} more days.`
+                            : `It has been ${days} days since your last donation on ${formattedDate}. `
                         }
                     </p>
                 )}
             </div>
+
+            {!isEligible && (
+                <div className="progress-container">
+                <div className="progress-track">
+                    <div 
+                        className="progress-bar" 
+                        style={{ width: `${Math.min((days / 90) * 100, 100)}%` }}
+                    ></div>
+                </div>
+                <small>
+                    <strong>{90 - days} days</strong> remaining until your next hero moment!
+                </small>
+                </div>
+            )}
 
             {isEligible && (
                 <div className="status-action">

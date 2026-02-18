@@ -98,3 +98,37 @@
     background-color: #f0f0f0;
     transform: translateY(-2px);
 }
+
+/* Progress Bar */
+.progress-container {
+    margin-top: 20px;
+    width: 100%;
+}
+
+.progress-track {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    height: 10px;
+    width: 100%;
+    overflow: hidden; 
+}
+
+.progress-bar {
+    height: 100%;
+    background-color: #dd6b20; 
+    border-radius: 10px;
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.progress-container small {
+    display: block;
+    margin-top: 10px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #744210;
+    text-align: left;
+}
+
+.progress-container small strong {
+    color: #c05621;
+}
