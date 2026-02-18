@@ -63,18 +63,88 @@ It replaces fragmented, manual record-keeping with a **real-time, PostgreSQL-pow
 ## 📁 Project Structure
 
 ```
-LifeLink-Project/
-├── Resources/              # Design assets and SQL scripts
-├── Backend/                # Node.js & Express server
-│   ├── src/                # Controllers, Routes, and Config
-│   ├── .env.example        # Environment variables template
-│   └── package.json
-├── Frontend/               # UI assets & EJS templates
-│   ├── public/             # CSS, JS, Images
-│   ├── views/              # EJS files
-│   └── package.json
-├── docs/                   # Documentation & proposals
-└── README.md
+LifeLink
+├─ Backend
+│  ├─ .env
+│  ├─ package-lock.json
+│  ├─ package.json
+│  ├─ seed.js
+│  └─ src
+│     ├─ app.js
+│     ├─ config
+│     │  └─ db.js
+│     ├─ controllers
+│     │  ├─ adminController.js
+│     │  ├─ authController.js
+│     │  ├─ donorController.js
+│     │  └─ hospitalController.js
+│     ├─ middleware
+│     │  └─ authMiddleware.js
+│     ├─ routes
+│     │  ├─ adminRoutes.js
+│     │  ├─ authRoutes.js
+│     │  ├─ donorRoutes.js
+│     │  └─ hospitalRoutes.js
+│     └─ server.js
+├─ Database
+│  └─ schema.sql
+├─ Frontend
+│  ├─ eslint.config.js
+│  ├─ index.html
+│  ├─ lint_output.txt
+│  ├─ package-lock.json
+│  ├─ package.json
+│  ├─ public
+│  │  └─ vite.svg
+│  ├─ README.md
+│  ├─ src
+│  │  ├─ App.css
+│  │  ├─ App.jsx
+│  │  ├─ assets
+│  │  │  └─ react.svg
+│  │  ├─ index.css
+│  │  ├─ main.jsx
+│  │  ├─ pages
+│  │  │  ├─ admin
+│  │  │  │  ├─ AdminDashboard.css
+│  │  │  │  ├─ AdminDashboard.jsx
+│  │  │  │  ├─ AdminLayout.jsx
+│  │  │  │  └─ AdminPage.jsx
+│  │  │  ├─ donor
+│  │  │  │  ├─ DonationHistory.jsx
+│  │  │  │  ├─ DonationStatus.css
+│  │  │  │  ├─ DonationStatus.jsx
+│  │  │  │  ├─ DonorDashboard.css
+│  │  │  │  ├─ DonorDashboard.jsx
+│  │  │  │  ├─ DonorHeader.jsx
+│  │  │  │  ├─ DonorProfile.jsx
+│  │  │  │  └─ EditProfileForm.jsx
+│  │  │  ├─ home
+│  │  │  │  ├─ HomePage.css
+│  │  │  │  └─ HomePage.jsx
+│  │  │  ├─ hospital
+│  │  │  │  ├─ BloodRequestForm.jsx
+│  │  │  │  ├─ HospitalDashboard.css
+│  │  │  │  ├─ HospitalDashboard.jsx
+│  │  │  │  └─ RequestStatusTable.jsx
+│  │  │  ├─ layouts
+│  │  │  │  ├─ MainLayout.jsx
+│  │  │  │  ├─ Navbar.css
+│  │  │  │  └─ Navbar.jsx
+│  │  │  └─ login
+│  │  │     ├─ LoginPage.css
+│  │  │     ├─ LoginPage.jsx
+│  │  │     └─ RegisterPage.jsx
+│  │  └─ utils
+│  │     └─ api.js
+│  └─ vite.config.js
+├─ package-lock.json
+├─ package.json
+├─ README.md
+├─ Resources
+│  └─ ER-diagram.png
+└─ vercel.json
+
 ```
 
 ---
@@ -152,3 +222,4 @@ This project follows a **decoupled development workflow** for clean collaboratio
 ## 📌 Vision
 
 LifeLink aims to become a **reliable digital backbone for emergency blood coordination**, reducing response time, eliminating errors, and ultimately **saving lives through technology**.
+
