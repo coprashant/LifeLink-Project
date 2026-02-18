@@ -53,7 +53,48 @@ exports.getProfile = async (req, res) => {
     }
 };
 
-// Updated updateProfile to include donation history
+exports.checkEligibility = async (req, res) => {
+    try {
+        const donorId = req.session.donorId;
+        if (!donorId) return res.status(401).json({ message: 'Donor ID not found' });
+
+        const result = await db.query(
+            `SELECT 
+                donor_id,
+                CASE 
+                    WHEN last_donation_date IS NULL THEN true
+                    WHEN CURRENT_DATE - last_donation_date >= 90 THEN true
+                    ELSE false
+                END as is_eligible,
+                CASE 
+                    WHEN last_donation_date IS NULL THEN CURRENT_DATE
+                    ELSE last_donation_date + INTERVAL '90 days'
+                END as next_donation_date
+             FROM Donors WHERE donor_id = $1`,
+            [donorId]
+        );
+        res.json({ data: result.rows[0] });
+    } catch (err) {
+        res.status(500).json({ message: 'Server Error' });
+    }
+};
+
+exports.searchBloodAvailability = async (req, res) => {
+    try {
+        const { bloodGroup } = req.params;
+        const result = await db.query(
+            `SELECT blood_group, COUNT(*) as available_units
+             FROM Blood_Inventory
+             WHERE blood_group = $1 AND status = 'available' AND expiry_date > CURRENT_DATE
+             GROUP BY blood_group`,
+            [bloodGroup]
+        );
+        res.json(result.rows[0] || { blood_group: bloodGroup, available_units: 0 });
+    } catch (err) {
+        res.status(500).json({ message: 'Server Error' });
+    }
+};
+
 exports.updateProfile = async (req, res) => {
     try {
         const donorId = req.session.donorId;
@@ -73,84 +114,81 @@ exports.updateProfile = async (req, res) => {
             address: donor.address,
             lastDonation: donor.last_donation_date
         });
-        // res.json(result.rows[0]);
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: 'Server Error' });
     }
 };
 
-exports.checkEligibility = async (req, res) => {
+exports.bookAppointment = async (req, res) => {
     try {
+        const { center_id, appointment_date, appointment_time } = req.body;
         const donorId = req.session.donorId;
 
         if (!donorId) {
-            return res.status(400).json({ message: 'Donor ID not found in session' });
+            return res.status(401).json({ message: 'Session expired. Please log in again.' });
         }
 
         const result = await db.query(
-            `SELECT 
-                donor_id,
-                full_name,
-                last_donation_date,
-                CASE 
-                    WHEN last_donation_date IS NULL THEN true
-                    WHEN CURRENT_DATE - last_donation_date >= 90 THEN true
-                    ELSE false
-                END as is_eligible,
-                CASE 
-                    WHEN last_donation_date IS NULL THEN CURRENT_DATE
-                    ELSE last_donation_date + INTERVAL '90 days'
-                END as next_donation_date,
-                CASE 
-                    WHEN last_donation_date IS NOT NULL THEN CURRENT_DATE - last_donation_date
-                    ELSE NULL
-                END as days_since_last_donation
-             FROM Donors
-             WHERE donor_id = $1`,
-            [donorId]
+            `INSERT INTO Appointments (donor_id, center_id, appointment_date, appointment_time, status) 
+             VALUES ($1, $2, $3, $4, 'scheduled') RETURNING *`,
+            [donorId, center_id, appointment_date, appointment_time]
         );
 
-        if (result.rows.length === 0) {
-            return res.status(404).json({ message: 'Donor not found' });
-        }
-
-        res.json({ message: 'Eligibility check completed', data: result.rows[0] });
+        res.status(201).json({ 
+            message: "Appointment scheduled!", 
+            appointment: result.rows[0] 
+        });
     } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: 'Server Error' });
+        console.error("Booking Error:", err.message);
+        res.status(500).json({ error: "Booking failed" });
     }
 };
 
-exports.searchBloodAvailability = async (req, res) => {
+exports.getUpcomingAppointments = async (req, res) => {
     try {
-        const { bloodGroup } = req.params;
+        const donorId = req.session.donorId; 
+        if (!donorId) return res.status(401).json({ message: 'Session expired' });
 
         const result = await db.query(
-            `SELECT 
-                blood_group,
-                COUNT(*) as available_units,
-                MIN(expiry_date) as earliest_expiry,
-                MAX(expiry_date) as latest_expiry
-             FROM Blood_Inventory
-             WHERE blood_group = $1 
-             AND status = 'available' 
-             AND expiry_date > CURRENT_DATE
-             GROUP BY blood_group`,
-            [bloodGroup]
+            `SELECT a.appointment_id, a.appointment_date, a.appointment_time, a.status, c.center_name 
+             FROM Appointments a
+             JOIN Donation_Centers c ON a.center_id = c.center_id
+             WHERE a.donor_id = $1 AND a.status = 'scheduled'
+             ORDER BY a.appointment_date ASC`,
+            [donorId]
         );
-
-        if (result.rows.length === 0) {
-            return res.json({
-                blood_group: bloodGroup,
-                available_units: 0,
-                message: 'No units available for this blood group'
-            });
-        }
-
-        res.json(result.rows[0]);
+        res.json(result.rows);
     } catch (err) {
         console.error(err);
-        res.status(500).json({ message: 'Server Error' });
+        res.status(500).json({ error: "Failed to fetch appointments" });
+    }
+};
+
+exports.cancelAppointment = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const donorId = req.session.donorId;
+
+        if (!donorId) return res.status(401).json({ message: 'Session expired' });
+
+        await db.query(
+            "DELETE FROM Appointments WHERE appointment_id = $1 AND donor_id = $2",
+            [id, donorId]
+        );
+        res.json({ message: "Appointment cancelled" });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Cancellation failed" });
+    }
+};
+
+exports.getDonationCenters = async (req, res) => {
+    try {
+        const result = await db.query('SELECT * FROM Donation_Centers');
+        res.json(result.rows);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Failed to fetch centers" });
     }
 };

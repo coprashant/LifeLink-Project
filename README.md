@@ -65,7 +65,6 @@ It replaces fragmented, manual record-keeping with a **real-time, PostgreSQL-pow
 ```
 LifeLink
 ├─ Backend
-│  ├─ .env
 │  ├─ package-lock.json
 │  ├─ package.json
 │  ├─ seed.js
@@ -91,7 +90,6 @@ LifeLink
 ├─ Frontend
 │  ├─ eslint.config.js
 │  ├─ index.html
-│  ├─ lint_output.txt
 │  ├─ package-lock.json
 │  ├─ package.json
 │  ├─ public
@@ -111,14 +109,18 @@ LifeLink
 │  │  │  │  ├─ AdminLayout.jsx
 │  │  │  │  └─ AdminPage.jsx
 │  │  │  ├─ donor
+│  │  │  │  ├─ DonationHistory.css
 │  │  │  │  ├─ DonationHistory.jsx
+│  │  │  │  ├─ DonationMap.jsx
 │  │  │  │  ├─ DonationStatus.css
 │  │  │  │  ├─ DonationStatus.jsx
 │  │  │  │  ├─ DonorDashboard.css
 │  │  │  │  ├─ DonorDashboard.jsx
 │  │  │  │  ├─ DonorHeader.jsx
 │  │  │  │  ├─ DonorProfile.jsx
-│  │  │  │  └─ EditProfileForm.jsx
+│  │  │  │  ├─ EditProfileForm.jsx
+│  │  │  │  ├─ UpcomingAppointments.css
+│  │  │  │  └─ UpcomingAppointments.jsx
 │  │  │  ├─ home
 │  │  │  │  ├─ HomePage.css
 │  │  │  │  └─ HomePage.jsx

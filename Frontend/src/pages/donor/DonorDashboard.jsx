@@ -5,9 +5,14 @@ import { DonorProfile } from "./DonorProfile";
 import { EditProfileForm } from "./EditProfileForm";
 import { DonationHistory } from "./DonationHistory";
 import { DonationStatus } from "./DonationStatus";
+import { UpcomingAppointments } from "./UpcomingAppointments";
+import DonationMap from "./DonationMap"; 
 import "./DonorDashboard.css";
 
 export function DonorDashboard() {
+    const [showMap, setShowMap] = useState(false);
+    const [appointments, setAppointments] = useState([]);
+
     const [donorInfo, setDonorInfo] = useState({
         full_name: "",
         blood_group: "",
@@ -17,36 +22,39 @@ export function DonorDashboard() {
         history: []
     });
 
-    const fetchRequests = async () => {
+const fetchDashboardData = async () => {
         try {
-            const response = await axios.get("/api/donor/profile", {
-                withCredentials: true
-            });
-            console.log("History Check:", response.data.history);
-            setDonorInfo(response.data);
+            const [profileRes, appointRes] = await Promise.all([
+                axios.get("/api/donor/profile", { withCredentials: true }),
+                axios.get("/api/donor/appointments", { withCredentials: true })
+            ]);
+            setDonorInfo(profileRes.data);
+            setAppointments(appointRes.data);
         } catch (error) {
-            if (error.response) {
-                alert(error.response.data.message || "Server error occured.");
-            } else if (error.request) {
-                alert("Server error occured.");
-            } else {
-                alert("Something went wrong");
-            }
+            console.error("Dashboard fetch error", error);
         }
     };
 
     useEffect(() => {
-        fetchRequests();
+        fetchDashboardData();
     }, []);
 
     const updateProfile = async (data) => {
         try {
-            await axios.put("/api/donor/profile", data, {
-                withCredentials: true
-            });
-            fetchRequests();
+            await axios.put("/api/donor/profile", data, { withCredentials: true });
+            fetchDashboardData();
         } catch (error) {
-            alert(error.response?.data?.message || "Something went wrong");
+            alert("Update failed");
+        }
+    };
+
+    const cancelAppointment = async (id) => {
+        if (!window.confirm("Cancel this appointment?")) return;
+        try {
+            await axios.delete(`/api/donor/appointments/${id}`, { withCredentials: true });
+            fetchDashboardData();
+        } catch (error) {
+            alert("Cancellation failed");
         }
     };
 
@@ -62,8 +70,32 @@ export function DonorDashboard() {
                 <div className="dashboard-grid">
                     <div className="left-column">
                         <DonationStatus
+                            status={donorInfo.status}
                             lastDonation={donorInfo.lastDonation} 
                             daysSince={donorInfo.daysSince}
+                            hasAppointment={appointments.length > 0}
+                            onFindCenter={() => setShowMap(true)}
+                        />
+
+                        {showMap && (
+                            <div className="map-container-wrapper">
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+                                    <h3>Select a Donation Center</h3>
+                                    <button 
+                                        onClick={() => setShowMap(false)} 
+                                        className="btn-cancel" 
+                                        style={{ padding: '5px 15px', width: 'auto' }}
+                                    >
+                                        ✕ Close Map
+                                    </button>
+                                </div>
+                                <DonationMap onBookingSuccess={fetchDashboardData} />
+                            </div>
+                        )}
+                        
+                        <UpcomingAppointments 
+                            appointments={appointments} 
+                            onCancel={cancelAppointment} 
                         />
                         <DonationHistory donorHistory={donorInfo.history} />
                     </div>

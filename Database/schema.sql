@@ -41,7 +41,7 @@ CREATE TABLE Blood_Inventory (
     bag_id SERIAL PRIMARY KEY,
     blood_group VARCHAR(5) NOT NULL,
     collection_date DATE NOT NULL DEFAULT CURRENT_DATE,
-    expiry_date DATE NOT NULL DEFAULT (CURRENT_DATE + INTERVAL '42 days'),
+    expiry_date DATE NOT NULL DEFAULT (CURRENT_DATE + 42),
     status VARCHAR(20) DEFAULT 'available' CHECK (status IN ('available', 'reserved', 'used', 'expired')),
     donor_id INT REFERENCES Donors(donor_id) ON DELETE SET NULL
 );
@@ -65,7 +65,29 @@ CREATE TABLE Request_Fulfillment (
     fulfillment_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE OR REPLACE VIEW eligible_donors AS
+-- 8. Donation Centers (For the Map)
+CREATE TABLE Donation_Centers (
+    center_id SERIAL PRIMARY KEY,
+    center_name VARCHAR(150) NOT NULL,
+    location_lat DECIMAL(9,6) NOT NULL, 
+    location_lng DECIMAL(9,6) NOT NULL, 
+    address TEXT,
+    contact_no VARCHAR(15),
+    operating_hours VARCHAR(100) DEFAULT '9:00 AM - 5:00 PM'
+);
+
+-- 9. Appointments
+CREATE TABLE Appointments (
+    appointment_id SERIAL PRIMARY KEY,
+    donor_id INT NOT NULL REFERENCES Donors(donor_id) ON DELETE CASCADE,
+    center_id INT NOT NULL REFERENCES Donation_Centers(center_id) ON DELETE CASCADE,
+    appointment_date DATE NOT NULL,
+    appointment_time TIME NOT NULL,
+    status VARCHAR(20) DEFAULT 'scheduled' CHECK (status IN ('scheduled', 'completed', 'cancelled')),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE OR  VIEW eligible_donors AS
 SELECT 
     donor_id, 
     full_name, 

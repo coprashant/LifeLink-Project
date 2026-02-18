@@ -1,10 +1,7 @@
 import dayjs from 'dayjs';
 import "./DonationStatus.css";
 
-export function DonationStatus({ lastDonation, daysSince }) {
-    
-    console.log("DEBUG - lastDonation:", lastDonation);
-    console.log("DEBUG - daysSince:", daysSince);
+export function DonationStatus({ lastDonation, daysSince , onFindCenter, hasAppointment }) {
 
     const isFirstTime = !lastDonation;
     const days = daysSince !== undefined ? parseInt(daysSince) : 0;
@@ -55,7 +52,14 @@ export function DonationStatus({ lastDonation, daysSince }) {
 
             {isEligible && (
                 <div className="status-action">
-                    <button className="btn-eligible">Find a Donation Center</button>
+                    <button 
+                        className="find-center-btn"
+                        disabled={hasAppointment}
+                        onClick={onFindCenter}
+                        title={hasAppointment ? "Cancel current appointment to book a new one" : ""}
+                    >
+                        {hasAppointment ? "Appointment Active" : "Find Donation Center"}
+                    </button>
                 </div>
             )}
         </div>

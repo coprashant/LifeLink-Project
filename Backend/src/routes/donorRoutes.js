@@ -9,6 +9,12 @@ router.use(protect(['donor']));
 router.get('/profile', donorController.getProfile);
 router.put('/profile', donorController.updateProfile);
 
+// Donation Centers & Appointments
+router.get('/centers', donorController.getDonationCenters);
+router.post('/appointments', donorController.bookAppointment);
+router.get('/appointments', donorController.getUpcomingAppointments); 
+router.delete('/appointments/:id', donorController.cancelAppointment); 
+
 // Eligibility Checker
 router.get('/eligibility', donorController.checkEligibility);
 

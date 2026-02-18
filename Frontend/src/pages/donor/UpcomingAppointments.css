@@ -1,0 +1,66 @@
+.appointments-section {
+    margin-bottom: 25px;
+}
+
+.appointments-section h2 {
+    color: #2d3748;
+    margin-bottom: 15px;
+}
+
+.no-appointments {
+    margin-bottom: 25px;
+    opacity: 0.7;
+}
+
+.appointments-grid {
+    display: grid;
+    gap: 15px;
+}
+
+.appointment-card {
+    border-left: 5px solid #3182ce;
+    background-color: #ebf8ff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.appointment-info h4 {
+    margin: 0;
+    color: #2b6cb0;
+}
+
+.appointment-info p {
+    margin: 5px 0;
+    font-size: 0.9rem;
+    color: #4a5568;
+}
+
+.status-badge {
+    font-size: 0.75rem;
+    background: #bee3f8;
+    padding: 2px 8px;
+    border-radius: 10px;
+    color: #2c5282;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.btn-cancel-appointment {
+    background: transparent;
+    color: #e53e3e;
+    border: 1px solid #e53e3e;
+    padding: 5px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: all 0.2s ease;
+}
+
+.btn-cancel-appointment:hover {
+    background: #fff5f5;
+    transform: translateY(-1px);
+}
