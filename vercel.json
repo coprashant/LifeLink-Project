@@ -17,7 +17,12 @@
       "destination": "Backend/src/app.js"
     },
     {
-      "source": "/((?!assets/|.*\\.).*)",
+      "source": "/(.*)",
+      "destination": "/Frontend/$1",
+      "continue": true
+    },
+    {
+      "source": "/((?!api|.*\\.).*)",
       "destination": "Frontend/index.html"
     }
   ]
