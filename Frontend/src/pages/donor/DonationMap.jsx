@@ -25,7 +25,7 @@ const redIcon = new L.Icon({
     shadowSize: [41, 41]
 });
 
-export default function DonationMap() {
+export default function DonationMap({onBookingSuccess}) {
     const [centers, setCenters] = useState([]);
     const [selectedCenter, setSelectedCenter] = useState(null);
     const [formData, setFormData] = useState({ date: '', time: '' });
@@ -55,9 +55,7 @@ export default function DonationMap() {
             });
             alert(`Success! Appointment booked at ${selectedCenter.center_name}`);
             setSelectedCenter(null);
-            if (onBookingSuccess) {
-            onBookingSuccess(); 
-        }
+            onBookingSuccess();
         } catch (err) {
             alert(err.message);
         }

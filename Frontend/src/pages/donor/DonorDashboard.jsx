@@ -89,7 +89,10 @@ const fetchDashboardData = async () => {
                                         ✕ Close Map
                                     </button>
                                 </div>
-                                <DonationMap onBookingSuccess={fetchDashboardData} />
+                                <DonationMap onBookingSuccess={() => {
+                                    fetchDashboardData(); 
+                                    setShowMap(false);    
+        }} />
                             </div>
                         )}
                         
