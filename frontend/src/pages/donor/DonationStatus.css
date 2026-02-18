@@ -1,43 +1,58 @@
+:root {
+    --eligible-green: #35983a;
+    --eligible-green-dark: #1b5e20;
+    --warning-orange: #dd6b20;
+    --warning-bg: #fffaf0;
+    --warning-border: #feebc8;
+    --warning-text: #744210;
+}
+
 .status-card {
     padding: 24px;
     border-radius: 12px;
     margin-bottom: 25px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     border: 1px solid transparent;
+    transition: all 0.3s ease;
 }
 
-/* Update these classes in donor_status.css */
+/* Eligible State */
 .eligible-bg {
-    background-color: #2e7d32 !important; /* Force the Green */
-    border-color: #1b5e20 !important;
-    color: #ffffff !important;           /* Force White text */
+    background-color: var(--eligible-green);
+    border-color: var(--eligible-green-dark);
+    color: #ffffff;
 }
 
-/* This ensures all text inside the card turns white */
-.eligible-bg h3, 
-.eligible-bg p, 
-.eligible-bg .status-body p, 
-.eligible-bg span {
-    color: #ffffff !important;
+.eligible-bg .status-header h3, 
+.eligible-bg .status-body p {
+    color: #ffffff;
 }
 
 .eligible-bg .status-icon {
-    background: rgba(255, 255, 255, 0.2) !important; 
-    border: 2px solid #ffffff !important;
-    color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid #ffffff;
+    color: #ffffff;
 }
 
+/* Not Eligible State */
 .not-eligible-bg {
-    background-color: #fffaf0;
-    border-color: #feebc8;
-    color: #744210;
+    background-color: var(--warning-bg);
+    border-color: var(--warning-border);
+    color: var(--warning-text);
 }
 
+.not-eligible-bg .status-icon {
+    background: #ffffff;
+    border: 2px solid var(--warning-orange);
+    color: var(--warning-orange);
+}
+
+/* Layout Elements */
 .status-header {
     display: flex;
     align-items: center;
     gap: 12px;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
 }
 
 .status-header h3 {
@@ -47,37 +62,39 @@
 }
 
 .status-icon {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 35px;
+    min-width: 35px;
     height: 35px;
     border-radius: 50%;
-    background: white;
+    font-weight: bold;
 }
-
-.icon-check { color: #38a169; border: 2px solid #38a169; }
-.icon-wait { color: #dd6b20; border: 2px solid #dd6b20; }
 
 .status-body p {
     font-size: 1.05rem;
-    line-height: 1.5;
+    line-height: 1.6;
     margin: 0;
 }
 
+/* Action Button */
+.status-action {
+    margin-top: 18px;
+}
+
 .btn-eligible {
-    margin-top: 15px;
-    background-color: #38a169;
-    color: white;
+    background-color: #ffffff;
+    color: var(--eligible-green);
     border: none;
-    padding: 10px 20px;
+    padding: 10px 24px;
     border-radius: 6px;
-    font-weight: bold;
+    font-weight: 700;
     cursor: pointer;
-    transition: background 0.3s;
+    transition: transform 0.2s, background 0.3s;
 }
 
 .btn-eligible:hover {
-    background-color: #2f855a;
+    background-color: #f0f0f0;
+    transform: translateY(-2px);
 }

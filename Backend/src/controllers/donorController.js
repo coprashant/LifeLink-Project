@@ -1,33 +1,30 @@
 const db = require('../config/db');
 
-// Updated getprofile to include donation history
 exports.getProfile = async (req, res) => {
     try {
         const donorId = req.session.donorId;
         if (!donorId) return res.status(401).json({ message: 'Donor ID not found in session' });
 
-        // Fetch Donor Details + Calculate Eligibility status
         const result = await db.query(
             `SELECT *, 
                 CASE 
                     WHEN last_donation_date IS NULL THEN 'Eligible'
                     WHEN (CURRENT_DATE - last_donation_date) >= 90 THEN 'Eligible'
                     ELSE 'Not Eligible'
-                END as status,
+                END as calculated_status,
                 CASE 
                     WHEN last_donation_date IS NOT NULL THEN (CURRENT_DATE - last_donation_date)
-                    ELSE NULL
-                END as days_since_last
+                    ELSE 0
+                END as days_diff
              FROM Donors 
              WHERE donor_id = $1`, 
             [donorId]
         );
+        
         if (result.rows.length === 0) return res.status(404).json({ message: 'Donor profile not found' });
 
-        // Edit started from here 
         const donor = result.rows[0];
 
-        // 2. Fetch donation history (assuming a table named Blood_Donations)
         const historyResult = await db.query(
             `SELECT 
                 history_id as donation_id, 
@@ -40,20 +37,16 @@ exports.getProfile = async (req, res) => {
             [donorId]
         );
 
-        //checking the data
-        console.log("Donor ID:", donorId);
-        console.log("History Result:", historyResult.rows);
-
-        // Combine data
         res.json({
             full_name: donor.full_name,
             blood_group: donor.blood_group,
             contact_no: donor.contact_no,
             address: donor.address,
             lastDonation: donor.last_donation_date,
+            status: donor.calculated_status, 
+            daysSince: parseInt(donor.days_diff),
             history: historyResult.rows
         });
-        // res.json(result.rows[0]);
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: 'Server Error' });

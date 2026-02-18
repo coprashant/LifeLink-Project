@@ -9,9 +9,11 @@ import "./DonorDashboard.css";
 
 export function DonorDashboard() {
     const [donorInfo, setDonorInfo] = useState({
-        name: "",
-        bloodGroup: "",
-        lastDonation: "",
+        full_name: "",
+        blood_group: "",
+        lastDonation: null,
+        status: "",
+        daysSince: 0,
         history: []
     });
 
@@ -48,6 +50,10 @@ export function DonorDashboard() {
         }
     };
 
+    if (!donorInfo.full_name) {
+        return <div className="loading">Loading Dashboard...</div>;
+    }
+
     return (
         <div className="donor-dashboard-wrapper">
             <div className="container">
@@ -56,8 +62,7 @@ export function DonorDashboard() {
                 <div className="dashboard-grid">
                     <div className="left-column">
                         <DonationStatus
-                            lastdonation={donorInfo.lastDonation}
-                            status={donorInfo.status}
+                            lastDonation={donorInfo.lastDonation} 
                             daysSince={donorInfo.daysSince}
                         />
                         <DonationHistory donorHistory={donorInfo.history} />
