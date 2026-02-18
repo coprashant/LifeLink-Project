@@ -10,7 +10,6 @@ const hospitalRoutes = require('./routes/hospitalRoutes');
 const donorRoutes = require('./routes/donorRoutes');
 
 const app = express();
-
 const isProduction = process.env.NODE_ENV === 'production';
 
 app.use(cors({
@@ -41,10 +40,11 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/hospital', hospitalRoutes);
 app.use('/api/donor', donorRoutes);
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-    const host = isProduction ? 'Cloud Environment' : `http://localhost:${PORT}`;
-    console.log(`Server running in ${isProduction ? 'production' : 'development'} mode on ${host}`);
-});
+if (process.env.NODE_ENV !== 'production') {
+    const PORT = process.env.PORT || 5000;
+    app.listen(PORT, () => {
+        console.log(`Server running on http://localhost:${PORT}`);
+    });
+}
 
 module.exports = app;
