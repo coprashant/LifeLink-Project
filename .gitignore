@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+
+# Environment variables
+.env
+.env.local
+
+# Build outputs
+dist/
+dist-ssr/
+tmp/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+
+# OS/Editor metadata
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Specific artifacts
+Frontend/lint_output.txt
