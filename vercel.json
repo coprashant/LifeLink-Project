@@ -17,13 +17,12 @@
       "destination": "Backend/src/app.js"
     },
     {
-      "source": "/(.*)",
-      "destination": "/Frontend/$1",
-      "continue": true
+      "source": "/((?!api|.*\\.).*)",
+      "destination": "/Frontend/dist/index.html"
     },
     {
       "source": "/(.*)",
-      "destination": "/Frontend/index.html"
+      "destination": "/Frontend/dist/$1"
     }
   ]
 }
