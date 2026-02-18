@@ -20,11 +20,14 @@ function App() {
     const checkUser = async () => {
       try {
         const data = await apiFetch('/auth/me');
-        if (data.loggedIn) {
+        if (data && data.loggedIn) {
           setUser(data.user);
+        }else {
+          setUser(null); 
         }
       } catch (err) {
         console.log("No active session found.");
+        setUser(null);
       } finally {
         setLoading(false);
       }

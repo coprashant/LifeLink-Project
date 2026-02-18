@@ -21,15 +21,18 @@ app.use(cors({
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+app.set('trust proxy', 1);
 app.use(session({
     secret: process.env.SESSION_SECRET || 'thapathali_campus_key',
-    resave: false,
-    saveUninitialized: false,
-    proxy: isProduction, 
+    resave: true,
+    saveUninitialized: true,
+    rolling: true,
+    proxy: true,
     cookie: {
-        secure: isProduction, 
+        secure: true, 
         httpOnly: true,       
-        sameSite: isProduction ? 'none' : 'lax' 
+        sameSite:'none',
+        maxAge: 24 * 60 * 60 * 1000
     }
 }));
 
