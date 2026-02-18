@@ -17,7 +17,7 @@
       "destination": "Backend/src/app.js"
     },
     {
-      "source": "/(.*)",
+      "source": "/((?!assets/|.*\\.).*)",
       "destination": "Frontend/index.html"
     }
   ]
