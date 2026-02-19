@@ -45,6 +45,19 @@ export function AdminPage({ mode }) {
         return "📅 Appointment Schedule";
     };
 
+    const getInventorySummary = () => {
+        if (mode !== "inventory") return null;
+        const counts = data.reduce((acc, item) => {
+            if (item.status === 'available') {
+                acc[item.blood_group] = (acc[item.blood_group] || 0) + 1;
+            }
+            return acc;
+        }, {});
+        return counts;
+    };
+
+    const inventorySummary = getInventorySummary();
+
     return (
         <div className="admin-view-container">
             <header className="content-header">
@@ -57,12 +70,27 @@ export function AdminPage({ mode }) {
                 </button>
             </header>
 
+            {mode === "inventory" && inventorySummary && (
+                <div className="summary-cards" style={{ display: 'flex', gap: '10px', marginBottom: '20px', flexWrap: 'wrap' }}>
+                    {Object.entries(inventorySummary).map(([group, count]) => (
+                        <div key={group} className="summary-card" style={{ padding: '10px 15px', background: '#fff', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.05)', borderLeft: '4px solid #e63946' }}>
+                            <span style={{ fontWeight: 'bold' }}>{group}:</span> {count} units
+                        </div>
+                    ))}
+                </div>
+            )}
+
             {showAddForm && (
                 <section className="table-container" style={{ padding: '20px', marginBottom: '20px' }}>
                     <form className="inline-add-form" onSubmit={async (e) => {
                         e.preventDefault();
                         const formData = new FormData(e.target);
                         const payload = Object.fromEntries(formData);
+                        
+                        if (mode === "inventory" && payload.units) {
+                            payload.units = parseInt(payload.units);
+                        }
+
                         try {
                             const endpoint = mode === "inventory" ? '/admin/inventory' : '/admin/donors';
                             await apiFetch(endpoint, { method: 'POST', body: JSON.stringify(payload) });
@@ -77,10 +105,10 @@ export function AdminPage({ mode }) {
                                     <select className="auth-input" name="blood_group" required>
                                         {['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'].map(bg => <option key={bg} value={bg}>{bg}</option>)}
                                     </select>
+                                    <input className="auth-input" name="units" type="number" min="1" placeholder="Units" required />
                                 </>
                             ) : (
                                 <>
-                                    {/* Inputs use name attributes that match your schema expectations */}
                                     <input className="auth-input" name="full_name" placeholder="Full Name" required />
                                     <select className="auth-input" name="blood_group" required>
                                         {['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'].map(bg => <option key={bg} value={bg}>{bg}</option>)}
@@ -117,7 +145,7 @@ export function AdminPage({ mode }) {
                         )}
                     </thead>
                     <tbody>
-                        {data.map((item) => (
+                        {!loading && data.map((item) => (
                             <tr key={item.bag_id || item.donor_id || item.appointment_id}>
                                 {mode === "inventory" ? (
                                     <>
@@ -136,7 +164,6 @@ export function AdminPage({ mode }) {
                                 ) : mode === "donors" ? (
                                     <>
                                         <td>#{item.donor_id}</td>
-                                        {/* Updated to match your Donors table: full_name and contact_no */}
                                         <td><strong>{item.full_name}</strong></td>
                                         <td><span className="blood-badge">{item.blood_group}</span></td>
                                         <td>{item.contact_no}</td>
@@ -169,6 +196,7 @@ export function AdminPage({ mode }) {
                         ))}
                     </tbody>
                 </table>
+                {loading && <p style={{ padding: '20px', textAlign: 'center' }}>Loading {mode}...</p>}
             </div>
         </div>
     );

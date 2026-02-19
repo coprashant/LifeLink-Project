@@ -29,7 +29,7 @@ export function AdminDashboard() {
             });
             fetchRequests();
         } catch (err) {
-            alert("Failed to update status: " + err.message);
+            alert("Action Denied: " + err.message);
         }
     };
 

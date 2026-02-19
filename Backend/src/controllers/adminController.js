@@ -118,14 +118,22 @@ exports.getInventoryById = async (req, res) => {
 
 exports.addBloodBag = async (req, res) => {
     try {
-        const { blood_group, donor_id } = req.body;
+        const { blood_group, donor_id, units } = req.body;
+        const numUnits = parseInt(units) || 1;
+        const bags = [];
+
+        for (let i = 0; i < numUnits; i++) {
+            const result = await db.query(
+                'INSERT INTO Blood_Inventory (blood_group, donor_id) VALUES ($1, $2) RETURNING *',
+                [blood_group, donor_id]
+            );
+            bags.push(result.rows[0]);
+        }
         
-        const result = await db.query(
-            'INSERT INTO Blood_Inventory (blood_group, donor_id) VALUES ($1, $2) RETURNING *',
-            [blood_group, donor_id]
-        );
-        
-        res.status(201).json(result.rows[0]);
+        res.status(201).json({
+            message: `${numUnits} bags added successfully`,
+            data: bags
+        });
     } catch (err) {
         console.error(err);
         res.status(500).json({message: 'Server Error'});
@@ -283,23 +291,59 @@ exports.allocateBloodToRequest = async (req, res) => {
 };
 
 exports.updateRequestStatus = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const { status } = req.body;
-        
+    const { id } = req.params;
+    const { status } = req.body;
+
+    if (status !== 'fulfilled') {
         const result = await db.query(
             'UPDATE Blood_Requests SET status = $1 WHERE request_id = $2 RETURNING *',
             [status, id]
         );
-        
-        if (result.rows.length === 0) {
-            return res.status(404).json({message: 'Request not found'});
+        return res.json(result.rows[0]);
+    }
+
+    const client = await db.pool.connect();
+    try {
+        await client.query('BEGIN');
+
+        const reqCheck = await client.query(
+            'SELECT blood_group_needed, units_requested FROM Blood_Requests WHERE request_id = $1',
+            [id]
+        );
+        const { blood_group_needed, units_requested } = reqCheck.rows[0];
+
+        const invCheck = await client.query(
+            'SELECT COUNT(*) FROM Blood_Inventory WHERE blood_group = $1 AND status = $2',
+            [blood_group_needed, 'available']
+        );
+
+        if (parseInt(invCheck.rows[0].count) < units_requested) {
+            throw new Error(`Insufficient inventory! Only ${invCheck.rows[0].count} units of ${blood_group_needed} available.`);
         }
-        
-        res.json(result.rows[0]);
+
+        await client.query(`
+            UPDATE Blood_Inventory 
+            SET status = 'used' 
+            WHERE bag_id IN (
+                SELECT bag_id FROM Blood_Inventory 
+                WHERE blood_group = $1 AND status = 'available' 
+                LIMIT $2
+            )`, 
+            [blood_group_needed, units_requested]
+        );
+
+        const finalReq = await client.query(
+            'UPDATE Blood_Requests SET status = $1 WHERE request_id = $2 RETURNING *',
+            ['fulfilled', id]
+        );
+
+        await client.query('COMMIT');
+        res.json(finalReq.rows[0]);
     } catch (err) {
-        console.error(err);
-        res.status(500).json({message: 'Server Error' });
+        await client.query('ROLLBACK');
+        res.status(400).json({ message: err.message });
+    } finally {
+        client.release();
     }
 };
 
