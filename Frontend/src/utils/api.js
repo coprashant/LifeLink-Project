@@ -18,7 +18,7 @@ export const apiFetch = async (endpoint, options = {}) => {
         const response = await fetch(url, defaultOptions);
 
         // Handle 401 Unauthorized globally
-        if (response.status === 401 && !url.includes('/login')) {
+        if (response.status === 401 && !url.includes('/login') && !url.includes('/me')) {
             console.warn("Session expired or unauthorized");
         }
 

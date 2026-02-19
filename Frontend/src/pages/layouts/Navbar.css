@@ -2,7 +2,7 @@
 :root {
     --admin-red: #c41e3a;
     --admin-red-hover: #a31830;
-    --bg-main: #f4f7f9;        /* Soft tinted background */
+    --bg-main: #f4f7f9;
     --bg-card: #ffffff;
     --text-main: #1e293b;
     --text-muted: #64748b;
@@ -23,11 +23,7 @@ body {
     overflow-x: hidden;
 }
 
-/* 2. Layout */
-.admin-page-structure { display: flex; flex-direction: column; height: 100vh; }
-.admin-body-wrapper { display: flex; flex: 1; overflow: hidden; }
-
-/* 3. Navbar Redesign */
+/* 2. Navbar Structure */
 .main-navbar {
     background: var(--bg-card);
     border-bottom: 1px solid var(--border-color);
@@ -47,6 +43,7 @@ body {
     width: 100%;
     padding: 0 40px;
     gap: 20px;
+    position: relative;
 }
 
 .nav-logo {
@@ -54,18 +51,21 @@ body {
     font-weight: 800;
     color: var(--admin-red);
     text-decoration: none;
-    flex: 0 0 auto; /* Takes only necessary space */
     letter-spacing: -0.5px;
+    white-space: nowrap;
+    z-index: 11;
 }
 
+/* 3. Search Bar Logic */
 .nav-search {
-    flex: 0 1 450px; /* Centered flexibly */
     display: flex;
+    align-items: center;
     background: #f8fafc;
     border: 1.5px solid #f1f5f9;
     border-radius: 12px;
     padding: 2px 15px;
     transition: var(--transition);
+    flex: 0 1 450px;
 }
 
 .nav-search:focus-within {
@@ -75,20 +75,34 @@ body {
 }
 
 .nav-search input {
-    background: transparent; border: none; outline: none;
-    padding: 10px; width: 100%; font-size: 0.95rem;
+    background: transparent;
+    border: none;
+    outline: none;
+    padding: 10px;
+    width: 100%;
+    font-size: 0.95rem;
 }
 
-.search-icon-btn { background: none; border: none; cursor: pointer; opacity: 0.5; }
+.search-submit-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    opacity: 0.5;
+    display: flex;
+    align-items: center;
+}
 
+.mobile-close-btn, .mobile-search-trigger {
+    display: none;
+}
+
+/* 4. Navigation Links & Buttons */
 .nav-links {
     display: flex;
     align-items: center;
     gap: 20px;
-    flex: 0 0 auto; /* Takes only necessary space */
 }
 
-/* 4. Beautiful Buttons */
 .btn-link {
     text-decoration: none;
     color: var(--text-main);
@@ -116,7 +130,6 @@ body {
 .btn-danger-sm:hover {
     background: var(--admin-red-hover);
     transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(196, 30, 58, 0.3);
 }
 
 .btn-outline-sm {
@@ -127,17 +140,9 @@ body {
     border: 1.5px solid var(--border-color);
     font-weight: 600;
     font-size: 0.9rem;
-    cursor: pointer;
     transition: var(--transition);
 }
 
-.btn-outline-sm:hover {
-    border-color: var(--admin-red);
-    color: var(--admin-red);
-    background: #fff1f2;
-}
-
-/* 5. User Badge */
 .user-welcome {
     background: #f1f5f9;
     color: #475569;
@@ -146,38 +151,76 @@ body {
     font-size: 0.75rem;
     font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-    border: 1px solid var(--border-color);
 }
 
-/* 6. Sidebar & Content Fixes */
-.sidebar {
-    width: var(--sidebar-width);
-    background: white;
-    border-right: 1px solid var(--border-color);
-    padding: 24px 12px;
-}
+/* 5. Mobile Responsive (The choice you liked) */
+@media (max-width: 768px) {
+    .nav-content {
+        padding: 0 15px;
+    }
 
-.nav-link {
-    display: flex;
-    align-items: center;
-    padding: 12px 16px;
-    border-radius: 10px;
-    color: var(--text-muted);
-    font-weight: 500;
-    transition: var(--transition);
-}
+    .nav-logo {
+        font-size: 1.2rem;
+    }
 
-.nav-link.active {
-    background: #fff1f2;
-    color: var(--admin-red);
-    font-weight: 600;
-}
+    /* Hide the standard search bar until triggered */
+    .nav-search {
+        display: none;
+        position: absolute;
+        right: 15px;
+        left: 130px;
+        flex: none;
+        z-index: 12;
+        background: white;
+        border: 1.5px solid var(--admin-red);
+    }
 
-.content { padding: 40px; overflow-y: auto; }
-.table-container {
-    background: white;
-    border-radius: 20px;
-    border: 1px solid var(--border-color);
-    box-shadow: var(--shadow-md);
+    /* Shown when isSearchOpen is true */
+    .nav-search.active {
+        display: flex;
+        animation: expandIn 0.2s ease;
+    }
+
+    .mobile-search-trigger {
+        display: block;
+        background: none;
+        border: none;
+        color: var(--text-main);
+        cursor: pointer;
+    }
+
+    .mobile-close-btn {
+        display: block;
+        background: none;
+        border: none;
+        color: var(--text-muted);
+        cursor: pointer;
+    }
+
+    .search-submit-btn {
+        display: none; 
+    }
+
+    /* Hide buttons when search covers them */
+    .nav-links.search-active {
+        display: none;
+    }
+
+    .nav-links {
+        gap: 12px;
+    }
+
+    .btn-danger-sm, .btn-outline-sm {
+        padding: 8px 14px;
+        font-size: 0.8rem;
+    }
+
+    .user-welcome {
+        display: none;
+    }
+
+    @keyframes expandIn {
+        from { opacity: 0; transform: translateX(10px); }
+        to { opacity: 1; transform: translateX(0); }
+    }
 }

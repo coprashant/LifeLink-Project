@@ -23,14 +23,14 @@ app.use(express.json());
 app.set('trust proxy', 1);
 app.use(session({
     secret: process.env.SESSION_SECRET || 'thapathali_campus_key',
-    resave: true,
-    saveUninitialized: true,
+    resave: false,
+    saveUninitialized: false,
     rolling: true,
     proxy: true,
     cookie: {
-        secure: true, 
+        secure: isProduction, 
         httpOnly: true,       
-        sameSite:'none',
+        sameSite: isProduction ? 'none' : 'lax',
         maxAge: 24 * 60 * 60 * 1000
     }
 }));

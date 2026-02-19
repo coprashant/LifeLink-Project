@@ -1,11 +1,21 @@
-/* Ensure the content starts below the 70px Navbar */
-.main-content {
-    padding-top: 30px; 
-    min-height: calc(100vh - 70px);
-    background-color: #f8f9fa; /* Light grey background for dashboards */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-/* Base button styles to keep things consistent */
+.main-content {
+    padding-top: 0; 
+    min-height: calc(100vh - 70px);
+    background-color: #f8f9fa; 
+    margin: 0;
+}
+
+body, html {
+    width: 100%;
+    overflow-x: hidden;
+}
+
 .btn-primary-red {
     background-color: #c41e3a;
     color: white;
