@@ -348,3 +348,80 @@ exports.getDonationHistory = async (req, res) => {
         res.status(500).json({message: 'Server Error'});
     }
 };
+
+
+exports.getAllAppointments = async (req, res) => {
+    try {
+        const result = await db.query(`
+            SELECT 
+                a.appointment_id, 
+                d.full_name AS donor_name, 
+                a.appointment_date, 
+                a.appointment_time, 
+                a.status,
+                dc.center_name
+            FROM Appointments a
+            JOIN Donors d ON a.donor_id = d.donor_id
+            JOIN Donation_Centers dc ON a.center_id = dc.center_id
+            ORDER BY a.appointment_date DESC
+        `);
+        res.json({ message: 'Appointments retrieved successfully', data: result.rows });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Server Error' });
+    }
+};
+
+exports.getAppointmentById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const result = await db.query('SELECT * FROM Appointments WHERE appointment_id = $1', [id]);
+        if (result.rows.length === 0) return res.status(404).json({ message: 'Appointment not found' });
+        res.json(result.rows[0]);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Server Error' });
+    }
+};
+
+exports.createAppointment = async (req, res) => {
+    try {
+        const { donor_id, center_id, appointment_date, appointment_time } = req.body;
+        const result = await db.query(
+            'INSERT INTO Appointments (donor_id, center_id, appointment_date, appointment_time) VALUES ($1, $2, $3, $4) RETURNING *',
+            [donor_id, center_id, appointment_date, appointment_time]
+        );
+        res.status(201).json({ message: 'Appointment created successfully', data: result.rows[0] });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Server Error' });
+    }
+};
+
+exports.updateAppointment = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { status } = req.body; // status: 'scheduled', 'completed', or 'cancelled'
+        const result = await db.query(
+            'UPDATE Appointments SET status = $1 WHERE appointment_id = $2 RETURNING *',
+            [status, id]
+        );
+        if (result.rows.length === 0) return res.status(404).json({ message: 'Appointment not found' });
+        res.json({ message: 'Appointment updated successfully', data: result.rows[0] });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Server Error' });
+    }
+};
+
+exports.deleteAppointment = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const result = await db.query('DELETE FROM Appointments WHERE appointment_id = $1 RETURNING *', [id]);
+        if (result.rows.length === 0) return res.status(404).json({ message: 'Appointment not found' });
+        res.json({ message: 'Appointment deleted successfully' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Server Error' });
+    }
+};

@@ -43,18 +43,18 @@ function App() {
         <Route path="login" element={<LoginPage setUser={setUser} />} />
         <Route path="register" element={<RegisterPage />} />
         {/* <Route path="donor" element={<DonorPage />} /> */}
-        {/* Add donor-dashboard here if you want it to have the top Navbar */}
         <Route path="donor/dashboard" element={<DonorDashboard user={user} />} />
         <Route path="hospital/dashboard" element={<HospitalDashboard user={user} />} />
       </Route>
 
-      {/* Admin Pages (Keep separate because of Sidebar) */}
+      {/* Admin Pages*/}
 
       <Route path="admin" element={<AdminLayout user={user} setUser={setUser} />}>
         <Route index element={<Navigate to="dashboard" replace />} />
         <Route path="dashboard" element={<AdminDashboard user={user} />} />
         <Route path="inventory" element={<AdminPage mode="inventory" />} />
         <Route path="donors" element={<AdminPage mode="donors" />} />
+        <Route path="appointments" element={<AdminPage mode="appointments" />} />
       </Route>
     </Routes>
 

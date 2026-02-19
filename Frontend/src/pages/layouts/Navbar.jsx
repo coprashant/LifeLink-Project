@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, X } from 'lucide-react';
+import { Search, X, LayoutDashboard } from 'lucide-react';
 import { handleLogout } from '../../utils/api';
 import './Navbar.css';
 
@@ -15,12 +15,17 @@ export function Navbar({ user, setUser }) {
         setIsSearchOpen(false);
     };
 
+    const getDashboardPath = () => {
+        if (user?.role === 'admin') return '/admin/dashboard';
+        if (user?.role === 'hospital') return '/hospital/dashboard';
+        return '/'; 
+    };
+
     return (
         <nav className="main-navbar">
     <div className="nav-content">
         <Link to="/" className="nav-logo">🩸 LifeLink</Link>
 
-        {/* This form is the key—it stays in flex flow on desktop */}
         <form className={`nav-search ${isSearchOpen ? 'active' : ''}`} onSubmit={handleSearch}>
             <input
                 type="text"
@@ -43,6 +48,10 @@ export function Navbar({ user, setUser }) {
             
             {user ? (
                 <>
+                    <Link to={getDashboardPath()} className="btn-dashboard-link">
+                            <LayoutDashboard size={18} />
+                            <span>Dashboard</span>
+                    </Link>
                     <span className="user-welcome">{(user?.name || "User").split(' ')[0]}</span>
                     <button className="btn-outline-sm" onClick={() => handleLogout(setUser, navigate)}>Logout</button>
                 </>

@@ -9,7 +9,8 @@ export function AdminPage({ mode }) {
     const fetchData = async () => {
         setLoading(true);
         try {
-            const result = await apiFetch(mode === "inventory" ? '/admin/inventory' : '/admin/donors');
+            const endpoint = `/admin/${mode}`;
+            const result = await apiFetch(endpoint);
             setData(Array.isArray(result.data) ? result.data : result);
         } catch (err) {
             console.error(`Failed to fetch ${mode}`, err);
@@ -29,7 +30,7 @@ export function AdminPage({ mode }) {
         if (!window.confirm(confirmMsg)) return;
 
         try {
-            const endpoint = mode === "inventory" ? `/admin/inventory/${id}` : `/admin/donors/${id}`;
+            const endpoint = `/admin/${mode}/${id}`;
             await apiFetch(endpoint, { 
                 method, 
                 ...(body && { body: JSON.stringify(body) }) 
@@ -38,11 +39,17 @@ export function AdminPage({ mode }) {
         } catch (err) { alert(err.message); }
     };
 
+    const getTitle = () => {
+        if (mode === "inventory") return "📦 Blood Inventory";
+        if (mode === "donors") return "👥 Donor Management";
+        return "📅 Appointment Schedule";
+    };
+
     return (
         <div className="admin-view-container">
             <header className="content-header">
                 <div>
-                    <h2>{mode === "inventory" ? "📦 Blood Inventory" : "👥 Donor Management"}</h2>
+                    <h2>{getTitle()}</h2>
                     <p className="text-muted">Manage your {mode} records</p>
                 </div>
                 <button className="btn-primary-red" onClick={() => setShowAddForm(!showAddForm)}>
@@ -97,7 +104,7 @@ export function AdminPage({ mode }) {
                                 <th>Status</th>
                                 <th>Actions</th>
                             </tr>
-                        ) : (
+                        ) : mode === "donors" ?(
                             <tr>
                                 <th>Donor ID</th>
                                 <th>Name</th>
@@ -105,11 +112,13 @@ export function AdminPage({ mode }) {
                                 <th>Contact</th>
                                 <th>Actions</th>
                             </tr>
+                        ) : (
+                            <tr><th>Appointment ID</th><th>Donor</th><th>Date</th><th>Time</th><th>Status</th><th>Actions</th></tr>
                         )}
                     </thead>
                     <tbody>
                         {data.map((item) => (
-                            <tr key={mode === "inventory" ? item.bag_id : item.donor_id}>
+                            <tr key={item.bag_id || item.donor_id || item.appointment_id}>
                                 {mode === "inventory" ? (
                                     <>
                                         <td>#{item.bag_id}</td>
@@ -124,7 +133,7 @@ export function AdminPage({ mode }) {
                                             </div>
                                         </td>
                                     </>
-                                ) : (
+                                ) : mode === "donors" ? (
                                     <>
                                         <td>#{item.donor_id}</td>
                                         {/* Updated to match your Donors table: full_name and contact_no */}
@@ -133,6 +142,26 @@ export function AdminPage({ mode }) {
                                         <td>{item.contact_no}</td>
                                         <td>
                                             <button onClick={() => handleAction(item.donor_id, 'DELETE')} className="action-btn-mini trash">🗑</button>
+                                        </td>
+                                    </>
+                                    ) : (
+                                    <>
+                                        <td>#{item.appointment_id}</td>
+                                        <td>{item.donor_name}</td>
+                                        <td>{new Date(item.appointment_date).toLocaleDateString()}</td>
+                                        <td>{item.appointment_time}</td>
+                                        <td>
+                                            <span className={`status-pill ${item.status?.toLowerCase()}`}>
+                                                {item.status}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <div style={{ display: 'flex', gap: '8px' }}>
+                                                {item.status === 'scheduled' && (
+                                                    <button onClick={() => handleAction(item.appointment_id, 'PUT', { status: 'completed' })} className="action-btn-mini dispatch">Confirm</button>
+                                                )}
+                                                <button onClick={() => handleAction(item.appointment_id, 'DELETE')} className="action-btn-mini trash">🗑</button>
+                                            </div>
                                         </td>
                                     </>
                                 )}

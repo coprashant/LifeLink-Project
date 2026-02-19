@@ -52,6 +52,6 @@ export const handleLogout = async (setUser, navigate) => {
         console.error("Logout request failed, cleaning up local state anyway", err);
     } finally {
         setUser(null); 
-        navigate('/login'); 
+        navigate('/'); 
     }
 };

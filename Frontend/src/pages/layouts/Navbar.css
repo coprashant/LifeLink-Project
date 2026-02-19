@@ -143,6 +143,24 @@ body {
     transition: var(--transition);
 }
 
+.btn-dashboard-link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #4a5568;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+    padding: 6px 12px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.btn-dashboard-link:hover {
+    background-color: #edf2f7;
+    color: #e53e3e; 
+}
+
 .user-welcome {
     background: #f1f5f9;
     color: #475569;
@@ -222,5 +240,11 @@ body {
     @keyframes expandIn {
         from { opacity: 0; transform: translateX(10px); }
         to { opacity: 1; transform: translateX(0); }
+    }
+}
+
+@media (max-width: 480px) {
+    .btn-dashboard-link span {
+        display: none;
     }
 }

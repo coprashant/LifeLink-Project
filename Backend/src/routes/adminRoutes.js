@@ -31,4 +31,12 @@ router.put('/requests/:id/status', adminController.updateRequestStatus);
 router.post('/donations', adminController.recordDonation);
 router.get('/donations/:donorId', adminController.getDonationHistory);
 
+
+//Appointment Management
+router.get('/appointments', adminController.getAllAppointments);
+router.get('/appointments/:id', adminController.getAppointmentById);
+router.post('/appointments', adminController.createAppointment);
+router.put('/appointments/:id', adminController.updateAppointment);
+router.delete('/appointments/:id', adminController.deleteAppointment);
+
 module.exports = router;

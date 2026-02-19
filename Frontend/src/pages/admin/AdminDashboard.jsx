@@ -1,16 +1,16 @@
 import { useState, useEffect } from "react";
 import { apiFetch } from "../../utils/api";
-import { useNavigate } from 'react-router-dom';
+import { useOutletContext } from "react-router-dom";
+import dayjs from "dayjs";
 import "./AdminDashboard.css";
 
 export function AdminDashboard() {
     const [requests, setRequests] = useState([]);
-    const navigate = useNavigate();
+    const { filterUrgency, filterStatus, searchTerm } = useOutletContext();
 
     const fetchRequests = async () => {
         try {
             const reqData = await apiFetch('/admin/requests');
-            // Controller returns result.rows directly
             setRequests(Array.isArray(reqData) ? reqData : []);
         } catch (err) {
             console.error("Failed to fetch requests", err);
@@ -27,11 +27,24 @@ export function AdminDashboard() {
                 method: 'PUT',
                 body: JSON.stringify({ status: newStatus })
             });
-            fetchRequests(); // Refresh list
+            fetchRequests();
         } catch (err) {
             alert("Failed to update status: " + err.message);
         }
     };
+
+    const filteredRequests = requests
+        .filter(req => {
+            const matchesUrgency = filterUrgency === "All" || req.urgency === filterUrgency;
+            const matchesStatus = filterStatus === "All" || req.status === filterStatus;
+            const matchesSearch = req.hospital_name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                                req.blood_group_needed.toLowerCase().includes(searchTerm.toLowerCase());
+            return matchesUrgency && matchesStatus && matchesSearch;
+        })
+        .sort((a, b) => {
+            const priority = { 'Critical': 3, 'Urgent': 2, 'Normal': 1 };
+            return priority[b.urgency] - priority[a.urgency];
+        });
 
     return (
         <>
@@ -50,18 +63,26 @@ export function AdminDashboard() {
                             <th>Hospital</th>
                             <th>Blood Group</th>
                             <th>Units</th>
+                            <th>Urgency</th>
+                            <th>Date</th>
                             <th>Status</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {requests.length > 0 ? (
-                            requests.map((req) => (
+                        {filteredRequests.length > 0 ? (
+                            filteredRequests.map((req) => (
                                 <tr key={req.request_id}>
                                     <td>#{req.request_id}</td>
                                     <td>{req.hospital_name}</td>
                                     <td><strong>{req.blood_group_needed}</strong></td>
                                     <td>{req.units_requested}</td>
+                                    <td>
+                                        <span className={`urgency-tag ${req.urgency?.toLowerCase()}`}>
+                                            {req.urgency}
+                                        </span>
+                                    </td>
+                                    <td>{dayjs(req.request_date).format("DD MMM HH:mm")}</td>
                                     <td>
                                         <span className={`status-tag ${req.status?.toLowerCase()}`}>
                                             {req.status}
@@ -70,14 +91,8 @@ export function AdminDashboard() {
                                     <td className="table-actions">
                                         {req.status === 'pending' && (
                                             <>
-                                                <button 
-                                                    onClick={() => handleStatusUpdate(req.request_id, 'fulfilled')} 
-                                                    className="action-btn-approve"
-                                                >Approve</button>
-                                                <button 
-                                                    onClick={() => handleStatusUpdate(req.request_id, 'cancelled')} 
-                                                    className="action-btn-reject"
-                                                >Reject</button>
+                                                <button onClick={() => handleStatusUpdate(req.request_id, 'fulfilled')} className="action-btn-approve">Approve</button>
+                                                <button onClick={() => handleStatusUpdate(req.request_id, 'cancelled')} className="action-btn-reject">Reject</button>
                                             </>
                                         )}
                                     </td>
@@ -85,7 +100,7 @@ export function AdminDashboard() {
                             ))
                         ) : (
                             <tr>
-                                <td colSpan="6" className="no-data">No pending requests found.</td>
+                                <td colSpan="8" className="no-data">No requests matching the selected filters.</td>
                             </tr>
                         )}
                     </tbody>

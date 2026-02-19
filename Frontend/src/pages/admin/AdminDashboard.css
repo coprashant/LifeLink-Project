@@ -16,7 +16,7 @@
 .admin-body-wrapper {
     display: flex;
     flex: 1;
-    overflow: hidden; /* Navbar stays at top, rest scrolls */
+    overflow: hidden; 
 }
 
 .sidebar {
@@ -93,6 +93,22 @@
     border-bottom: 1px solid #f1f3f5;
 }
 
+.status-pill {
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.status-pill.pending { background: #fffbeb; color: #92400e; border: 1px solid #fde68a; }
+.status-pill.confirmed { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
+.status-pill.cancelled { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+
+.admin-table tbody tr:hover {
+    background-color: #f8fafc;
+}
+
 /* Buttons & Badges */
 .action-btn-mini {
     padding: 6px 12px;
@@ -159,12 +175,39 @@
     display: none; 
 }
 
+/*Filters*/
+.sidebar-filters {
+    padding: 20px 15px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.sidebar-filters h4 {
+    color: #a0aec0;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+}
+
+.sidebar-filters input, 
+.sidebar-filters select {
+    background: #ffe4e9;
+    border: 1px solid rgb(57, 53, 53);
+    color: rgb(57, 53, 53);
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
 @media (max-width: 768px) {
     .mobile-toggle {
         display: block;
         position: fixed;
         bottom: 20px;
-        right: 20px;
+        left: 20px;
         z-index: 1001;
         background: #e63946;
         color: white;
@@ -180,7 +223,7 @@
     .sidebar {
         position: fixed;
         left: -260px; 
-        top: 0;
+        top: 72px;
         bottom: 0;
         width: 260px;
         z-index: 1000;
