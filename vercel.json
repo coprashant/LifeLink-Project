@@ -8,7 +8,7 @@
     {
       "src": "Frontend/package.json",
       "use": "@vercel/static-build",
-      "config": { "distDir": "dist" }
+      "config": { "distDir": "Frontend/dist" }
     }
   ],
   "rewrites": [
@@ -17,16 +17,8 @@
       "destination": "Backend/src/app.js"
     },
     {
-      "source": "/favicon.ico",
-      "destination": "/Frontend/dist/vite.svg"
-    },
-    {
-      "source": "/((?!api|.*\\.).*)",
-      "destination": "/Frontend/dist/index.html"
-    },
-    {
       "source": "/(.*)",
-      "destination": "/Frontend/dist/$1"
+      "destination": "/Frontend/dist/index.html"
     }
   ]
 }
