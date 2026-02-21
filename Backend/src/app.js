@@ -13,7 +13,7 @@ const app = express();
 const isProduction = process.env.NODE_ENV === 'production';
 
 app.use(cors({
-  origin: isProduction ? process.env.FRONTEND_URL : 'http://localhost:5173',
+  origin: isProduction ?[process.env.FRONTEND_URL, "https://lifelink-project.vercel.app"] : 'http://localhost:5173',
   credentials: true
 }));
 
