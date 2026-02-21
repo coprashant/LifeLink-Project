@@ -1,6 +1,4 @@
-/* =========================
-   GLOBAL
-========================= */
+/*GLOBAL*/
 
 :root {
   --primary: #c1121f;
@@ -28,9 +26,7 @@ body {
   color: var(--text-dark);
 }
 
-/* =========================
-   CONTAINER
-========================= */
+/* CONTAINER*/
 
 .container {
   max-width: 1200px;
@@ -38,9 +34,7 @@ body {
   padding: 0 24px;
 }
 
-/* =========================
-   BUTTONS
-========================= */
+/*BUTTONS*/
 
 .btn {
   display: inline-block;
@@ -81,9 +75,7 @@ body {
   box-shadow: 0 12px 30px rgba(13, 110, 253, 0.35);
 }
 
-/* =========================
-   HERO SECTION
-========================= */
+/*HERO SECTION*/
 
 .hero-section {
   position: relative;
@@ -161,9 +153,7 @@ body {
   flex-wrap: wrap;
 }
 
-/* =========================
-   STATS SECTION
-========================= */
+/* STATS SECTION*/
 
 .stats-section {
   padding: 100px 0;
@@ -269,7 +259,7 @@ body {
   box-shadow: 0 15px 35px rgba(0,0,0,0.1);
 }
 
-/* ================= CTA REFRESH ================= */
+/* CTA */
 .cta-section {
     padding: 100px 0;
     background: var(--bg-light);
@@ -313,7 +303,7 @@ body {
     color: white;
 }
 
-/* ================= FOOTER REFRESH ================= */
+/* FOOTER */
 .footer {
     background: #0b0c10;
     color: #94a3b8;
@@ -397,9 +387,7 @@ body {
 .social-links a[aria-label="LinkedIn"]:hover { background: #0077B5; }
 .social-links a[aria-label="Instagram"]:hover { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc23b6, #bc1888); }
 
-/* =========================
-   RESPONSIVE
-========================= */
+/* RESPONSIVE*/
 
 @media (max-width: 992px) {
   .hero-section {

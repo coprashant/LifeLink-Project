@@ -1,9 +1,8 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { apiFetch } from '../../utils/api'; // Import your helper
+import { apiFetch } from '../../utils/api'; 
 import './LoginPage.css';
 
-// Accept setUser as a prop from App.jsx
 export function LoginPage({ setUser }) { 
     const [role, setRole] = useState('donor');
     const [email, setEmail] = useState('');

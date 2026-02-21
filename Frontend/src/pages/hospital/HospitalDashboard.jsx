@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { apiFetch } from "../../utils/api"; // Using your existing utility
+import { apiFetch } from "../../utils/api"; 
 import "./HospitalDashboard.css";
 import BloodRequestForm from "./BloodRequestForm";
 import RequestStatusTable from "./RequestStatusTable";
@@ -9,7 +9,6 @@ export function HospitalDashboard({ user }) {
 
     const fetchRequests = async () => {
         try {
-            // Updated to use your consistent apiFetch utility
             const response = await apiFetch("/hospital/requests");
             setRequests(Array.isArray(response.data) ? response.data : []);
         } catch (error) {

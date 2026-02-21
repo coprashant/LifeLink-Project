@@ -1,4 +1,4 @@
-// Detect if we are running locally or on Vercel
+// Detect if server is running locally or on Vercel
 const BASE_URL = import.meta.env.VITE_API_URL || ''; 
 
 export const apiFetch = async (endpoint, options = {}) => {
@@ -26,7 +26,6 @@ export const apiFetch = async (endpoint, options = {}) => {
         if (contentType && contentType.includes("application/json")) {
             const data = await response.json();
             
-            // If the request was successful but the API returned an error field
             if (!response.ok) {
                 throw new Error(data.message || "Request failed");
             }

@@ -1,4 +1,4 @@
--- 1. Donors Table
+-- Donors Table: Stores personal info and donation eligibility
 CREATE TABLE Donors (
     donor_id SERIAL PRIMARY KEY,
     full_name VARCHAR(100) NOT NULL,
@@ -8,7 +8,7 @@ CREATE TABLE Donors (
     blood_group VARCHAR(5) NOT NULL 
 );
 
--- 2. Hospitals Table
+-- Hospitals Table: Stores hospital details for blood requests
 CREATE TABLE Hospitals (
     hospital_id SERIAL PRIMARY KEY,
     hospital_name VARCHAR(150) NOT NULL,
@@ -17,7 +17,7 @@ CREATE TABLE Hospitals (
     hospital_email VARCHAR(100) UNIQUE NOT NULL
 );
 
--- 3. Users Table 
+-- Users Table: Handles authentication and links to donor or hospital profiles
 CREATE TABLE Users (
     user_id SERIAL PRIMARY KEY,
     email VARCHAR(100) UNIQUE NOT NULL,
@@ -27,7 +27,7 @@ CREATE TABLE Users (
     hospital_id INT REFERENCES Hospitals(hospital_id) ON DELETE CASCADE
 );
 
--- 4. Donation History 
+-- Donation History: Logs every successful donation event
 CREATE TABLE Donation_History (
     history_id SERIAL PRIMARY KEY,
     donation_date DATE DEFAULT CURRENT_DATE,
@@ -36,7 +36,7 @@ CREATE TABLE Donation_History (
     donor_id INT NOT NULL REFERENCES Donors(donor_id) ON DELETE CASCADE
 );
 
--- 5. Blood Inventory 
+-- Blood Inventory: Tracks individual blood bags and their expiry
 CREATE TABLE Blood_Inventory (
     bag_id SERIAL PRIMARY KEY,
     blood_group VARCHAR(5) NOT NULL,
@@ -46,7 +46,7 @@ CREATE TABLE Blood_Inventory (
     donor_id INT REFERENCES Donors(donor_id) ON DELETE SET NULL
 );
 
--- 6. Blood Requests (From Hospitals)
+-- Blood Requests: Records blood requirements submitted by hospitals
 CREATE TABLE Blood_Requests (
     request_id SERIAL PRIMARY KEY,
     blood_group_needed VARCHAR(5) NOT NULL,
@@ -57,7 +57,7 @@ CREATE TABLE Blood_Requests (
     hospital_id INT NOT NULL REFERENCES Hospitals(hospital_id) ON DELETE CASCADE
 );
 
--- 7. Request Fulfillment 
+-- Request Fulfillment: Links specific blood bags to hospital requests
 CREATE TABLE Request_Fulfillment (
     fulfillment_id SERIAL PRIMARY KEY, 
     request_id INT NOT NULL REFERENCES Blood_Requests(request_id) ON DELETE CASCADE,
@@ -65,7 +65,7 @@ CREATE TABLE Request_Fulfillment (
     fulfillment_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- 8. Donation Centers (For the Map)
+-- Donation Centers: Geo-location data for donation sites
 CREATE TABLE Donation_Centers (
     center_id SERIAL PRIMARY KEY,
     center_name VARCHAR(150) NOT NULL,
@@ -76,7 +76,7 @@ CREATE TABLE Donation_Centers (
     operating_hours VARCHAR(100) DEFAULT '9:00 AM - 5:00 PM'
 );
 
--- 9. Appointments
+-- Appointments: Schedules between donors and centers
 CREATE TABLE Appointments (
     appointment_id SERIAL PRIMARY KEY,
     donor_id INT NOT NULL REFERENCES Donors(donor_id) ON DELETE CASCADE,
@@ -87,7 +87,8 @@ CREATE TABLE Appointments (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE OR  VIEW eligible_donors AS
+-- Eligible Donors View: Filters donors who haven't donated in the last 90 days
+CREATE OR REPLACE VIEW eligible_donors AS
 SELECT 
     donor_id, 
     full_name, 
@@ -95,6 +96,3 @@ SELECT
     last_donation_date
 FROM Donors
 WHERE last_donation_date IS NULL OR (CURRENT_DATE - last_donation_date) >= 90;
-
-
-SELECT * FROM Users;

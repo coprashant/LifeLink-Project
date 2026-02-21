@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { apiFetch } from '../../utils/api'; // Import your helper
+import { apiFetch } from '../../utils/api'; 
 import './LoginPage.css';
 
 export function RegisterPage() {
@@ -40,7 +40,6 @@ export function RegisterPage() {
             }
         } catch (error) {
             console.error('Error during registration:', error);
-            // apiFetch throws the error message from the server automatically
             alert(error.message || 'Could not connect to the server.');
         }
     };

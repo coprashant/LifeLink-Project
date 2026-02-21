@@ -6,7 +6,7 @@ export function MainLayout({ user, setUser }) {
         <div className="app-wrapper">
             <Navbar user={user} setUser={setUser} />
             <main className="main-content">
-                <Outlet /> {/* This is where HomePage, Login, etc. will render */}
+                <Outlet /> 
             </main>
         </div>
     );

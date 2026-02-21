@@ -1,208 +1,169 @@
-/* Container Spacing */
+/* Page Layout */
 .hospital-dashboard-wrapper {
-    padding: 2rem 0;
-    min-height: calc(100vh - 70px);
-    background-color: #f4f7f6;
+  padding: 2rem 0;
+  min-height: calc(100vh - 70px);
+  background-color: #f8fafc; 
+  -webkit-font-smoothing: antialiased;
 }
 
+/* Main Container */
 .dashboard-main {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
 }
 
 /* Header Section */
 .dashboard-header {
-    margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
 }
 
 .dashboard-header h2 {
-    font-size: 1.8rem;
-    color: #1a1a1a;
-    font-weight: 700;
-    margin-bottom: 0.2rem;
+  font-size: 1.875rem;
+  color: #0f172a; 
+  font-weight: 800;
+  letter-spacing: -0.025em;
 }
 
 .text-muted {
-    color: #666;
-    font-size: 0.95rem;
+  color: #64748b;
+  font-size: 1rem;
 }
 
-/* Layout Grid */
+/* Grid System*/
 .dashboard-grid {
-    display: grid;
-    grid-template-columns:1fr 350px; /* Fixed width for form, flexible for table */
-    gap: 2rem;
-    align-items: start;
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 2rem;
+  align-items: start;
 }
 
-/* Card Styling (Forms & Sections) */
+/* Card Components */
 .hospital-dashboard-wrapper .card {
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-    border: 1px solid #eef0f2;
-    overflow: hidden;
+  background: white;
+  border-radius: 16px; 
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+  border: 1px solid #f1f5f9;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hospital-dashboard-wrapper .card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
 }
 
 .hospital-dashboard-wrapper .card-header {
-    padding: 1.25rem;
-    background: #fff;
-    border-bottom: 1px solid #f0f0f0;
+  padding: 1.5rem;
+  background: #fff;
+  border-bottom: 1px solid #f1f5f9;
 }
 
 .hospital-dashboard-wrapper .card-header h3 {
-    margin: 0;
-    font-size: 1.1rem;
-    color: #dc3545; /* Thematic Red */
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.hospital-dashboard-wrapper .card-body {
-    padding: 1.5rem;
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #e11d48; 
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 /* Form Elements */
 .hospital-dashboard-wrapper .form-label {
-    display: block;
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: #444;
-    margin-bottom: 0.5rem;
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: 0.5rem;
 }
 
 .hospital-dashboard-wrapper .form-select,
 .hospital-dashboard-wrapper .form-input {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1.5px solid #e1e1e1;
-    border-radius: 8px;
-    font-size: 0.95rem;
-    margin-bottom: 1.25rem;
-    transition: border-color 0.2s;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  background-color: #f8fafc;
+  transition: all 0.2s;
 }
 
 .hospital-dashboard-wrapper .form-select:focus,
 .hospital-dashboard-wrapper .form-input:focus {
-    outline: none;
-    border-color: #dc3545;
+  outline: none;
+  background-color: #fff;
+  border-color: #e11d48;
+  box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.1);
 }
 
 .hospital-dashboard-wrapper .btn-submit {
-    width: 100%;
-    background: #dc3545;
-    color: white;
-    border: none;
-    padding: 0.8rem;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s;
+  width: 100%;
+  background: #e11d48;
+  color: white;
+  border: none;
+  padding: 0.875rem;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: filter 0.2s;
 }
 
 .hospital-dashboard-wrapper .btn-submit:hover {
-    background: #c82333;
+  filter: brightness(90%);
 }
 
-/* Request Status Table */
-.section-title {
-    font-size: 1.25rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    color: #333;
-}
-
+/* Table Management */
 .table-container {
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-    border: 1px solid #eef0f2;
-    overflow-x: auto;
-}
-
-.status-table {
-    width: 100%;
-    border-collapse: collapse;
-    min-width: 600px;
+  background: white;
+  border-radius: 16px;
+  border: 1px solid #f1f5f9;
+  overflow: hidden;
 }
 
 .status-table th {
-    background: #fafafa;
-    padding: 1rem;
-    text-align: left;
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: #777;
-    border-bottom: 1px solid #eee;
+  background: #f8fafc;
+  padding: 1rem;
+  text-align: left;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #64748b;
 }
 
 .status-table td {
-    padding: 1.2rem 1rem;
-    border-bottom: 1px solid #f9f9f9;
-    font-size: 0.95rem;
-    color: #444;
+  padding: 1rem;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 0.95rem;
+  color: #1e293b;
 }
 
-/* Status Badges */
+/* Status & Urgency Badges */
 .badge {
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 0.75rem;
-    font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
 }
 
-.badge-success {
-    background: #d1e7dd;
-    color: #0f5132;
-}
-
-.badge-warning {
-    background: #fff3cd;
-    color: #664d03;
-}
-
-/* Urgency Tags */
 .urgency-tag {
-    font-weight: 600;
-    font-size: 0.8rem;
-    padding: 2px 8px;
-    border-radius: 4px;
-    text-transform: uppercase;
+  font-weight: 700;
+  font-size: 0.75rem;
+  padding: 4px 8px;
+  border-radius: 6px;
 }
 
-.urgency-tag.critical {
-    color: #b91c1c; /* Deep Red */
-    background-color: #fef2f2;
-    border: 1px solid #fee2e2;
-}
+.urgency-tag.critical { color: #991b1b; background: #fee2e2; }
+.urgency-tag.urgent { color: #9a3412; background: #ffedd5; }
+.urgency-tag.normal { color: #334155; background: #f1f5f9; }
 
-.urgency-tag.urgent {
-    color: #ea580c; /* Orange */
-    background-color: #fff7ed;
-    border: 1px solid #ffedd5;
-}
+.badge-fulfilled { background: #dcfce7; color: #166534; }
+.badge-pending { background: #fef3c7; color: #92400e; }
+.badge-cancelled { background: #fee2e2; color: #991b1b; }
 
-.urgency-tag.normal {
-    color: #374151; /* Gray */
-    background-color: #f3f4f6;
-    border: 1px solid #e5e7eb;
-}
-
-/* Status Badges */
-.badge-fulfilled { background-color: #dcfce7; color: #166534; }
-.badge-pending { background-color: #fef3c7; color: #92400e; }
-.badge-cancelled { background-color: #fee2e2; color: #991b1b; }
-
-/* Responsive Breakpoints */
+/* Responsive Adjustments */
 @media (max-width: 992px) {
-    .dashboard-grid {
-        grid-template-columns: 1fr; /* Stack form on top of table on smaller screens */
-    }
-    
-    .form-column {
-        max-width: 100%;
-    }
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
 }
