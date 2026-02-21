@@ -12,13 +12,13 @@ router.put('/profile', donorController.updateProfile);
 // Donation Centers & Appointments
 router.get('/centers', donorController.getDonationCenters);
 router.post('/appointments', donorController.bookAppointment);
-router.get('/appointments', donorController.getUpcomingAppointments); 
-router.delete('/appointments/:id', donorController.cancelAppointment); 
+router.get('/appointments', donorController.getUpcomingAppointments);
+router.delete('/appointments/:id', donorController.cancelAppointment);
 
 // Eligibility Checker
 router.get('/eligibility', donorController.checkEligibility);
 
-// Blood Availability Search (Public-like access for donors)
+// Blood Availability Search
 router.get('/search/:bloodGroup', donorController.searchBloodAvailability);
 
 module.exports = router;

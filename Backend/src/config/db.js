@@ -9,7 +9,6 @@ const pool = new Pool({
   database: process.env.DB_NAME,
   password: process.env.DB_PASSWORD,
   port: process.env.DB_PORT || 5432,
-  // Automatically enables SSL only when on Vercel
   ssl: isProduction ? { rejectUnauthorized: false } : false
 });
 
