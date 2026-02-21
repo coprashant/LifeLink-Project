@@ -2,8 +2,8 @@
   "name": "lifelink-project",
   "version": "1.0.0",
   "scripts": {
-  "build": "cd Frontend && npm install && npm run build",
-  "start": "node Backend/src/app.js"
+    "build": "cd Frontend && npm install --include=dev && npm run build",
+    "start": "node Backend/src/app.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
