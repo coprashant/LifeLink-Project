@@ -1,24 +1,34 @@
+# Project Overview
+
 # 🩸 LifeLink
 
 ### Digital Blood Bank & Emergency Donor Network
 
 **LifeLink** is a centralized, web-based **Blood Inventory and Emergency Donor Management System** built to close the critical gap between **blood banks, hospitals, and donors**.
-It replaces fragmented, manual record-keeping with a **real-time, PostgreSQL-powered platform** so the *right blood type reaches the right patient at the right time*.
+It replaces fragmented, manual record-keeping with a **real-time, PostgreSQL-powered platform** so the right blood type reaches the right patient at the right time.
+
+<img src="Resources/Home.png" />
+
 
 ---
 
-## 🚀 Features
+**Hosted at:** [https://lifelink-project.vercel.app](https://lifelink-project.vercel.app)
 
-### 🔐 Administrator Dashboard (Blood Bank Staff)
+---
+
+## Key Features
+
+### Administrator Dashboard (Blood Bank Staff)
 
 * **Inventory Management**
   Full CRUD operations on blood units, categorized by blood group, component, and expiry date.
 * **Donor Verification**
   Track donor health profiles and enforce the mandatory **90-day donation interval**.
-* **Smart Alerts**
-  Automated notifications for blood units nearing the **42-day shelf-life limit**.
+* **Request Approval**
+  Approve or deny the blood request made by the hospital and decide which blood bags to send.
+  
 
-### 🏥 Hospital Portal
+### Hospital Portal
 
 * **Urgent Blood Requests**
   Submit real-time requirements with blood group and quantity.
@@ -27,36 +37,31 @@ It replaces fragmented, manual record-keeping with a **real-time, PostgreSQL-pow
 * **Request Status Tracking**
   Monitor requests from **Pending → Fulfilled**.
 
-### 🧑‍🤝‍🧑 Donor & Public Interface
+### Donor & Public Interface
 
 * **Donor Registration**
   Volunteer signup with contact information and blood group details.
 * **Eligibility Checker**
   Automatically calculates the next eligible donation date based on donation history.
-
+* **Donation Appointments**
+  Apply for appointment beforehand in the selected donation centres.
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack:
 
-**Backend**
+### Frontend:
+- **React (Vite)**
+- **Tailwind CSS**
+- **Axios**
 
-* Node.js
-* Express.js
+### Backend:
+- **Node.js**
+- **Express.js**
+- **PostgreSQL**
+- **Role-Based Access Control (RBAC)**
 
-**Database**
-
-* PostgreSQL (Relational Database Management System)
-
-**Frontend**
-
-* EJS (Templating Engine)
-* Bootstrap 5
-* HTML5, CSS3
-
-**Testing & Design**
-
-* Postman (API Testing)
-* Draw.io (ER Diagram Design)
+### Deployment:
+- **Vercel**
 
 ---
 
@@ -151,7 +156,7 @@ LifeLink
 
 ```
 
-## 📊 Database Schema (ER Diagram)
+##  Database Schema (ER Diagram)
 
 The system uses a **normalized relational database design** to maintain integrity and scalability.
 
@@ -184,7 +189,7 @@ Update your PostgreSQL credentials inside the `.env` file.
 
 ### 3️⃣ Database Configuration
 
-* Create a PostgreSQL database named **`lifelink`**
+* Create a PostgreSQL database named **`Lifelink_db`**
 * Run the SQL script located at:
 
   ```
@@ -199,19 +204,6 @@ npm start
 
 ---
 
-## 🤝 Collaboration Workflow
-
-This project follows a **decoupled development workflow** for clean collaboration.
-
-* **Feature Branching**
-  Separate branches: `feature-backend`, `feature-frontend`
-* **Pull Requests**
-  Mandatory code reviews before merging into `main`
-* **VS Code Integration**
-  Optimized for GitHub Pull Requests & Issues extension
-
----
-
 ## 👥 Project Members
 
 | Role     | Name              | GitHub                                       |
@@ -221,7 +213,4 @@ This project follows a **decoupled development workflow** for clean collaboratio
 
 ---
 
-## 📌 Vision
-
-LifeLink aims to become a **reliable digital backbone for emergency blood coordination**, reducing response time, eliminating errors, and ultimately **saving lives through technology**.
 
