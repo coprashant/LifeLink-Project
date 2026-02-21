@@ -64,92 +64,92 @@ It replaces fragmented, manual record-keeping with a **real-time, PostgreSQL-pow
 
 ```
 LifeLink
+├─ api
+│  └─ index.js
 ├─ Backend
-│  ├─ package-lock.json
-│  ├─ package.json
-│  ├─ seed.js
-│  └─ src
-│     ├─ app.js
-│     ├─ config
-│     │  └─ db.js
-│     ├─ controllers
-│     │  ├─ adminController.js
-│     │  ├─ authController.js
-│     │  ├─ donorController.js
-│     │  └─ hospitalController.js
-│     ├─ middleware
-│     │  └─ authMiddleware.js
-│     ├─ routes
-│     │  ├─ adminRoutes.js
-│     │  ├─ authRoutes.js
-│     │  ├─ donorRoutes.js
-│     │  └─ hospitalRoutes.js
-│     └─ server.js
+│  ├─ package-lock.json
+│  ├─ package.json
+│  ├─ seed.js
+│  └─ src
+│     ├─ app.js
+│     ├─ config
+│     │  └─ db.js
+│     ├─ controllers
+│     │  ├─ adminController.js
+│     │  ├─ authController.js
+│     │  ├─ donorController.js
+│     │  └─ hospitalController.js
+│     ├─ middleware
+│     │  └─ authMiddleware.js
+│     └─ routes
+│        ├─ adminRoutes.js
+│        ├─ authRoutes.js
+│        ├─ donorRoutes.js
+│        └─ hospitalRoutes.js
 ├─ Database
-│  └─ schema.sql
+│  └─ schema.sql
 ├─ Frontend
-│  ├─ eslint.config.js
-│  ├─ index.html
-│  ├─ package-lock.json
-│  ├─ package.json
-│  ├─ public
-│  │  └─ vite.svg
-│  ├─ README.md
-│  ├─ src
-│  │  ├─ App.css
-│  │  ├─ App.jsx
-│  │  ├─ assets
-│  │  │  └─ react.svg
-│  │  ├─ index.css
-│  │  ├─ main.jsx
-│  │  ├─ pages
-│  │  │  ├─ admin
-│  │  │  │  ├─ AdminDashboard.css
-│  │  │  │  ├─ AdminDashboard.jsx
-│  │  │  │  ├─ AdminLayout.jsx
-│  │  │  │  └─ AdminPage.jsx
-│  │  │  ├─ donor
-│  │  │  │  ├─ DonationHistory.css
-│  │  │  │  ├─ DonationHistory.jsx
-│  │  │  │  ├─ DonationMap.jsx
-│  │  │  │  ├─ DonationStatus.css
-│  │  │  │  ├─ DonationStatus.jsx
-│  │  │  │  ├─ DonorDashboard.css
-│  │  │  │  ├─ DonorDashboard.jsx
-│  │  │  │  ├─ DonorHeader.jsx
-│  │  │  │  ├─ DonorProfile.jsx
-│  │  │  │  ├─ EditProfileForm.jsx
-│  │  │  │  ├─ UpcomingAppointments.css
-│  │  │  │  └─ UpcomingAppointments.jsx
-│  │  │  ├─ home
-│  │  │  │  ├─ HomePage.css
-│  │  │  │  └─ HomePage.jsx
-│  │  │  ├─ hospital
-│  │  │  │  ├─ BloodRequestForm.jsx
-│  │  │  │  ├─ HospitalDashboard.css
-│  │  │  │  ├─ HospitalDashboard.jsx
-│  │  │  │  └─ RequestStatusTable.jsx
-│  │  │  ├─ layouts
-│  │  │  │  ├─ MainLayout.jsx
-│  │  │  │  ├─ Navbar.css
-│  │  │  │  └─ Navbar.jsx
-│  │  │  └─ login
-│  │  │     ├─ LoginPage.css
-│  │  │     ├─ LoginPage.jsx
-│  │  │     └─ RegisterPage.jsx
-│  │  └─ utils
-│  │     └─ api.js
-│  └─ vite.config.js
+│  ├─ eslint.config.js
+│  ├─ index.html
+│  ├─ package-lock.json
+│  ├─ package.json
+│  ├─ public
+│  │  ├─ favicon.png
+│  │  └─ vite.svg
+│  ├─ README.md
+│  ├─ src
+│  │  ├─ App.css
+│  │  ├─ App.jsx
+│  │  ├─ assets
+│  │  │  └─ react.svg
+│  │  ├─ index.css
+│  │  ├─ main.jsx
+│  │  ├─ pages
+│  │  │  ├─ admin
+│  │  │  │  ├─ AdminDashboard.css
+│  │  │  │  ├─ AdminDashboard.jsx
+│  │  │  │  ├─ AdminLayout.jsx
+│  │  │  │  └─ AdminPage.jsx
+│  │  │  ├─ donor
+│  │  │  │  ├─ DonationHistory.css
+│  │  │  │  ├─ DonationHistory.jsx
+│  │  │  │  ├─ DonationMap.jsx
+│  │  │  │  ├─ DonationStatus.css
+│  │  │  │  ├─ DonationStatus.jsx
+│  │  │  │  ├─ DonorDashboard.css
+│  │  │  │  ├─ DonorDashboard.jsx
+│  │  │  │  ├─ DonorHeader.jsx
+│  │  │  │  ├─ DonorProfile.jsx
+│  │  │  │  ├─ EditProfileForm.jsx
+│  │  │  │  ├─ UpcomingAppointments.css
+│  │  │  │  └─ UpcomingAppointments.jsx
+│  │  │  ├─ home
+│  │  │  │  ├─ HomePage.css
+│  │  │  │  └─ HomePage.jsx
+│  │  │  ├─ hospital
+│  │  │  │  ├─ BloodRequestForm.jsx
+│  │  │  │  ├─ HospitalDashboard.css
+│  │  │  │  ├─ HospitalDashboard.jsx
+│  │  │  │  └─ RequestStatusTable.jsx
+│  │  │  ├─ layouts
+│  │  │  │  ├─ MainLayout.jsx
+│  │  │  │  ├─ Navbar.css
+│  │  │  │  └─ Navbar.jsx
+│  │  │  └─ login
+│  │  │     ├─ LoginPage.css
+│  │  │     ├─ LoginPage.jsx
+│  │  │     └─ RegisterPage.jsx
+│  │  └─ utils
+│  │     └─ api.js
+│  └─ vite.config.js
 ├─ package-lock.json
 ├─ package.json
 ├─ README.md
-├─ Resources
-│  └─ ER-diagram.png
-└─ vercel.json
+├─ vercel.json
+└─ Resources
+   └─ ER-diagram.png
 
 ```
-
----
 
 ## 📊 Database Schema (ER Diagram)
 
