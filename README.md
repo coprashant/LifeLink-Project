@@ -161,11 +161,15 @@ LifeLink
 The system uses a **normalized relational database design** to maintain integrity and scalability.
 
 * **Users**
-  Authentication and Role-Based Access Control (RBAC).
+  * Authentication and Role-Based Access Control (RBAC).
 * **Donors & Hospitals**
-  Profile entities linked to user accounts.
+  * Profile entities linked to user accounts.
 * **Inventory & Requests**
-  Connected via a fulfillment bridge for transparent tracking and accountability.
+  * Connected via a fulfillment bridge for transparent tracking and accountability.
+* **Appointments and Donation_Centres**
+  * Donation appointment in the selected donation centres.
+
+<img height=300px width=750px src = "Resources/ER Diagram.png">
 
 ---
 
