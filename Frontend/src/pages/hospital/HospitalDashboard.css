@@ -161,6 +161,24 @@
 .badge-pending { background: #fef3c7; color: #92400e; }
 .badge-cancelled { background: #fee2e2; color: #991b1b; }
 
+
+/*Request Form*/
+.card-body form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.card-header{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.card-body{
+  padding: 1.5rem;
+}
+
 /* Responsive Adjustments */
 @media (max-width: 992px) {
   .dashboard-grid {

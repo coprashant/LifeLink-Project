@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./HospitalDashboard.css";
 
 export default function BloodRequestForm({ onSubmit }) {
 
