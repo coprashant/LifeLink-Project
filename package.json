@@ -6,7 +6,7 @@
     "Backend"
   ],
   "scripts": {
-    "build": "npm run build --workspace=Frontend"
+    "build": "npm run build --workspace=frontend"
   },
   "dependencies": {
     "express": "^4.19.2",
@@ -18,6 +18,6 @@
   },
   "devDependencies": {
     "vite": "^7.3.1",
-    "@vitejs/plugin-react": "^4.0.0"
+    "@vitejs/plugin-react": "^5.1.1"
   }
 }
