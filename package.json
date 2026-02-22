@@ -6,7 +6,7 @@
     "Backend"
   ],
   "scripts": {
-    "build": "npm run build --workspace=frontend"
+    "build": "cd Frontend && npm install && ../node_modules/.bin/vite build"
   },
   "dependencies": {
     "express": "^4.19.2",
@@ -14,10 +14,8 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "pg": "^8.11.5",
-    "bcryptjs": "^2.4.3"
-  },
-  "devDependencies": {
+    "bcryptjs": "^2.4.3",
     "vite": "^7.3.1",
-    "@vitejs/plugin-react": "^5.1.1"
+    "@vitejs/plugin-react": "^4.0.0"
   }
 }
