@@ -12,7 +12,6 @@ async function seedUser() {
         const query = 'INSERT INTO Users (email, password, role) VALUES ($1, $2, $3)';
         await db.query(query, [email, hashedPassword, role]);
 
-        //Temporary log to confirm seeding
         console.log('Test Admin created successfully!');
         console.log('User: admin@lifelink.com | Pass: password123');
         process.exit();
